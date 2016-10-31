@@ -13,7 +13,7 @@
         if ($this.hasClass('awb_attach_video_btn_selected')) {
             $input.val('');
             $label.html('');
-            $this.html($this.attr('data-select-title'));
+            $this.val($this.attr('data-select-title'));
             $this.removeClass('awb_attach_video_btn_selected');
             return;
         }
@@ -49,10 +49,9 @@
             var attachment = frame.state().get('selection').first().toJSON();
 
             if (attachment) {
-                console.log(attachment);
                 $input.val(attachment.id);
                 $label.html(attachment.filename);
-                $this.html($this.attr('data-remove-title'));
+                $this.val($this.attr('data-remove-title'));
                 $this.addClass('awb_attach_video_btn_selected');
             }
         });

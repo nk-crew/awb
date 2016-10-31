@@ -69,7 +69,7 @@ if (!class_exists('nK_AWB_VC_Extend')) :
             return '<div class="awb_attach_video">
                         <input name="' . esc_attr($settings['param_name']) . '" class="wpb_vc_param_value ' . esc_attr($settings['param_name']) . ' ' . esc_attr($settings['type']) . '_field" type="hidden" value="' . esc_attr($value) . '" />
                    </div>
-                   <button class="awb_attach_video_btn ' . ($value ? 'awb_attach_video_btn_selected' : '') . ' button" data-select-title="' . esc_attr__('Select File', NK_AWB_DOMAIN) . '" data-remove-title="' . esc_attr__('&times;', NK_AWB_DOMAIN) . '">' . ($value ? esc_html__('&times;', NK_AWB_DOMAIN) : esc_html__('Select File', NK_AWB_DOMAIN)) . '</button>
+                   <input type="button" class="awb_attach_video_btn ' . ($value ? 'awb_attach_video_btn_selected' : '') . ' button" data-select-title="' . esc_attr__('Select File', NK_AWB_DOMAIN) . '" data-remove-title="' . esc_attr__('&times;', NK_AWB_DOMAIN) . '" value="' . ($value ? esc_attr__('&times;', NK_AWB_DOMAIN) : esc_attr__('Select File', NK_AWB_DOMAIN)) . '">
                    <small class="awb_attach_video_label">' . esc_html(basename($value)) . '</small>';
         }
         /**
