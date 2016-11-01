@@ -16,8 +16,16 @@
             var $vc_row = ($vc_clearfix || $this).prev('.vc_row:not(.nk-awb)');
 
             if ($vc_row.length) {
+                var $children = $this.children('.nk-awb-inner');
+
+                // remove stretch option from AWB if stretch enabled on ROW
+                if ($vc_row.is('[data-vc-full-width=true]')) {
+                    $children.removeAttr('data-awb-stretch');
+                }
+
+                // insert AWB in row
                 $vc_row.addClass('nk-awb');
-                $vc_row.append($this.children('.nk-awb-inner'));
+                $vc_row.append($children);
             }
 
             $this.remove();
