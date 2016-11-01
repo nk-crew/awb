@@ -280,9 +280,17 @@
                     });
 
                     // get form values
-                    var $controls = $panel.find('.awb-mce-form [name]:visible');
+                    var $controls = $panel.find('.awb-mce-form [name]');
                     var atts = {};
                     $controls.each(function () {
+                        var $this = $(this);
+                        if ($this.is('[type=hidden]')) {
+                            if (!$this.parent().is(':visible')) {
+                                return;
+                            }
+                        } else if (!$this.is(':visible')) {
+                            return;
+                        }
                         atts[this.name] = this.type === 'checkbox' ? this.checked : this.value;
                     });
 
