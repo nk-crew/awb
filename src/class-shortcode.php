@@ -96,6 +96,11 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 $awb_class .= ' nk-awb-after-vc_row';
             }
 
+            // nk_awb shortcode with custom css from VC
+            if (function_exists('vc_shortcode_custom_css_class') && isset($atts['vc_css'])) {
+                $awb_class .= ' ' . vc_shortcode_custom_css_class($atts['vc_css']);
+            }
+
             // overlay color
             $awb_overlay = '';
             if (isset($awb_color) && $awb_color) {

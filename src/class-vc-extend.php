@@ -41,7 +41,7 @@ if (!class_exists('nK_AWB_VC_Extend')) :
 
         public function init_hooks () {
             add_filter('vc_shortcode_output', array($this, 'vc_shortcode_output_filter'), 10, 3);
-            add_action('admin_init', array($this, 'vc_shortcode_extend_params'));
+            add_action('admin_init', array($this, 'vc_shortcode_extend_prepare'));
             add_action('admin_init', array($this, 'vc_shortcode_remove_params'));
             add_action('admin_enqueue_scripts', array($this, 'admin_enqueue_scripts'));
         }
@@ -51,6 +51,7 @@ if (!class_exists('nK_AWB_VC_Extend')) :
                 wp_enqueue_media();
                 wp_enqueue_style('nk-awb-vc-attach-file', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-attach-video.css');
                 wp_enqueue_style('nk-awb-vc-heading', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-heading.css');
+                wp_enqueue_style('nk-awb-vc-icon', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-icon.css');
                 wp_enqueue_script('nk-awb-vc-frontend', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-frontend.js', array('jquery'));
             }
         }
@@ -118,15 +119,57 @@ if (!class_exists('nK_AWB_VC_Extend')) :
         }
 
         /**
+         * Prepare VC Extend
+         */
+        public function vc_shortcode_extend_prepare () {
+            // add new tab in vc_row
+            $this->vc_shortcode_extend_params('vc_row', esc_html__('Background [AWB]', NK_AWB_DOMAIN));
+
+            // add new shortcode nk_awb
+            if (function_exists('vc_map')) {
+                $shortcode_name = 'nk_awb';
+                $shortcode_group = esc_html__('General', NK_AWB_DOMAIN);
+                vc_map(array(
+                    'name'              => esc_html__('Advanced WordPress Backgrounds', NK_AWB_DOMAIN),
+                    'base'              => $shortcode_name,
+                    'controls'          => 'full',
+                    'icon'              => 'nk-awb-icon',
+                    'is_container'      => true,
+                    'js_view'           => 'VcColumnView',
+                    'params'            => array()
+                ));
+                $this->vc_shortcode_extend_params($shortcode_name, $shortcode_group);
+
+                if (function_exists('vc_add_param')) {
+                    vc_add_param($shortcode_name, array(
+                        "type"        => "awb_heading",
+                        "param_name"  => "awb_heading__awb_custom_classes",
+                        "title"       => esc_html__("Custom Classes", NK_AWB_DOMAIN),
+                        "group"       => $shortcode_group
+                    ));
+                    vc_add_param($shortcode_name, array(
+                        "type"        => "textfield",
+                        "param_name"  => "awb_class",
+                        "heading"     => "",
+                        "group"       => $shortcode_group
+                    ));
+                    vc_add_param($shortcode_name, array(
+                        "type"        => "css_editor",
+                        'heading'     => esc_html__('CSS', NK_AWB_DOMAIN),
+                        "param_name"  => "vc_css",
+                        'group'       => esc_html__('Design Options', NK_AWB_DOMAIN)
+                    ));
+                }
+            }
+        }
+
+        /**
          * Extend vc_row params
          */
-        public function vc_shortcode_extend_params () {
+        public function vc_shortcode_extend_params ($element, $group_name) {
             if(!function_exists('vc_add_param')) {
                 return;
             }
-
-            $element = 'vc_row';
-            $group_name = esc_html__('Background [AWB]', NK_AWB_DOMAIN);
 
             vc_add_param($element, array(
                 "type"        => "dropdown",
@@ -392,3 +435,10 @@ if (!class_exists('nK_AWB_VC_Extend')) :
         }
     }
 endif;
+
+// extend vc controls for nk_awb shortcode
+if (class_exists('WPBakeryShortCodesContainer')) {
+    class WPBakeryShortCode_nk_awb extends WPBakeryShortCodesContainer {
+
+    }
+}

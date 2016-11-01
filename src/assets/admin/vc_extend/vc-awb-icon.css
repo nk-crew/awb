@@ -1,0 +1,7 @@
+.vc_element-icon[data-is-container=true].nk-awb-icon,
+.vc_element-icon.nk-awb-icon {
+    background-position: 50% 50%;
+}
+.vc_element-icon.nk-awb-icon {
+    background-image: url('icon.png');
+}
