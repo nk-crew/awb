@@ -1,0 +1,9 @@
+.button.awb_attach_video_btn {
+    margin-right: 5px;
+    width: auto;
+}
+.awb_attach_video_label {
+    color: #999;
+    display: inline-block;
+    margin-top: 5px;
+}

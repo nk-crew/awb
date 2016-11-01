@@ -1,0 +1,13 @@
+.button.awb_attach_image_btn {
+    margin-right: 5px;
+    width: auto;
+}
+.awb_attach_image_label {
+    color: #999;
+    display: inline-block;
+    margin-top: 5px;
+}
+.awb_attach_image_label img {
+    width: 100px;
+    height: auto;
+}

@@ -69,6 +69,7 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 "awb_after_vc_row"      => "false",
 
                 "awb_class"             => "",
+                "awb_styles"            => "",
             ), $atts));
 
             // prevent if no valid type
@@ -81,6 +82,7 @@ if (!class_exists('nK_AWB_Shortcode')) :
 
             // prepare attributes and styles
             $awb_class = 'nk-awb ' . $awb_class;
+            $awb_attributes = '';
             $awb_inner_attributes = 'data-awb-type="' . esc_attr($awb_type) . '"';
             $awb_inner_styles = '';
 
@@ -171,7 +173,12 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 $awb_inner_attributes .= ' data-awb-parallax-mobile="' . esc_attr($awb_parallax_mobile). '"';
             }
 
-            // styles
+            // outer styles
+            if ($awb_styles) {
+                $awb_attributes .= ' style="' . esc_attr($awb_styles) . '"';
+            }
+
+            // inner styles
             if ($awb_inner_styles) {
                 $awb_inner_attributes .= ' style="' . esc_attr($awb_inner_styles) . '"';
             }
@@ -179,7 +186,7 @@ if (!class_exists('nK_AWB_Shortcode')) :
             // classes
             $awb_inner_attributes = 'class="nk-awb-inner" ' . $awb_inner_attributes;
 
-            return '<div class="' . esc_attr($awb_class) . '">' . do_shortcode($content) . '<div ' . $awb_inner_attributes . '>' . $awb_overlay . '</div></div>';
+            return '<div class="' . esc_attr($awb_class) . '" ' . $awb_attributes . '>' . do_shortcode($content) . '<div ' . $awb_inner_attributes . '>' . $awb_overlay . '</div></div>';
         }
     }
 endif;

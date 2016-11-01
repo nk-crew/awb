@@ -73,6 +73,9 @@ class nK_AWB {
 
         // VC extend
         $this->vc_extend();
+
+        // TinyMCE extend
+        $this->tinymce();
     }
 
     public function init_hooks() {
@@ -96,6 +99,7 @@ class nK_AWB {
         require_once($this->plugin_path . 'class-updater.php');
         require_once($this->plugin_path . 'class-shortcode.php');
         require_once($this->plugin_path . 'class-vc-extend.php');
+        require_once($this->plugin_path . 'class-tinymce.php');
     }
 
 
@@ -110,6 +114,9 @@ class nK_AWB {
     }
     public function vc_extend () {
         return nK_AWB_VC_Extend::instance();
+    }
+    public function tinymce () {
+        return nK_AWB_TinyMCE::instance();
     }
 
 

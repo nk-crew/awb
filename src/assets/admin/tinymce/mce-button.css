@@ -1,0 +1,152 @@
+i.mce-i-awb:before {
+    content: "\f115";
+    font-family: "dashicons";
+}
+.mce-window.mce-container.mce-awb-panel .mce-container-body.mce-abs-layout {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* AWB Panel */
+.mce-awb-panel.mce-container * {
+    box-sizing: border-box;
+    white-space: initial;
+}
+.mce-awb-panel.mce-container .mce-container-body {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    color: #5e5e5e;
+}
+.mce-awb-panel.mce-window .mce-window-head .mce-title {
+    padding: 5px 36px 5px 16px;
+}
+.mce-awb-panel.mce-window .mce-window-head .mce-close,
+.mce-awb-panel .mce-window-head .mce-close .mce-i-remove,
+.mce-awb-panel .mce-window-head .mce-close .mce-i-remove:before {
+    height: 46px;
+    line-height: 46px;
+}
+
+.mce-awb-panel .awb-col-6 {
+    width: 50%;
+    float: left;
+    padding: 10px 16px;
+}
+.mce-awb-panel .awb-col-4 {
+    width: 33.333%;
+    float: left;
+    padding: 10px 16px;
+}
+.mce-awb-panel .awb-col-3 {
+    width: 25%;
+    float: left;
+    padding: 10px 16px;
+}
+.mce-awb-panel .awb-col-12 {
+    width: 100%;
+    clear: both;
+    padding: 16px;
+}
+.mce-awb-panel .awb-clearfix {
+    clear: both;
+}
+
+.mce-awb-panel h3 {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.mce-awb-panel .awb-title {
+    border-top: 1px solid #eaeaea;
+    padding-top: 22px;
+    margin-top: 16px;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.mce-awb-panel .awb-description {
+    color: #999;
+    display: block;
+    font-style: italic;
+    line-height: 20px;
+    margin-top: 8px;
+    clear: both;
+}
+.mce-awb-panel input {
+    border: 1px solid #ddd;
+    padding: 3px 5px;
+    width: 100%;
+}
+.mce-awb-panel input[type=checkbox] {
+    border: 1px solid #b4b9be;
+    padding: 0;
+    width: auto;
+}
+.mce-awb-panel input[type=submit],
+.mce-awb-panel input[type=button] {
+    width: auto;
+}
+.mce-awb-panel select {
+    padding: 2px;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+
+
+/* Tabs */
+.mce-awb-panel .awb-tabs {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #d2d2d2;
+    padding-left: 16px;
+}
+.mce-awb-panel .awb-tab {
+    padding: 10px 15px;
+    display: inline-block;
+    border: 1px solid #e4e4e4;
+    background-color: #f3f3f3;
+    border-bottom-color: #d2d2d2;
+    margin-bottom: -1px;
+}
+.mce-awb-panel .awb-tab.awb-tab-active {
+    border-color: #d2d2d2;
+    border-bottom-color: #fff;
+    background-color: #fff;
+}
+.mce-awb-panel .awb-tab:hover {
+    color: inherit;
+    background-color: #fff;
+}
+.mce-awb-panel .awb-tabs ~ [data-tab] {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    left: -1000px;
+}
+.mce-awb-panel .awb-tabs ~ [data-tab].awb-tab-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+    left: auto;
+}
+
+
+/* Color Picker */
+.mce-container .wp-color-result {
+    background-color: #f7f7f7;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 #ccc;
+    cursor: pointer;
+    display: inline-block;
+    height: 24px;
+    margin: 0 6px 6px 0;
+    padding-left: 30px;
+    position: relative;
+    top: 1px;
+    vertical-align: bottom;
+}
+.mce-awb-panel .iris-picker .iris-strip {
+    height: 205px;
+}
+.mce-awb-panel .iris-border .iris-palette-container {
+    float: left;
+    margin-top: -20px;
+}
