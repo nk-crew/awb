@@ -105,8 +105,9 @@
         $('.nk-awb .nk-awb-inner[data-awb-stretch="true"]').each(function () {
             var $this = $(this);
             var rect = this.getBoundingClientRect();
+            var wndW = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
             var left = rect.left;
-            var right = rect.right - rect.width;
+            var right = wndW - rect.right;
 
             if (left != 0 || right != 0) {
                 var ml = parseFloat($this.css('margin-left') || 0);
