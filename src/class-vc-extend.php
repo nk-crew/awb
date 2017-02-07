@@ -322,7 +322,7 @@ if (!class_exists('nK_AWB_VC_Extend')) :
                 "type"        => "textfield",
                 "param_name"  => "awb_video_start_time",
                 "heading"     => esc_html__( "Start Time", NK_AWB_DOMAIN ),
-                "description" => esc_html__( "Start time in milliseconds when video will be started (this value will be applied also after loop)", NK_AWB_DOMAIN ),
+                "description" => esc_html__( "Start time in seconds when video will be started (this value will be applied also after loop)", NK_AWB_DOMAIN ),
                 "group"       => $group_name,
                 "edit_field_class" => "vc_col-sm-6",
                 "dependency" => array(
@@ -334,7 +334,7 @@ if (!class_exists('nK_AWB_VC_Extend')) :
                 "type"        => "textfield",
                 "param_name"  => "awb_video_end_time",
                 "heading"     => esc_html__( "End Time", NK_AWB_DOMAIN ),
-                "description" => esc_html__( "End time in milliseconds when video will be ended", NK_AWB_DOMAIN ),
+                "description" => esc_html__( "End time in seconds when video will be ended", NK_AWB_DOMAIN ),
                 "group"       => $group_name,
                 "edit_field_class" => "vc_col-sm-6",
                 "dependency" => array(
