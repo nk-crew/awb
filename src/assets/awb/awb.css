@@ -11,6 +11,10 @@
     bottom: 0;
     z-index: -99;
 }
+/* Fix for Safari */
+.nk-awb .nk-awb-overlay {
+    z-index: 0;
+}
 .nk-awb .nk-awb-inner {
     background-size: cover;
     background-position: center center;
