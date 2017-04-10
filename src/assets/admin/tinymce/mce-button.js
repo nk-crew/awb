@@ -227,7 +227,7 @@
                                     '<div class="awb-description">pixels</div>',
                                 '</div>',
                                 '<div class="awb-col-4">',
-                                    '<h3>peed</h3>',
+                                    '<h3>Speed</h3>',
                                     '<input type="text" name="awb_mouse_parallax_speed" value="' + atts.awb_mouse_parallax_speed + '">',
                                     '<div class="awb-description">milliseconds</div>',
                                 '</div>',
@@ -307,7 +307,7 @@
 
                     // get form values
                     var $controls = $panel.find('.awb-mce-form [name]');
-                    var atts = {};
+                    var new_atts = {};
                     $controls.each(function () {
                         var $this = $(this);
                         if ($this.is('[type=hidden]')) {
@@ -317,7 +317,7 @@
                         } else if (!$this.is(':visible')) {
                             return;
                         }
-                        atts[this.name] = this.type === 'checkbox' ? this.checked : this.value;
+                        new_atts[this.name] = this.type === 'checkbox' ? this.checked : this.value;
                     });
 
                     // build shortcode
@@ -325,8 +325,8 @@
 
                     // insert available attributes
                     for (var k in defaultAtts) {
-                        if (typeof atts[k] !== 'undefined' && atts[k]) {
-                            shortcode_str += ' ' + k + '="' + atts[k] + '"';
+                        if (typeof new_atts[k] !== 'undefined' && new_atts[k]) {
+                            shortcode_str += ' ' + k + '="' + new_atts[k] + '"';
                         }
                     }
 
@@ -346,8 +346,11 @@
                         shortcode_str += ' awb_styles="' + customStyles + '"';
                     }
 
+                    // content
+                    var content = atts.content || '<p>Your Content Here</p>';
+
                     // add panel content
-                    shortcode_str += '] <p>Your Content Here</p> [/' + sh_tag + ']';
+                    shortcode_str += ']' + content + '[/' + sh_tag + ']';
 
                     // insert shortcode to tinymce
                     editor.insertContent(shortcode_str);
@@ -389,8 +392,10 @@
         editor.addButton('awb', {
             icon: 'awb',
             tooltip: 'Advanced WordPress Backgrounds',
-            onclick: function() {
-                editor.execCommand('awb_popup', '', defaultAtts);
+            onclick: function(a, b) {
+                editor.execCommand('awb_popup', '', $.extend({
+                    content: editor.selection.getContent()
+                }, defaultAtts));
             }
         });
     });
