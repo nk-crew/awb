@@ -2,7 +2,7 @@
 /**
  * Plugin Name:  Advanced WordPress Backgrounds
  * Description:  Parallax, Video, Images Backgrounds
- * Version:      1.0.1
+ * Version:      1.1.0
  * Author:       nK
  * Author URI:   https://nkdev.info
  * License:      GPLv2 or later
