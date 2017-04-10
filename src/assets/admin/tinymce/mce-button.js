@@ -29,6 +29,10 @@
             awb_parallax_speed    : 0.5,
             awb_parallax_mobile   : 'false',
 
+            awb_mouse_parallax         : '',
+            awb_mouse_parallax_size    : 30,
+            awb_mouse_parallax_speed   : 10000,
+
             awb_class             : ''
         };
 
@@ -204,6 +208,28 @@
                                 '<div class="awb-col-4">',
                                     '<h3>Enable on Mobile Devices</h3>',
                                     '<input type="checkbox" value="1" name="awb_parallax_mobile" ' + isChecked(atts.awb_parallax_mobile) + '>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+
+                        // Mouse Parallax
+                        '<div data-cond="[name=awb_type] && [name=awb_type] != color">',
+                            '<div class="awb-clearfix"></div>',
+                            '<h3 class="awb-title">Mouse Parallax</h3>',
+                            '<div class="awb-col-4">',
+                                '<h3>Enable</h3>',
+                                '<input type="checkbox" value="1" name="awb_mouse_parallax" ' + isChecked(atts.awb_mouse_parallax) + '>',
+                            '</div>',
+                            '<div data-cond="[name=awb_mouse_parallax]">',
+                                '<div class="awb-col-4">',
+                                    '<h3>Size</h3>',
+                                    '<input type="text" name="awb_mouse_parallax_size" value="' + atts.awb_mouse_parallax_size + '">',
+                                    '<div class="awb-description">pixels</div>',
+                                '</div>',
+                                '<div class="awb-col-4">',
+                                    '<h3>peed</h3>',
+                                    '<input type="text" name="awb_mouse_parallax_speed" value="' + atts.awb_mouse_parallax_speed + '">',
+                                    '<div class="awb-description">milliseconds</div>',
                                 '</div>',
                             '</div>',
                         '</div>',

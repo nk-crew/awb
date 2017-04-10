@@ -14,10 +14,10 @@ jQuery(function ($) {
             }
 
             var $this = e.view.$el.children('.vc_row');
-            var $awb = $this.find('.nk-awb-inner');
+            var $awb = $this.find('.nk-awb-wrap');
 
             // destroy jarallax
-            var $jarallax = $awb.children('[id*="jarallax"]').length ? $awb[0] : false;
+            var $jarallax = $awb.find('[id*="jarallax"]').length ? $awb[0] : false;
             if ($jarallax && $jarallax.jarallax) {
                 $jarallax.jarallax['destroy'].apply($jarallax.jarallax);
             }

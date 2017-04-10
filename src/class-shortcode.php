@@ -37,6 +37,7 @@ if (!class_exists('nK_AWB_Shortcode')) :
         static function enqueue_front_assets () {
             wp_enqueue_script('jarallax', nk_awb()->plugin_url . 'assets/jarallax/jarallax.min.js', array('jquery'), '', true);
             wp_enqueue_script('jarallax-video', nk_awb()->plugin_url . 'assets/jarallax/jarallax-video.min.js', array('jquery'), '', true);
+            wp_enqueue_script('tween-max', nk_awb()->plugin_url . 'assets/gsap/TweenMax.min.js', array('jquery'), '', true);
             wp_enqueue_script('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.js', array('jarallax'), '', true);
             wp_enqueue_style('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.css');
         }
@@ -66,6 +67,10 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 "awb_parallax_speed"    => 0.5,
                 "awb_parallax_mobile"   => "false",
 
+                "awb_mouse_parallax"    => "false",
+                "awb_mouse_parallax_size" => 30, // pixels
+                "awb_mouse_parallax_speed" => 10000, // ms
+
                 "awb_after_vc_row"      => "false",
 
                 "awb_class"             => "",
@@ -83,12 +88,13 @@ if (!class_exists('nK_AWB_Shortcode')) :
             // prepare attributes and styles
             $awb_class = 'nk-awb ' . $awb_class;
             $awb_attributes = '';
-            $awb_inner_attributes = 'data-awb-type="' . esc_attr($awb_type) . '"';
+            $awb_wrap_attributes = 'data-awb-type="' . esc_attr($awb_type) . '"';
             $awb_inner_styles = '';
+            $awb_inner_attributes = '';
 
             // stretch
             if (filter_var($awb_stretch, FILTER_VALIDATE_BOOLEAN)) {
-                $awb_inner_attributes .= ' data-awb-stretch="true"';
+                $awb_wrap_attributes .= ' data-awb-stretch="true"';
             }
 
             // after vc_row
@@ -123,16 +129,16 @@ if (!class_exists('nK_AWB_Shortcode')) :
                     }
                 }
                 if (isset($awb_image) && $awb_image) {
-                    $awb_inner_attributes .= ' data-awb-image="' . esc_url($awb_image) . '"';
-                    $awb_inner_attributes .= ' data-awb-image-width="' . esc_attr($imgWidth) . '"';
-                    $awb_inner_attributes .= ' data-awb-image-height="' . esc_attr($imgHeight) . '"';
+                    $awb_wrap_attributes .= ' data-awb-image="' . esc_url($awb_image) . '"';
+                    $awb_wrap_attributes .= ' data-awb-image-width="' . esc_attr($imgWidth) . '"';
+                    $awb_wrap_attributes .= ' data-awb-image-height="' . esc_attr($imgHeight) . '"';
                     $awb_inner_styles .= 'background-image: url("' . esc_url($awb_image) . '");';
                 }
             }
             if ($awb_type === 'yt_vm_video') {
-                $awb_inner_attributes .= ' data-awb-video="' . esc_attr($awb_video) . '"';
-                $awb_inner_attributes .= ' data-awb-video-start-time="' . esc_attr($awb_video_start_time) . '"';
-                $awb_inner_attributes .= ' data-awb-video-end-time="' . esc_attr($awb_video_end_time) . '"';
+                $awb_wrap_attributes .= ' data-awb-video="' . esc_attr($awb_video) . '"';
+                $awb_wrap_attributes .= ' data-awb-video-start-time="' . esc_attr($awb_video_start_time) . '"';
+                $awb_wrap_attributes .= ' data-awb-video-end-time="' . esc_attr($awb_video_end_time) . '"';
             }
             if ($awb_type === 'video') {
                 $videos = '';
@@ -166,16 +172,22 @@ if (!class_exists('nK_AWB_Shortcode')) :
                         $videos .= 'ogv:' . esc_url($awb_video_ogv);
                     }
                 }
-                $awb_inner_attributes .= ' data-awb-video="' . esc_attr($videos) . '"';
-                $awb_inner_attributes .= ' data-awb-video-start-time="' . esc_attr($awb_video_start_time) . '"';
-                $awb_inner_attributes .= ' data-awb-video-end-time="' . esc_attr($awb_video_end_time) . '"';
+                $awb_wrap_attributes .= ' data-awb-video="' . esc_attr($videos) . '"';
+                $awb_wrap_attributes .= ' data-awb-video-start-time="' . esc_attr($awb_video_start_time) . '"';
+                $awb_wrap_attributes .= ' data-awb-video-end-time="' . esc_attr($awb_video_end_time) . '"';
             }
 
             // parallax
             if ($awb_parallax == 'scroll' || $awb_parallax == 'scale' || $awb_parallax == 'opacity' || $awb_parallax == 'scroll-opacity' || $awb_parallax == 'scale-opacity') {
-                $awb_inner_attributes .= ' data-awb-parallax="' . esc_attr($awb_parallax). '"';
-                $awb_inner_attributes .= ' data-awb-parallax-speed="' . esc_attr($awb_parallax_speed). '"';
-                $awb_inner_attributes .= ' data-awb-parallax-mobile="' . esc_attr($awb_parallax_mobile). '"';
+                $awb_wrap_attributes .= ' data-awb-parallax="' . esc_attr($awb_parallax) . '"';
+                $awb_wrap_attributes .= ' data-awb-parallax-speed="' . esc_attr($awb_parallax_speed) . '"';
+                $awb_wrap_attributes .= ' data-awb-parallax-mobile="' . esc_attr($awb_parallax_mobile) . '"';
+            }
+
+            // mouse parallax
+            if ($awb_mouse_parallax && $awb_mouse_parallax !== 'false') {
+                $awb_wrap_attributes .= ' data-awb-mouse-parallax-size="' . esc_attr($awb_mouse_parallax_size) . '"';
+                $awb_wrap_attributes .= ' data-awb-mouse-parallax-speed="' . esc_attr($awb_mouse_parallax_speed) . '"';
             }
 
             // outer styles
@@ -184,14 +196,21 @@ if (!class_exists('nK_AWB_Shortcode')) :
             }
 
             // inner styles
+            $awb_inner_attributes .= ' class="nk-awb-inner"';
             if ($awb_inner_styles) {
                 $awb_inner_attributes .= ' style="' . esc_attr($awb_inner_styles) . '"';
             }
 
             // classes
-            $awb_inner_attributes = 'class="nk-awb-inner" ' . $awb_inner_attributes;
+            $awb_wrap_attributes = 'class="nk-awb-wrap" ' . $awb_wrap_attributes;
 
-            return '<div class="' . esc_attr($awb_class) . '" ' . $awb_attributes . '>' . do_shortcode($content) . '<div ' . $awb_inner_attributes . '>' . $awb_overlay . '</div></div>';
+            return '<div class="' . esc_attr($awb_class) . '" ' . $awb_attributes . '>'
+                        . do_shortcode($content)
+                        . '<div ' . $awb_wrap_attributes . '>'
+                            . $awb_overlay
+                            . '<div ' . $awb_inner_attributes . '></div>'
+                        . '</div>'
+                    . '</div>';
         }
     }
 endif;

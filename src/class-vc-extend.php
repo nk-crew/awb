@@ -432,6 +432,56 @@ if (!class_exists('nK_AWB_VC_Extend')) :
                     "not_empty"  => true
                 )
             ));
+
+            // Mouse Parallax
+            vc_add_param($element, array(
+                "type"        => "awb_heading",
+                "param_name"  => "awb_heading__awb_mouse_parallax",
+                "title"       => esc_html__("Mouse Parallax", NK_AWB_DOMAIN),
+                "group"       => $group_name,
+                "dependency" => array(
+                    "element"    => "awb_type",
+                    "value"      => array("image", "yt_vm_video", "video")
+                ),
+            ));
+            vc_add_param($element, array(
+                "type"        => "checkbox",
+                "param_name"  => "awb_mouse_parallax",
+                "heading"     => esc_html__( "Enable", NK_AWB_DOMAIN ),
+                'value'       => array( '' => true ),
+                "group"       => $group_name,
+                "edit_field_class" => "vc_col-sm-4",
+                "dependency" => array(
+                    "element"    => "awb_type",
+                    "value"      => array("image", "yt_vm_video", "video")
+                ),
+            ));
+            vc_add_param($element, array(
+                "type"        => "textfield",
+                "param_name"  => "awb_mouse_parallax_size",
+                "heading"     => esc_html__( "Size", NK_AWB_DOMAIN ),
+                "description" => esc_html__( "pixels", NK_AWB_DOMAIN ),
+                'value'       => 30,
+                "group"       => $group_name,
+                "edit_field_class" => "vc_col-sm-4",
+                "dependency" => array(
+                    "element"    => "awb_mouse_parallax",
+                    'not_empty'  => true
+                ),
+            ));
+            vc_add_param($element, array(
+                "type"        => "textfield",
+                "param_name"  => "awb_mouse_parallax_speed",
+                "heading"     => esc_html__( "Speed", NK_AWB_DOMAIN ),
+                "description" => esc_html__( "milliseconds", NK_AWB_DOMAIN ),
+                'value'       => 10000,
+                "group"       => $group_name,
+                "edit_field_class" => "vc_col-sm-4",
+                "dependency" => array(
+                    "element"    => "awb_mouse_parallax",
+                    'not_empty'  => true
+                ),
+            ));
         }
     }
 endif;
