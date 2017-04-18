@@ -129,13 +129,13 @@
                 else {
                     $parallaxMouseList = $newParallax;
                     if (isMobile && window.DeviceOrientationEvent) {
-                        $wnd.on('deviceorientation', () => {
+                        $wnd.on('deviceorientation', function () {
                             parallax_mouse_run(event.gamma / 90, event.beta / 180, true);
                         });
 
                     // no smooth on firefox
                     } else if (!isFireFox) {
-                        $wnd.on('mousemove', (event) => {
+                        $wnd.on('mousemove', function (event) {
                             parallax_mouse_run(event.clientX, event.clientY);
                         });
                     }
