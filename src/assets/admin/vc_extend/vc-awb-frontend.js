@@ -40,36 +40,31 @@ jQuery(function ($) {
         // on shortcode add and update events
         vc.events.on('shortcodes:vc_row shortcodes:vc_column shortcodes:nk_awb', function (e) {
             var params = e.attributes.params;
-            var $icon = false;
 
             // prevent if no view or control buttons (available only on backend)
             if (!e.view || !e.view.$controls_buttons) {
                 return;
             }
 
+            // find icon
+            var $icon = false;
+            if (e.attributes.shortcode === 'nk_awb') {
+                $icon = e.view.$el.find('.wpb_element_title .nk-awb-icon');
+            } else {
+                $icon = e.view.$controls_buttons.parent().children('.vc_control-awb');
+            }
+
             if (params && (params.awb_type)) {
 
-                // change main icon in default shortcode
-                if (e.attributes.shortcode === 'nk_awb') {
-                    $icon = e.view.$el.find('.wpb_element_title .nk-awb-icon');
-                }
-
                 // add indicator to row or column
-                else {
-                    var $controls = e.view.$controls_buttons.parent();
-
-                    // remove old indicatior
-                    $icon = $controls.children('.vc_control-awb');
-                    if (!$icon.length) {
-                        $icon = $('<span class="vc_control-awb">').appendTo($controls);
-                    }
+                if (!$icon.length && (e.attributes.shortcode === 'vc_row' || e.attributes.shortcode === 'vc_column'))  {
+                    $icon = $('<span class="vc_control-awb">').appendTo(e.view.$controls_buttons.parent());
                 }
 
                 // insert overlay color
                 if ($icon) {
                     $icon.html('<span class="vc_control-awb-overlay" style="background-color: ' + (params.awb_color || 'transparent') + ';"></span>');
                 }
-
 
                 // update image thumbnail
                 $icon.css('background-image', '');
@@ -104,15 +99,7 @@ jQuery(function ($) {
                     }
                 }
             } else {
-                // reset icon
-                if (e.attributes.shortcode === 'nk_awb') {
-                    $icon = e.view.$el.find('.wpb_element_title .nk-awb-icon');
-                } else {
-                    $icon = e.view.$controls_buttons.parent().children('.vc_control-awb');
-                }
-                if ($icon) {
-                    $icon.css('background-image', '').html('');
-                }
+                $icon.css('background-image', '').html('');
             }
         });
     }
