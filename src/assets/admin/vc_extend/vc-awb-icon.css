@@ -2,6 +2,31 @@
 .vc_element-icon.nk-awb-icon {
     background-position: 50% 50%;
 }
-.vc_element-icon.nk-awb-icon {
+.vc_element-icon.nk-awb-icon,
+.vc_control-awb {
+    position: relative;
     background-image: url('icon.png');
+    background-size: cover;
+    background-position: 50% 50%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.vc_control-awb {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    margin: 0 2px;
+}
+.vc_controls-row .vc_control-awb {
+    float: right;
+    margin: 4px;
+}
+.vc_control-awb-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
 }
