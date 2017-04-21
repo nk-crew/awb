@@ -17,6 +17,7 @@
     width: 18px;
     height: 18px;
     margin: 0 2px;
+    cursor: pointer;
 }
 .vc_controls-row .vc_control-awb {
     float: right;
