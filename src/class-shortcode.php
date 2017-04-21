@@ -72,6 +72,7 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 "awb_mouse_parallax_speed" => 10000, // ms
 
                 "awb_after_vc_row"      => "false",
+                "awb_after_vc_column"   => "false",
 
                 "awb_class"             => "",
                 "awb_styles"            => "",
@@ -100,6 +101,11 @@ if (!class_exists('nK_AWB_Shortcode')) :
             // after vc_row
             if (filter_var($awb_after_vc_row, FILTER_VALIDATE_BOOLEAN)) {
                 $awb_class .= ' nk-awb-after-vc_row';
+            }
+
+            // after vc_column
+            if (filter_var($awb_after_vc_column, FILTER_VALIDATE_BOOLEAN)) {
+                $awb_class .= ' nk-awb-after-vc_column';
             }
 
             // nk_awb shortcode with custom css from VC

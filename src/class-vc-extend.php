@@ -97,6 +97,9 @@ if (!class_exists('nK_AWB_VC_Extend')) :
             if ($obj->settings('base') == 'vc_row') {
                 $attr['awb_after_vc_row'] = 'true';
                 $output .= nk_awb()->shortcode()->get_shortcode_out($attr, '');
+            } else if ($obj->settings('base') == 'vc_column') {
+                $attr['awb_after_vc_column'] = 'true';
+                $output .= nk_awb()->shortcode()->get_shortcode_out($attr, '');
             }
             return $output;
         }
@@ -124,6 +127,9 @@ if (!class_exists('nK_AWB_VC_Extend')) :
         public function vc_shortcode_extend_prepare () {
             // add new tab in vc_row
             $this->vc_shortcode_extend_params('vc_row', esc_html__('Background [AWB]', NK_AWB_DOMAIN));
+
+            // add new tab in vc_column
+            $this->vc_shortcode_extend_params('vc_column', esc_html__('Background [AWB]', NK_AWB_DOMAIN));
 
             // add new shortcode nk_awb
             if (function_exists('vc_map')) {

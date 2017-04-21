@@ -181,24 +181,53 @@
      * Stretch Background
      */
     function stretch_awb () {
-        $('.nk-awb .nk-awb-wrap[data-awb-stretch="true"]').each(function () {
+
+        $('.nk-awb:not(.wpb_column)').children('.nk-awb-wrap[data-awb-stretch="true"]').each(function () {
             var $this = $(this);
             var rect = this.getBoundingClientRect();
             var left = rect.left;
             var right = wndW - rect.right;
 
-            if (left != 0 || right != 0) {
+            var ml = parseFloat($this.css('margin-left') || 0);
+            var mr = parseFloat($this.css('margin-right') || 0);
+            $this.css({
+                'margin-left': ml - left,
+                'margin-right': mr - right
+            });
+        });
+
+        // column stretch
+        $('.nk-awb.wpb_column').children('.nk-awb-wrap[data-awb-stretch="true"]').each(function () {
+            var $this = $(this);
+            var $row = $this.parents('.vc_row:eq(0)');
+            var $col = $this.parents('.wpb_column:eq(0)');
+            var rectAWB = this.getBoundingClientRect();
+            var rectRow = $row[0].getBoundingClientRect();
+            var rectCol = $col[0].getBoundingClientRect();
+            var leftAWB = rectAWB.left;
+            var rightAWB = wndW - rectAWB.right;
+            var leftRow = rectRow.left;
+            var rightRow = wndW - rectRow.right;
+            var leftCol = rectCol.left;
+            var rightCol = wndW - rectCol.right;
+            var css = {
+                'margin-left': 0,
+                'margin-right': 0
+            };
+
+            if (leftRow == leftCol) {
                 var ml = parseFloat($this.css('margin-left') || 0);
-                var mr = parseFloat($this.css('margin-right') || 0);
-                $this.css({
-                    'margin-left': ml - left,
-                    'margin-right': mr - right
-                })
+                css['margin-left'] = ml - leftAWB;
             }
+
+            if (rightRow == rightCol) {
+                var mr = parseFloat($this.css('margin-right') || 0);
+                css['margin-right'] = mr - rightAWB;
+            }
+
+            $this.css(css);
         });
     }
-    stretch_awb();
-    $wnd.on('resize orientationchange load', stretch_awb);
 
 
     /**
@@ -227,6 +256,22 @@
                 // insert AWB in row
                 $vc_row.addClass('nk-awb');
                 $vc_row.append($children);
+            }
+
+            $this.remove();
+        });
+
+        // prepare vc_column
+        $('.nk-awb-after-vc_column').each(function () {
+            var $this = $(this);
+            var $vc_column = $this.prev('.wpb_column:not(.nk-awb)');
+
+            if ($vc_column.length) {
+                var $children = $this.children('.nk-awb-wrap');
+
+                // insert AWB in row
+                $vc_column.addClass('nk-awb');
+                $vc_column.append($children);
             }
 
             $this.remove();
@@ -303,4 +348,8 @@
     $(function () {
         window.nk_awb_init();
     });
+
+    // init stretch
+    stretch_awb();
+    $wnd.on('resize orientationchange load', stretch_awb);
 })(jQuery);
