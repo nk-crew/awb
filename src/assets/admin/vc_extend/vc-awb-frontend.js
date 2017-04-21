@@ -9,12 +9,12 @@ jQuery(function ($) {
 
         // on shortcode add and update events
         vc.events.on('shortcodes:add shortcodeView:updated', function (e) {
-            if (e.settings.base !== 'vc_row') {
+            if (e.settings.base !== 'vc_row' && e.settings.base !== 'vc_column') {
                 return;
             }
 
-            var $this = e.view.$el.children('.vc_row');
-            var $awb = $this.find('.nk-awb-wrap');
+            var $this = e.view.$el.children('.vc_row, .wpb_column');
+            var $awb = $this.children('.nk-awb-wrap');
 
             // destroy jarallax
             var $jarallax = $awb.find('[id*="jarallax"]').length ? $awb[0] : false;
