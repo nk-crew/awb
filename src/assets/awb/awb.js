@@ -206,8 +206,8 @@
             var rectCol = $col[0].getBoundingClientRect();
             var leftAWB = rectAWB.left;
             var rightAWB = wndW - rectAWB.right;
-            var leftRow = rectRow.left;
-            var rightRow = wndW - rectRow.right;
+            var leftRow = rectRow.left + (parseFloat($row.css('padding-left')) || 0);
+            var rightRow = wndW - rectRow.right + (parseFloat($row.css('padding-right')) || 0);
             var leftCol = rectCol.left;
             var rightCol = wndW - rectCol.right;
             var css = {
@@ -215,12 +215,16 @@
                 'margin-right': 0
             };
 
-            if (leftRow == leftCol) {
+            // We need to round numbers because in some situations the same blocks have different offsets, for example
+            // Row right is 68
+            // Col right is 68.015625
+            // I don't know why :(
+            if (Math.round(leftRow) == Math.round(leftCol)) {
                 var ml = parseFloat($this.css('margin-left') || 0);
                 css['margin-left'] = ml - leftAWB;
             }
 
-            if (rightRow == rightCol) {
+            if (Math.round(rightRow) == Math.round(rightCol)) {
                 var mr = parseFloat($this.css('margin-right') || 0);
                 css['margin-right'] = mr - rightAWB;
             }
@@ -265,9 +269,15 @@
         $('.nk-awb-after-vc_column').each(function () {
             var $this = $(this);
             var $vc_column = $this.prev('.wpb_column:not(.nk-awb)');
+            var $vc_row = $vc_column.parents('.vc_row:eq(0)');
 
             if ($vc_column.length) {
                 var $children = $this.children('.nk-awb-wrap');
+
+                // remove stretch option from AWB if stretch enabled on ROW
+                if ($vc_row.is('[data-vc-stretch-content=true]')) {
+                    $children.removeAttr('data-awb-stretch');
+                }
 
                 // insert AWB in row
                 $vc_column.addClass('nk-awb');
