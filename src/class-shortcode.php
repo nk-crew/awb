@@ -204,7 +204,7 @@ if (!class_exists('nK_AWB_Shortcode')) :
             // inner styles
             $awb_inner_attributes .= ' class="nk-awb-inner"';
             if ($awb_inner_styles) {
-                $awb_inner_attributes .= ' style="' . esc_attr($awb_inner_styles) . '"';
+                $awb_inner_attributes .= ' style="' . $awb_inner_styles . '"';
             }
 
             // classes
