@@ -138,7 +138,7 @@ if (!class_exists('nK_AWB_Shortcode')) :
                     $awb_wrap_attributes .= ' data-awb-image="' . esc_url($awb_image) . '"';
                     $awb_wrap_attributes .= ' data-awb-image-width="' . esc_attr($imgWidth) . '"';
                     $awb_wrap_attributes .= ' data-awb-image-height="' . esc_attr($imgHeight) . '"';
-                    $awb_inner_styles .= 'background-image: url("' . esc_url($awb_image) . '");';
+                    $awb_inner_styles .= 'background-image: url(\'' . esc_url($awb_image) . '\');';
                 }
             }
             if ($awb_type === 'yt_vm_video') {
