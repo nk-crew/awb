@@ -6,7 +6,6 @@
     "use strict";
 
     // variables
-    var tween = typeof TweenMax !== 'undefined' ? TweenMax : false;
     var isMobile = /Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/g.test(navigator.userAgent || navigator.vendor || window.opera);
     var isFireFox = typeof InstallTrigger !== 'undefined';
     var $wnd = $(window);
@@ -64,15 +63,12 @@
 
     // run parallax animation
     function parallax_mouse_run (x, y, deviceOrientation) {
-        if (!tween) {
-            return;
-        }
-
         var data;
         var itemX;
         var itemY;
         $parallaxMouseList.each(function () {
-            data = $(this).data('nk-parallax-mouse-data');
+            var $this = $(this);
+            data = $this.data('awb-mouse-data');
 
             // don't animate if block isn't in viewport
             if (typeof data !== 'object' || !data.is_in_viewport && !(deviceOrientation && parallaxMouseFirstRun)) {
@@ -98,14 +94,13 @@
 
             // if first run orientation on device, set default values without animation
             if (deviceOrientation && parallaxMouseFirstRun) {
-                tween.set(this, {
-                    x: itemX,
-                    y: itemY
+                $this.css({
+                    transform: 'translateX(' + itemX + 'px) translateY(' + itemY + 'px) translateZ(0)'
                 });
             } else {
-                tween.to(this, deviceOrientation ? 2 : data.speed, {
-                    x: itemX,
-                    y: itemY
+                $this.css({
+                    transition: 'transform ' + (deviceOrientation ? 2 : data.speed) + 's  cubic-bezier(0.22, 0.63, 0.6, 0.88)',
+                    transform: 'translateX(' + itemX + 'px) translateY(' + itemY + 'px) translateZ(0)'
                 });
             }
         });
@@ -113,10 +108,6 @@
     }
 
     function parallax_mouse_init (force) {
-        if (!tween) {
-            return;
-        }
-
         function run () {
             var $newParallax = $('.nk-awb .nk-awb-wrap.nk-awb-mouse-parallax').children('.nk-awb-inner');
             if ($newParallax.length) {
@@ -130,13 +121,17 @@
                     $parallaxMouseList = $newParallax;
                     if (isMobile && window.DeviceOrientationEvent) {
                         $wnd.on('deviceorientation', function () {
-                            parallax_mouse_run(event.gamma / 90, event.beta / 180, true);
+                            requestAnimationFrame(function () {
+                                parallax_mouse_run(event.gamma / 90, event.beta / 180, true);
+                            });
                         });
 
                     // no smooth on firefox
-                    } else if (!isFireFox) {
+                    } else {
                         $wnd.on('mousemove', function (event) {
-                            parallax_mouse_run(event.clientX, event.clientY);
+                            requestAnimationFrame(function () {
+                                parallax_mouse_run(event.clientX, event.clientY);
+                            });
                         });
                     }
                 }
@@ -149,7 +144,7 @@
                     var $parent = $this.parent();
                     var size = parseFloat($parent.attr('data-awb-mouse-parallax-size')) || 30;
                     var speed = parseFloat($parent.attr('data-awb-mouse-parallax-speed')) || 10000;
-                    $this.data('nk-parallax-mouse-data', {
+                    $this.data('awb-mouse-data', {
                         is_in_viewport: is_in_viewport($parent) ? $parent.is(':visible') : 0,
                         rect: $parent[0].getBoundingClientRect(),
                         size: size,
