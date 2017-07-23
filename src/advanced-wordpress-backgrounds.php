@@ -18,12 +18,6 @@ if ( !function_exists( 'add_action' ) ) {
 }
 
 
-add_action('plugins_loaded', 'nk_awb_load_textdomain' );
-function nk_awb_load_textdomain() {
-    load_plugin_textdomain( NK_AWB_DOMAIN, false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
-}
-
-
 /**
  * nK Theme Helper Class
  */
@@ -41,7 +35,7 @@ class nK_AWB {
     public static function instance () {
         if ( is_null( self::$_instance ) ) {
             self::$_instance = new self();
-            self::$_instance->init_options();
+            self::$_instance->init();
             self::$_instance->init_hooks();
         }
         return self::$_instance;
@@ -58,9 +52,15 @@ class nK_AWB {
         /* We do nothing here! */
     }
 
-    public function init_options() {
+    /**
+     * Init translation
+     */
+    public function init () {
         $this->plugin_path = plugin_dir_path(__FILE__);
         $this->plugin_url = plugin_dir_url(__FILE__);
+
+        // load textdomain
+        load_plugin_textdomain( NK_AWB_DOMAIN, false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
 
         // include helper files
         $this->include_dependencies();
@@ -89,14 +89,10 @@ class nK_AWB {
         $this->plugin_version = $data['Version'];
         $this->plugin_slug = plugin_basename(__FILE__, '.php');
         $this->plugin_name_sanitized = basename(__FILE__, '.php');
-
-        // init updater class to plugin updates check
-        $this->updater();
     }
 
     // include
     private function include_dependencies () {
-        require_once($this->plugin_path . 'class-updater.php');
         require_once($this->plugin_path . 'class-shortcode.php');
         require_once($this->plugin_path . 'class-vc-extend.php');
         require_once($this->plugin_path . 'class-tinymce.php');
@@ -106,9 +102,6 @@ class nK_AWB {
     /**
      * Additional Classes
      */
-    public function updater () {
-        return nK_AWB_Updater::instance();
-    }
     public function shortcode () {
         return nK_AWB_Shortcode::instance();
     }
