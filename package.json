@@ -1,10 +1,10 @@
 {
-    "name": "advanced-wordpress-backgrounds",
+    "name": "advanced-backgrounds",
     "title": "Advanced WordPress Backgrounds",
     "description": "Parallax, Video, Images Backgrounds",
     "license": "GPL-2.0",
     "author": "nK <https://nkdev.info>",
-    "text_domain": "awb",
+    "text_domain": "advanced-backgrounds",
     "text_domain_define": "NK_AWB_DOMAIN",
     "scripts": {
         "build": "gulp",

@@ -7,9 +7,9 @@
  * Author URI:   https://nkdev.info
  * License:      GPLv2 or later
  * License URI:  https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:  advanced-wordpress-backgrounds
+ * Text Domain:  advanced-backgrounds
  */
-define('NK_AWB_DOMAIN', 'advanced-wordpress-backgrounds');
+define('NK_AWB_DOMAIN', 'advanced-backgrounds');
 
 // Make sure we don't expose any info if called directly
 if ( !function_exists( 'add_action' ) ) {
