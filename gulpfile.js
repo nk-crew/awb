@@ -55,6 +55,17 @@ gulp.task('update_text_domain', function () {
 
 
 /**
+ * Remove unused constant
+ */
+gulp.task('remove_unused_constant', function () {
+    // copy files to the dist folder
+    return gulp.src(dist + '/*.php')
+        .pipe(replace("define('" + data.text_domain_define + "', '" + data.text_domain + "');\n", ''))
+        .pipe(gulp.dest(dist));
+});
+
+
+/**
  * WP POT Translation File Generator.
  */
 gulp.task('translate', function () {
@@ -75,10 +86,10 @@ gulp.task('translate', function () {
  * Main Build Task
  */
 gulp.task('build', function(cb) {
-    runSequence('clean', 'copy_to_dist', 'correct_lines_ending', 'update_text_domain', 'translate', cb);
+    runSequence('clean', 'copy_to_dist', 'correct_lines_ending', 'update_text_domain', 'remove_unused_constant', 'translate', cb);
 });
 gulp.task('watch_build', function(cb) {
-    runSequence('copy_to_dist', 'correct_lines_ending', 'update_text_domain', 'translate', cb);
+    runSequence('copy_to_dist', 'correct_lines_ending', 'update_text_domain', 'remove_unused_constant', 'translate', cb);
 });
 
 
