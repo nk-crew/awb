@@ -17,6 +17,28 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. 
 
 See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.info/#awb)
 
+= Features =
+* Background __Types__:
+    * Color
+    * Image
+    * Local Video
+    * Youtube / Vimeo Video
+* __Parallax__ options powered by high performant JavaScript plugin [Jarallax](https://github.com/nk-o/jarallax)
+    * Custom speed option
+    * Enable / Disable for mobile devices option
+    * Scroll effect
+    * Opacity effect
+    * Scale effect
+    * Scroll + Opacity effect
+    * Scroll + Scale effect
+* __Mouse Parallax__
+* Custom __video__ start & end time
+* __Overlay__ color with transparency options
+* Stretch option. Will be useful on boxed websites.
+* Visual shortcode maker. You can create shortcode using visual builder
+* __Visual Composer__ supported (extended row and col options + separate shortcode)
+* Custom CSS offsets (paddings + margins)
+
 
 = Real Examples =
 
@@ -26,9 +48,20 @@ See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.inf
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/advanced-wordpress-backgrounds` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/advanced-backgrounds` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 1. Add shortcodes in pages/posts from the editor toolbar
+
+
+
+== Screenshots ==
+
+1. Insert shortcode in default editor
+2. Shortcode maker p.1
+3. Shortcode maker p.2
+4. Shortcode maker video
+5. Shortcode maker styles tab
+6. Extended Visual Composer ROW options
 
 
 
