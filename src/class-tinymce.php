@@ -45,7 +45,7 @@ if (!class_exists('nK_AWB_TinyMCE')) :
                 wp_enqueue_style('awb-tinymce', nk_awb()->plugin_url . 'assets/admin/tinymce/mce-button.css');
                 wp_enqueue_style('wp-color-picker');
                 wp_enqueue_script('wp-color-picker');
-                wp_enqueue_script('wp-color-picker-alpha', nk_awb()->plugin_url . 'assets/vendor/wp-color-picker-alpha.min.js', array('wp-color-picker'), '1.2.2');
+                wp_enqueue_script('wp-color-picker-alpha', nk_awb()->plugin_url . 'assets/vendor/wp-color-picker-alpha.min.js', array('wp-color-picker'), '2.0.0');
                 wp_enqueue_script('conditionize', nk_awb()->plugin_url . 'assets/vendor/conditionize.js');
 
                 wp_enqueue_style('awb-tinymce-attach-video', nk_awb()->plugin_url . 'assets/admin/tinymce/mce-awb-attach-video.css');
