@@ -18,6 +18,11 @@
     getWndSize();
     $wnd.on('resize load orientationchange', getWndSize);
 
+    // enable object-fit
+    if (typeof objectFitImages !== 'undefined') {
+        objectFitImages();
+    }
+
     /**
      * In Viewport checker
      * return visible percent from 0 to 1

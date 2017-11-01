@@ -89,7 +89,8 @@ class nK_AWB {
     public function register_scripts() {
         wp_register_script('jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax.min.js', array('jquery'), '1.9.0', true);
         wp_register_script('jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax-video.min.js', array('jarallax'), '1.9.0', true);
-        wp_register_script('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.js', array('jquery', 'jarallax'), '', true);
+        wp_register_script('object-fit-images', nk_awb()->plugin_url . 'assets/vendor/object-fit-images/ofi.min.js', '', '', true);
+        wp_register_script('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.js', array('jquery', 'jarallax', 'object-fit-images'), '', true);
         wp_register_style('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.css');
     }
 
