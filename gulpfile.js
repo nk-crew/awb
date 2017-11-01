@@ -8,7 +8,8 @@ var gulp      = require('gulp'),
     sort      = require('gulp-sort'),
     runSequence  = require('gulp-run-sequence'),
     cache     = require('gulp-cached'),
-    del       = require('del');
+    del       = require('del'),
+    uglify    = require('gulp-uglify');
 
 var src = 'src';
 var dist = 'dist/' + data.name;
@@ -27,6 +28,20 @@ gulp.task('copy_to_dist', function () {
     return gulp.src(src + '/**/*')
         .pipe(cache('copy_to_dist'))
         .pipe(gulp.dest(dist));
+});
+
+
+/**
+ * Compile JS files
+ */
+gulp.task('js', function () {
+    return gulp.src([dist + '/assets/**/*.js', '!' + dist + '/assets/vendor/**/*'])
+        .pipe(uglify({
+            output: {
+                comments: /^!/
+            }
+        }))
+        .pipe(gulp.dest(dist + '/assets'));
 });
 
 
@@ -86,7 +101,7 @@ gulp.task('translate', function () {
  * Main Build Task
  */
 gulp.task('build', function(cb) {
-    runSequence('clean', 'copy_to_dist', 'correct_lines_ending', 'update_text_domain', 'remove_unused_constant', 'translate', cb);
+    runSequence('clean', 'copy_to_dist', 'js', 'correct_lines_ending', 'update_text_domain', 'remove_unused_constant', 'translate', cb);
 });
 gulp.task('watch_build', function(cb) {
     runSequence('copy_to_dist', 'correct_lines_ending', 'update_text_domain', 'remove_unused_constant', 'translate', cb);
