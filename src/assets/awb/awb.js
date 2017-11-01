@@ -342,6 +342,5 @@
     });
 
     // init stretch
-    stretch_awb();
-    $wnd.on('ready load resize orientationchange', stretch_awb);
+    $wnd.on('resize orientationchange', stretch_awb);
 })(jQuery);
