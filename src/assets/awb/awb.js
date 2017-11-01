@@ -194,8 +194,8 @@
         // column stretch
         $('.nk-awb.wpb_column').children('.nk-awb-wrap[data-awb-stretch="true"]').each(function () {
             var $this = $(this);
-            var $row = $this.parents('.vc_row:eq(0)');
-            var $col = $this.parents('.wpb_column:eq(0)');
+            var $row = $this.closest('.vc_row');
+            var $col = $this.closest('.wpb_column');
             var rectAWB = this.getBoundingClientRect();
             var rectRow = $row[0].getBoundingClientRect();
             var rectCol = $col[0].getBoundingClientRect();
@@ -264,7 +264,7 @@
         $('.nk-awb-after-vc_column').each(function () {
             var $this = $(this);
             var $vc_column = $this.prev('.wpb_column:not(.nk-awb)');
-            var $vc_row = $vc_column.parents('.vc_row:eq(0)');
+            var $vc_row = $vc_column.closest('.vc_row');
 
             if ($vc_column.length) {
                 var $children = $this.children('.nk-awb-wrap');
