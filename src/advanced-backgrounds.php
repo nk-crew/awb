@@ -87,8 +87,8 @@ class nK_AWB {
      * Register scripts that will be used in the future when portfolio will be printed.
      */
     public function register_scripts() {
-        wp_register_script('jarallax', nk_awb()->plugin_url . 'assets/jarallax/jarallax.min.js', array('jquery'), '1.8.0', true);
-        wp_register_script('jarallax-video', nk_awb()->plugin_url . 'assets/jarallax/jarallax-video.min.js', array('jarallax'), '1.8.0', true);
+        wp_register_script('jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax.min.js', array('jquery'), '1.9.0', true);
+        wp_register_script('jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax-video.min.js', array('jarallax'), '1.9.0', true);
         wp_register_script('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.js', array('jquery', 'jarallax'), '', true);
         wp_register_style('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.css');
     }
