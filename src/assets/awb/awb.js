@@ -301,8 +301,10 @@
             var $this = $(this).addClass('nk-awb-rendered');
             var type = $this.attr('data-awb-type');
             var video = false;
-            var videoStartTime = false;
-            var videoEndTime = false;
+            var videoStartTime = 0;
+            var videoEndTime = 0;
+            var videoVolume = 0;
+            var videoAlwaysPlay = true;
             var parallax = $this.attr('data-awb-parallax');
             var parallaxSpeed = $this.attr('data-awb-parallax-speed');
             var parallaxMobile = $this.attr('data-awb-parallax-mobile') !== 'false';
@@ -310,8 +312,10 @@
             // video type
             if (type === 'yt_vm_video' || type === 'video') {
                 video = $this.attr('data-awb-video');
-                videoStartTime = $this.attr('data-awb-video-start-time');
-                videoEndTime = $this.attr('data-awb-video-end-time');
+                videoStartTime = parseFloat($this.attr('data-awb-video-start-time')) || 0;
+                videoEndTime = parseFloat($this.attr('data-awb-video-end-time')) || 0;
+                videoVolume = parseFloat($this.attr('data-awb-video-volume')) || 0;
+                videoAlwaysPlay = $this.attr('data-awb-video-always-play') === 'true';
             }
 
             // prevent if no parallax and no video
@@ -331,6 +335,8 @@
                 jarallaxParams.videoSrc = video;
                 jarallaxParams.videoStartTime = videoStartTime;
                 jarallaxParams.videoEndTime = videoEndTime;
+                jarallaxParams.videoVolume = videoVolume;
+                jarallaxParams.videoPlayOnlyVisible = !videoAlwaysPlay;
             }
 
             $this.children('.nk-awb-inner').jarallax(jarallaxParams);

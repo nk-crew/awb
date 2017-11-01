@@ -69,8 +69,10 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 "awb_video_mp4"         => "",
                 "awb_video_webm"        => "",
                 "awb_video_ogv"         => "",
-                "awb_video_start_time"  => "",
-                "awb_video_end_time"    => "",
+                "awb_video_start_time"  => 0,
+                "awb_video_end_time"    => 0,
+                "awb_video_volume"      => 0,
+                "awb_video_always_play" => "false",
 
                 "awb_parallax"          => "false", // scroll, scale, opacity, scroll-opacity, scale-opacity
                 "awb_parallax_speed"    => 0.5,
@@ -144,6 +146,12 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 $awb_wrap_attributes .= ' data-awb-video="' . esc_attr($awb_video) . '"';
                 $awb_wrap_attributes .= ' data-awb-video-start-time="' . esc_attr($awb_video_start_time) . '"';
                 $awb_wrap_attributes .= ' data-awb-video-end-time="' . esc_attr($awb_video_end_time) . '"';
+                $awb_wrap_attributes .= ' data-awb-video-volume="' . esc_attr($awb_video_volume) . '"';
+
+                // video always play
+                if (filter_var($awb_video_always_play, FILTER_VALIDATE_BOOLEAN)) {
+                    $awb_wrap_attributes .= ' data-awb-video-always-play="true"';
+                }
             }
             if ($awb_type === 'video') {
                 $videos = '';
@@ -180,6 +188,12 @@ if (!class_exists('nK_AWB_Shortcode')) :
                 $awb_wrap_attributes .= ' data-awb-video="' . esc_attr($videos) . '"';
                 $awb_wrap_attributes .= ' data-awb-video-start-time="' . esc_attr($awb_video_start_time) . '"';
                 $awb_wrap_attributes .= ' data-awb-video-end-time="' . esc_attr($awb_video_end_time) . '"';
+                $awb_wrap_attributes .= ' data-awb-video-volume="' . esc_attr($awb_video_volume) . '"';
+
+                // video always play
+                if (filter_var($awb_video_always_play, FILTER_VALIDATE_BOOLEAN)) {
+                    $awb_wrap_attributes .= ' data-awb-video-always-play="true"';
+                }
             }
 
             // parallax

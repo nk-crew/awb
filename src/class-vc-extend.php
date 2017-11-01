@@ -348,6 +348,32 @@ if (!class_exists('nK_AWB_VC_Extend')) :
                     "value"      => array("yt_vm_video", "video")
                 )
             ));
+            vc_add_param($element, array(
+                "type"        => "textfield",
+                "param_name"  => "awb_video_volume",
+                "heading"     => esc_html__( "Volume", NK_AWB_DOMAIN ),
+                "description" => esc_html__( "Volume from 0 to 100.", NK_AWB_DOMAIN ),
+                "group"       => $group_name,
+                "value"       => "0",
+                "edit_field_class" => "vc_col-sm-6",
+                "dependency" => array(
+                    "element"    => "awb_type",
+                    "value"      => array("yt_vm_video", "video")
+                )
+            ));
+            vc_add_param($element, array(
+                "type"        => "checkbox",
+                "param_name"  => "awb_video_always_play",
+                "heading"     => esc_html__( "Always play", NK_AWB_DOMAIN ),
+                "description" => esc_html__( "Play video also when not in viewport.", NK_AWB_DOMAIN ),
+                'value'       => array( '' => true ),
+                "group"       => $group_name,
+                "edit_field_class" => "vc_col-sm-6",
+                "dependency" => array(
+                    "element"    => "awb_type",
+                    "value"      => array("yt_vm_video", "video")
+                )
+            ));
 
             // Color
             vc_add_param($element, array(
