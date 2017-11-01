@@ -21,7 +21,6 @@ if ( !function_exists( 'add_action' ) ) {
 /**
  * nK Theme Helper Class
  */
-if (!class_exists( 'nK_AWB' )) :
 class nK_AWB {
     /**
      * The single class instance.
@@ -68,14 +67,10 @@ class nK_AWB {
         // clear caches
         $this->clear_expired_caches();
 
-        // init shortcode
-        $this->shortcode();
-
-        // VC extend
-        $this->vc_extend();
-
-        // TinyMCE extend
-        $this->tinymce();
+        // init classes
+        new nK_AWB_Shortcode();
+        new nK_AWB_VC_Extend();
+        new nK_AWB_TinyMCE();
     }
 
     public function init_hooks() {
@@ -105,23 +100,9 @@ class nK_AWB {
 
     // include
     private function include_dependencies () {
-        require_once($this->plugin_path . 'class-shortcode.php');
-        require_once($this->plugin_path . 'class-vc-extend.php');
-        require_once($this->plugin_path . 'class-tinymce.php');
-    }
-
-
-    /**
-     * Additional Classes
-     */
-    public function shortcode () {
-        return nK_AWB_Shortcode::instance();
-    }
-    public function vc_extend () {
-        return nK_AWB_VC_Extend::instance();
-    }
-    public function tinymce () {
-        return nK_AWB_TinyMCE::instance();
+        require_once($this->plugin_path . 'classes/class-shortcode.php');
+        require_once($this->plugin_path . 'classes/class-vc-extend.php');
+        require_once($this->plugin_path . 'classes/class-tinymce.php');
     }
 
 
@@ -194,11 +175,8 @@ class nK_AWB {
         $this->update_option($caches_slug, $caches);
     }
 }
-endif;
 
-if (!function_exists( 'nk_awb' )) :
 function nk_awb () {
     return nK_AWB::instance();
 }
-endif;
 add_action('plugins_loaded', 'nk_awb' );
