@@ -289,28 +289,18 @@
 
         // init jarallax
         if (typeof $.fn.jarallax === 'undefined') {
-            return '';
+            return;
         }
 
         $('.nk-awb .nk-awb-wrap:not(.nk-awb-rendered)').each(function () {
             var $this = $(this).addClass('nk-awb-rendered');
             var type = $this.attr('data-awb-type');
-            var image = false;
-            var imageWidth = false;
-            var imageHeight = false;
             var video = false;
             var videoStartTime = false;
             var videoEndTime = false;
             var parallax = $this.attr('data-awb-parallax');
             var parallaxSpeed = $this.attr('data-awb-parallax-speed');
             var parallaxMobile = $this.attr('data-awb-parallax-mobile') !== 'false';
-
-            // image type
-            if (type === 'image' || type === 'yt_vm_video' || type === 'video') {
-                image = $this.attr('data-awb-image');
-                imageWidth = $this.attr('data-awb-image-width');
-                imageHeight = $this.attr('data-awb-image-height');
-            }
 
             // video type
             if (type === 'yt_vm_video' || type === 'video') {
@@ -326,9 +316,6 @@
 
             var jarallaxParams = {
                 type: parallax,
-                imgSrc: image,
-                imgWidth: imageWidth,
-                imgHeight: imageHeight,
                 speed: parallaxSpeed,
                 noAndroid: !parallaxMobile,
                 noIos: !parallaxMobile
@@ -349,12 +336,12 @@
     // init immediately
     window.nk_awb_init();
 
-    // init after dom ready
-    $(function () {
+    // init after dom ready and load
+    $wnd.on('ready load', function () {
         window.nk_awb_init();
     });
 
     // init stretch
     stretch_awb();
-    $wnd.on('resize orientationchange load', stretch_awb);
+    $wnd.on('ready load resize orientationchange', stretch_awb);
 })(jQuery);

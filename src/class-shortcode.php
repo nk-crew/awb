@@ -123,30 +123,20 @@ if (!class_exists('nK_AWB_Shortcode')) :
             }
 
             // overlay color
-            $awb_overlay = '';
+            $awb_overlay_html = '';
             if (isset($awb_color) && $awb_color) {
-                $awb_overlay = '<div class="nk-awb-overlay" style="background-color: ' . esc_attr($awb_color) . ';"></div>';
+                $awb_overlay_html .= '<div class="nk-awb-overlay" style="background-color: ' . esc_attr($awb_color) . ';"></div>';
             }
 
             // types
+            $awb_inner_html = '';
             if ($awb_type === 'image' || $awb_type === 'yt_vm_video' || $awb_type === 'video') {
-                $imgWidth = '';
-                $imgHeight = '';
                 if (is_numeric($awb_image)) {
-                    $awb_image = wp_get_attachment_image_src($awb_image, $awb_image_size);
-
-                    if($awb_image && isset($awb_image[0])) {
-                        $imgWidth = isset($awb_image[1]) ? $awb_image[1] : '';
-                        $imgHeight = isset($awb_image[2]) ? $awb_image[2] : '';
-                        $awb_image = $awb_image[0];
-                    } else {
-                        $awb_image = false;
-                    }
-                }
-                if (isset($awb_image) && $awb_image) {
+                    $awb_inner_html .= wp_get_attachment_image($awb_image, $awb_image_size, false, array(
+                        'class' => 'jarallax-img'
+                    ));
+                } else if (isset($awb_image) && $awb_image) {
                     $awb_wrap_attributes .= ' data-awb-image="' . esc_url($awb_image) . '"';
-                    $awb_wrap_attributes .= ' data-awb-image-width="' . esc_attr($imgWidth) . '"';
-                    $awb_wrap_attributes .= ' data-awb-image-height="' . esc_attr($imgHeight) . '"';
                     $awb_inner_styles .= 'background-image: url(\'' . esc_url($awb_image) . '\');';
                 }
             }
@@ -222,8 +212,8 @@ if (!class_exists('nK_AWB_Shortcode')) :
             return '<div class="' . esc_attr($awb_class) . '" ' . $awb_attributes . '>'
                         . do_shortcode($content)
                         . '<div ' . $awb_wrap_attributes . '>'
-                            . $awb_overlay
-                            . '<div ' . $awb_inner_attributes . '></div>'
+                            . $awb_overlay_html
+                            . '<div ' . $awb_inner_attributes . '>' . $awb_inner_html . '</div>'
                         . '</div>'
                     . '</div>';
         }
