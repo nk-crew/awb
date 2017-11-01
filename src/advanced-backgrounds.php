@@ -80,6 +80,17 @@ class nK_AWB {
 
     public function init_hooks() {
         add_action('admin_init', array($this, 'admin_init'));
+        add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
+    }
+
+    /**
+     * Register scripts that will be used in the future when portfolio will be printed.
+     */
+    public function register_scripts() {
+        wp_register_script('jarallax', nk_awb()->plugin_url . 'assets/jarallax/jarallax.min.js', array('jquery'), '1.8.0', true);
+        wp_register_script('jarallax-video', nk_awb()->plugin_url . 'assets/jarallax/jarallax-video.min.js', array('jarallax'), '1.8.0', true);
+        wp_register_script('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.js', array('jquery', 'jarallax'), '', true);
+        wp_register_style('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.css');
     }
 
     public function admin_init () {
