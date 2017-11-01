@@ -48,9 +48,15 @@ See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.inf
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/advanced-backgrounds` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Add shortcodes in pages/posts from the editor toolbar
+= Automatic installation =
+
+Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of AWB, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
+
+In the search field type AWB and click Search Plugins. Once you’ve found our plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking “Install Now”.
+
+= Manual installation =
+
+The manual installation method involves downloading our AWB plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 
 
