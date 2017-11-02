@@ -2,7 +2,7 @@
 Contributors: nko
 Tags: parallax, video, youtube, background, visual composer
 Requires at least: 4.0.0
-Tested up to: 4.8
+Tested up to: 4.9
 Stable tag: 1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -21,9 +21,10 @@ See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.inf
 * Background __Types__:
     * Color
     * Image
+    * Pattern images
     * Local Video
     * Youtube / Vimeo Video
-* __Parallax__ options powered by high performant JavaScript plugin [Jarallax](https://github.com/nk-o/jarallax)
+* __Parallax__ options powered by high performance JavaScript plugin [Jarallax](https://github.com/nk-o/jarallax)
     * Custom speed option
     * Enable / Disable for mobile devices option
     * Scroll effect
@@ -33,6 +34,7 @@ See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.inf
     * Scroll + Scale effect
 * __Mouse Parallax__
 * Custom __video__ start & end time
+* srcset supported (i.e. Google love it)
 * __Overlay__ color with transparency options
 * Stretch option. Will be useful on boxed websites.
 * Visual shortcode maker. You can create shortcode using visual builder
@@ -72,6 +74,16 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 
 == Changelog ==
+
+= 1.3.0 =
+* added video volume option
+* added video always play option
+* added background image size option (support for pattern backgrounds)
+* added background image position option
+* changed background image to <img> tag with srcset support
+* changed scripts enqueue to registration first (prevent some themes to override scripts)
+* updated jarallax plugin
+* updated wp-color-picker-alpha plugin to support WordPress 4.9
 
 = 1.2.4 =
 * improved mouse parallax (removed GSAP, now this is pure CSS animation)
