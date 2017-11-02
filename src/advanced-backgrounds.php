@@ -58,6 +58,16 @@ class nK_AWB {
         $this->plugin_path = plugin_dir_path(__FILE__);
         $this->plugin_url = plugin_dir_url(__FILE__);
 
+        // get current plugin data
+        $data = get_file_data(__FILE__, array(
+            'Name' => 'Name',
+            'Version' => 'Version',
+        ));
+        $this->plugin_name = $data['Name'];
+        $this->plugin_version = $data['Version'];
+        $this->plugin_slug = plugin_basename(__FILE__, '.php');
+        $this->plugin_name_sanitized = basename(__FILE__, '.php');
+
         // load textdomain
         load_plugin_textdomain( NK_AWB_DOMAIN, false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
 
@@ -74,7 +84,6 @@ class nK_AWB {
     }
 
     public function init_hooks() {
-        add_action('admin_init', array($this, 'admin_init'));
         add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
     }
 
@@ -85,17 +94,11 @@ class nK_AWB {
         wp_register_script('jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax.min.js', array('jquery'), '1.9.0', true);
         wp_register_script('jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax-video.min.js', array('jarallax'), '1.9.0', true);
         wp_register_script('object-fit-images', nk_awb()->plugin_url . 'assets/vendor/object-fit-images/ofi.min.js', '', '', true);
-        wp_register_script('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.js', array('jquery', 'jarallax', 'jarallax-video', 'object-fit-images'), '', true);
-        wp_register_style('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.css');
-    }
+        wp_register_script('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.js', array('jquery', 'jarallax', 'jarallax-video', 'object-fit-images'), nk_awb()->plugin_version, true);
+        wp_register_style('nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.css', '', nk_awb()->plugin_version);
 
-    public function admin_init () {
-        // get current plugin data
-        $data = get_plugin_data(__FILE__);
-        $this->plugin_name = $data['Name'];
-        $this->plugin_version = $data['Version'];
-        $this->plugin_slug = plugin_basename(__FILE__, '.php');
-        $this->plugin_name_sanitized = basename(__FILE__, '.php');
+        // add styles to header to fix image jumping
+        wp_enqueue_style('nk-awb');
     }
 
     // include
