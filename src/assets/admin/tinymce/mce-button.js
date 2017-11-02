@@ -18,6 +18,8 @@
             awb_video             : '',
 
             awb_image_size        : 'full',
+            awb_image_background_size: 'cover',
+            awb_image_background_position: '50% 50%',
 
             awb_video_mp4         : '',
             awb_video_webm        : '',
@@ -125,10 +127,23 @@
                                 attachControl('awb_image', atts.awb_image, 'image'),
                             '</div>',
                             '<div class="awb-col-6" data-cond="[name=awb_image]">',
-                                '<h3>Size</h3>',
                                 '<select name="awb_image_size">',
                                     getSelectorOptions(options.imageSizes, atts.awb_image_size),
                                 '</select>',
+                            '</div>',
+                            '<div class="awb-clearfix"></div>',
+                            '<div class="awb-col-6" data-cond="[name=awb_image]">',
+                                '<select name="awb_image_background_size">',
+                                getSelectorOptions({
+                                    'cover'  : 'Cover',
+                                    'contain': 'Contain',
+                                    'pattern': 'Pattern'
+                                }, atts.awb_image_background_size),
+                                '</select>',
+                            '</div>',
+                            '<div class="awb-col-6" data-cond="[name=awb_image]">',
+                                '<input type="text" name="awb_image_background_position" value="' + atts.awb_image_background_position + '">',
+                                '<div class="awb-description">Image position. Example: 50% 50%</div>',
                             '</div>',
                         '</div>',
 

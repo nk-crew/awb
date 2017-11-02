@@ -226,10 +226,41 @@ class nK_AWB_VC_Extend {
         vc_add_param($element, array(
             "type"        => "dropdown",
             "param_name"  => "awb_image_size",
-            "heading"     => esc_html__( "Size", NK_AWB_DOMAIN ),
+            "heading"     => "",
             "group"       => $group_name,
             "std"         => "full",
             "value"       => self::getImageSizes(),
+            "edit_field_class" => "vc_col-sm-6",
+            "dependency" => array(
+                "element"    => "awb_image",
+                "not_empty"  => true
+            )
+        ));
+        vc_add_param($element, array(
+            "type"        => "dropdown",
+            "param_name"  => "awb_image_background_size",
+            "heading"     => "",
+            "group"       => $group_name,
+            "std"         => "cover",
+            "value"       => array(
+                esc_html__( "Cover", NK_AWB_DOMAIN )   => "cover",
+                esc_html__( "Contain", NK_AWB_DOMAIN ) => "contain",
+                esc_html__( "Pattern", NK_AWB_DOMAIN )  => "pattern",
+            ),
+            "edit_field_class" => "vc_col-sm-6",
+            "dependency" => array(
+                "element"    => "awb_image",
+                "not_empty"  => true
+            )
+        ));
+        vc_add_param($element, array(
+            "type"        => "textfield",
+            "param_name"  => "awb_image_background_position",
+            "heading"     => "",
+            "description" => esc_html__( "Image position. Example: 50% 50%", NK_AWB_DOMAIN ),
+            "group"       => $group_name,
+            "value"       => "50% 50%",
+            "save_always" => true,
             "edit_field_class" => "vc_col-sm-6",
             "dependency" => array(
                 "element"    => "awb_image",

@@ -300,6 +300,8 @@
         $('.nk-awb .nk-awb-wrap:not(.nk-awb-rendered)').each(function () {
             var $this = $(this).addClass('nk-awb-rendered');
             var type = $this.attr('data-awb-type');
+            var imageBgSize = $this.attr('data-awb-image-background-size');
+            var imageBgPosition = $this.attr('data-awb-image-background-position');
             var video = false;
             var videoStartTime = 0;
             var videoEndTime = 0;
@@ -327,8 +329,15 @@
                 type: parallax,
                 speed: parallaxSpeed,
                 noAndroid: !parallaxMobile,
-                noIos: !parallaxMobile
+                noIos: !parallaxMobile,
+                imgSize: imageBgSize || 'cover',
+                imgPosition: imageBgPosition || '50% 50%'
             };
+
+            if(imageBgSize === 'pattern') {
+                jarallaxParams.imgSize = 'auto';
+                jarallaxParams.imgRepeat = 'repeat';
+            }
 
             if (video) {
                 jarallaxParams.speed = parallax ? parallaxSpeed : 1;

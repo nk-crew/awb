@@ -51,6 +51,8 @@ class nK_AWB_Shortcode {
             "awb_video"             => "",
 
             "awb_image_size"        => "full",
+            "awb_image_background_size" => "cover",
+            "awb_image_background_position" => "50% 50%",
 
             "awb_video_mp4"         => "",
             "awb_video_webm"        => "",
@@ -118,16 +120,29 @@ class nK_AWB_Shortcode {
 
         // types
         $awb_inner_html = '';
-        if ($awb_type === 'image' || $awb_type === 'yt_vm_video' || $awb_type === 'video') {
-            if (is_numeric($awb_image)) {
+        if (isset($awb_image) && $awb_image && ($awb_type === 'image' || $awb_type === 'yt_vm_video' || $awb_type === 'video')) {
+            if (is_numeric($awb_image) && $awb_image_background_size !== 'pattern') {
                 $awb_inner_html .= wp_get_attachment_image($awb_image, $awb_image_size, false, array(
-                    'class' => 'jarallax-img'
+                    'class' => 'jarallax-img',
+                    'style' => 'object-position: ' . $awb_image_background_position . ';',
                 ));
-            } else if (isset($awb_image) && $awb_image) {
-                $awb_wrap_attributes .= ' data-awb-image="' . esc_url($awb_image) . '"';
+            } else {
+                if (is_numeric($awb_image)) {
+                    $awb_image = wp_get_attachment_image_url($awb_image, $awb_image_size);
+                }
                 $awb_inner_styles .= 'background-image: url(\'' . esc_url($awb_image) . '\');';
+                $awb_inner_styles .= 'background-position: ' . esc_attr($awb_image_background_position) . ';';
             }
         }
+
+        // data image background attributes
+        if ($awb_image_background_size) {
+            $awb_wrap_attributes .= ' data-awb-image-background-size="' . esc_attr($awb_image_background_size) . '"';
+        }
+        if ($awb_image_background_position) {
+            $awb_wrap_attributes .= ' data-awb-image-background-position="' . esc_attr($awb_image_background_position) . '"';
+        }
+
         if ($awb_type === 'yt_vm_video') {
             $awb_wrap_attributes .= ' data-awb-video="' . esc_attr($awb_video) . '"';
             $awb_wrap_attributes .= ' data-awb-video-start-time="' . esc_attr($awb_video_start_time) . '"';
