@@ -7,8 +7,8 @@
 
     // variables
     var isMobile = /Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/g.test(navigator.userAgent || navigator.vendor || window.opera);
-    var isFireFox = typeof InstallTrigger !== 'undefined';
     var $wnd = $(window);
+    var $doc = $(document);
     var wndW = 0;
     var wndH = 0;
     function getWndSize () {
@@ -181,7 +181,6 @@
      * Stretch Background
      */
     function stretch_awb () {
-
         $('.nk-awb:not(.wpb_column)').children('.nk-awb-wrap[data-awb-stretch="true"]').each(function () {
             var $this = $(this);
             var rect = this.getBoundingClientRect();
@@ -232,6 +231,24 @@
             $this.css(css);
         });
     }
+
+    /**
+     * Fix for VC stretch.
+     */
+    $doc.on('vc-full-width-row', function () {
+        var args = Array.prototype.slice.call(arguments, 1);
+
+        if (args.length) {
+            args.forEach(function (item) {
+                $(item).find('.nk-awb-rendered > .nk-awb-inner').each(function () {
+                    if (this.jarallax) {
+                        this.jarallax.onResize();
+                        this.jarallax.onScroll();
+                    }
+                });
+            });
+        }
+    });
 
 
     /**
