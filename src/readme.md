@@ -75,6 +75,9 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 == Changelog ==
 
+= 1.3.2 =
+* updated Jarallax to 1.9.1
+
 = 1.3.1 =
 * fixed parallax resize inside stretched Visual Composer row
 
