@@ -3,6 +3,10 @@
  * AWB Shortcode Class
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class nK_AWB_Shortcode {
 
     /**

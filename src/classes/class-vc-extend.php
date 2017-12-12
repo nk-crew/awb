@@ -3,6 +3,10 @@
  * Extend Visual Composer vc_row, add video attachment control
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class nK_AWB_VC_Extend {
     /**
      * nK_AWB_VC_Extend constructor.

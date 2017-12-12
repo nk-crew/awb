@@ -3,6 +3,10 @@
  * Extend TinyMCE toolbar
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+    exit;
+}
+
 class nK_AWB_TinyMCE {
     /**
      * nK_AWB_TinyMCE constructor.
