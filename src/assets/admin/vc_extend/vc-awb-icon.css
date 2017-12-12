@@ -3,6 +3,7 @@
     background-position: 50% 50%;
 }
 .vc_element-icon.nk-awb-icon,
+.vc_element-icon[data-is-container=true].nk-awb-icon,
 .vc_control-awb {
     position: relative;
     background-image: url('icon.png');
@@ -10,6 +11,9 @@
     background-position: 50% 50%;
     border-radius: 50%;
     overflow: hidden;
+}
+.vc_add-element-container .vc_element-icon.nk-awb-icon {
+    position: absolute;
 }
 
 .vc_control-awb {
