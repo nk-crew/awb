@@ -1,13 +1,13 @@
 /**
  * Video Select control for MCE popup
  */
-;(function ($) {
-    $(document).on('click', '.mce-awb-panel .awb_attach_video_btn', function(e) {
+(function ($) {
+    $(document).on('click', '.mce-awb-panel .awb_attach_video_btn', function (e) {
         e.preventDefault();
-        var $this = $(this);
-        var $input = $this.prev('.awb_attach_video').children('input');
-        var $label = $this.next('.awb_attach_video_label');
-        var frame = $this.data('wp-frame');
+        const $this = $(this);
+        const $input = $this.prev('.awb_attach_video').children('input');
+        const $label = $this.next('.awb_attach_video_label');
+        let frame = $this.data('wp-frame');
 
         // if selected - remove
         if ($this.hasClass('awb_attach_video_btn_selected')) {
@@ -25,6 +25,7 @@
         }
 
         if (!wp.media) {
+            // eslint-disable-next-line
             console.error('Can\'t access wp.media object.');
             return;
         }
@@ -33,20 +34,20 @@
         frame = wp.media({
             title: 'Select or Upload Video',
             button: {
-                text: 'Use this video'
+                text: 'Use this video',
             },
             multiple: false,
             library: {
-                type : 'video'
-            }
+                type: 'video',
+            },
         });
         $this.data('wp-frame', frame);
 
 
         // When an video is selected in the media frame...
-        frame.on('select', function() {
+        frame.on('select', () => {
             // Get media attachment details from the frame state
-            var attachment = frame.state().get('selection').first().toJSON();
+            const attachment = frame.state().get('selection').first().toJSON();
 
             if (attachment) {
                 $input.val(attachment.id);
@@ -59,4 +60,4 @@
         // Finally, open the modal on click
         frame.open();
     });
-})(jQuery);
+}(jQuery));

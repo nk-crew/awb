@@ -1,4 +1,8 @@
-.git
+.DS_Store
+.sass-cache
+.publish
 .idea
-node_modules
-dist
+/dist
+/vendor
+/node_modules
+npm-debug.log

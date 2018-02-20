@@ -1,13 +1,13 @@
 /**
  * Image Select control for MCE popup
  */
-;(function ($) {
-    $(document).on('click', '.mce-awb-panel .awb_attach_image_btn', function(e) {
+(function ($) {
+    $(document).on('click', '.mce-awb-panel .awb_attach_image_btn', function (e) {
         e.preventDefault();
-        var $this = $(this);
-        var $input = $this.prev('.awb_attach_image').children('input');
-        var $label = $this.next('.awb_attach_image_label');
-        var frame = $this.data('wp-frame');
+        const $this = $(this);
+        const $input = $this.prev('.awb_attach_image').children('input');
+        const $label = $this.next('.awb_attach_image_label');
+        let frame = $this.data('wp-frame');
 
         // if selected - remove
         if ($this.hasClass('awb_attach_image_btn_selected')) {
@@ -25,6 +25,7 @@
         }
 
         if (!wp.media) {
+            // eslint-disable-next-line
             console.error('Can\'t access wp.media object.');
             return;
         }
@@ -33,27 +34,27 @@
         frame = wp.media({
             title: 'Select or Upload Image',
             button: {
-                text: 'Use this image'
+                text: 'Use this image',
             },
             multiple: false,
             library: {
-                type : 'image'
-            }
+                type: 'image',
+            },
         });
         $this.data('wp-frame', frame);
 
 
         // When an image is selected in the media frame...
-        frame.on('select', function() {
+        frame.on('select', () => {
             // Get media attachment details from the frame state
-            var attachment = frame.state().get('selection').first().toJSON();
+            const attachment = frame.state().get('selection').first().toJSON();
 
             if (attachment) {
                 $input.val(attachment.id).trigger('change');
                 if (attachment.sizes && attachment.sizes.medium) {
-                    $label.html('<img src="' + attachment.sizes.medium.url + '" alt="">');
+                    $label.html(`<img src="${attachment.sizes.medium.url}" alt="">`);
                 } else {
-                    $label.html('<img src="' + attachment.url + '" alt="">');
+                    $label.html(`<img src="${attachment.url}" alt="">`);
                 }
                 $this.val($this.attr('data-remove-title'));
                 $this.addClass('awb_attach_image_btn_selected');
@@ -63,4 +64,4 @@
         // Finally, open the modal on click
         frame.open();
     });
-})(jQuery);
+}(jQuery));

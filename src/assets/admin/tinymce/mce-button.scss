@@ -1,10 +1,10 @@
-i.mce-i-awb:before {
+i.mce-i-awb::before {
     content: "\f115";
-    font-family: "dashicons";
+    font-family: "dashicons"; // stylelint-disable-line
 }
 .mce-window.mce-container.mce-awb-panel .mce-container-body.mce-abs-layout {
-    overflow-y: auto;
     overflow-x: hidden;
+    overflow-y: auto;
 }
 
 /* AWB Panel */
@@ -22,93 +22,93 @@ i.mce-i-awb:before {
 }
 .mce-awb-panel.mce-window .mce-window-head .mce-close,
 .mce-awb-panel .mce-window-head .mce-close .mce-i-remove,
-.mce-awb-panel .mce-window-head .mce-close .mce-i-remove:before {
+.mce-awb-panel .mce-window-head .mce-close .mce-i-remove::before {
     height: 46px;
     line-height: 46px;
 }
 
 .mce-awb-panel .awb-col-6 {
-    width: 50%;
     float: left;
+    width: 50%;
     padding: 10px 16px;
 }
 .mce-awb-panel .awb-col-4 {
-    width: 33.333%;
     float: left;
+    width: 33.333%;
     padding: 10px 16px;
 }
 .mce-awb-panel .awb-col-3 {
-    width: 25%;
     float: left;
+    width: 25%;
     padding: 10px 16px;
 }
 .mce-awb-panel .awb-col-12 {
     width: 100%;
-    clear: both;
     padding: 16px;
+    clear: both;
 }
 .mce-awb-panel .awb-clearfix {
     clear: both;
 }
 
 .mce-awb-panel h3 {
-    font-weight: bold;
     margin-bottom: 10px;
+    font-weight: 600;
 }
 .mce-awb-panel .awb-title {
-    border-top: 1px solid #eaeaea;
     padding-top: 22px;
-    margin-top: 16px;
-    padding-left: 16px;
     padding-right: 16px;
+    padding-left: 16px;
+    margin-top: 16px;
+    border-top: 1px solid #eaeaea;
 }
 .mce-awb-panel .awb-description {
-    color: #999;
     display: block;
-    font-style: italic;
-    line-height: 20px;
     margin-top: 8px;
     clear: both;
+    font-style: italic;
+    line-height: 20px;
+    color: #999;
 }
 .mce-awb-panel input {
-    border: 1px solid #ddd;
-    padding: 3px 5px;
     width: 100%;
+    padding: 3px 5px;
+    border: 1px solid #ddd;
 }
-.mce-awb-panel input[type=checkbox] {
-    border: 1px solid #b4b9be;
-    padding: 0;
+.mce-awb-panel input[type="checkbox"] {
     width: auto;
+    padding: 0;
+    border: 1px solid #b4b9be;
 }
-.mce-awb-panel input[type=submit],
-.mce-awb-panel input[type=button] {
+.mce-awb-panel input[type="submit"],
+.mce-awb-panel input[type="button"] {
     width: auto;
 }
 .mce-awb-panel select {
+    width: 100%;
     padding: 2px;
     border: 1px solid #ddd;
-    width: 100%;
 }
 
 
 /* Tabs */
 .mce-awb-panel .awb-tabs {
+    padding-left: 16px;
     margin-bottom: 10px;
     border-bottom: 1px solid #d2d2d2;
-    padding-left: 16px;
 }
 .mce-awb-panel .awb-tab {
-    padding: 10px 15px;
     display: inline-block;
-    border: 1px solid #e4e4e4;
-    background-color: #f3f3f3;
-    border-bottom-color: #d2d2d2;
+    padding: 10px 15px;
     margin-bottom: -1px;
+    background-color: #f3f3f3;
+    border: 1px solid #e4e4e4;
+    border-bottom-color: #d2d2d2;
 }
 .mce-awb-panel .awb-tab.awb-tab-active {
+    background-color: #fff;
     border-color: #d2d2d2;
     border-bottom-color: #fff;
-    background-color: #fff;
 }
 .mce-awb-panel .awb-tab:hover {
     color: inherit;
@@ -116,32 +116,32 @@ i.mce-i-awb:before {
 }
 .mce-awb-panel .awb-tabs ~ [data-tab] {
     position: absolute;
-    opacity: 0;
-    visibility: hidden;
     left: -1000px;
+    visibility: hidden;
+    opacity: 0;
 }
 .mce-awb-panel .awb-tabs ~ [data-tab].awb-tab-active {
     position: relative;
-    opacity: 1;
-    visibility: visible;
     left: auto;
+    visibility: visible;
+    opacity: 1;
 }
 
 
 /* Color Picker */
 .mce-container .wp-color-result {
+    position: relative;
+    display: inline-block;
+    top: 1px;
+    height: 24px;
+    padding-left: 30px;
+    margin: 0 6px 6px 0;
+    vertical-align: bottom;
+    cursor: pointer;
     background-color: #f7f7f7;
     border: 1px solid #ccc;
     border-radius: 3px;
     box-shadow: 0 1px 0 #ccc;
-    cursor: pointer;
-    display: inline-block;
-    height: 24px;
-    margin: 0 6px 6px 0;
-    padding-left: 30px;
-    position: relative;
-    top: 1px;
-    vertical-align: bottom;
 }
 .mce-awb-panel .iris-picker .iris-strip {
     height: 205px;

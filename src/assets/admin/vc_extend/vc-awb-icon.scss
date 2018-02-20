@@ -1,16 +1,16 @@
-.vc_element-icon[data-is-container=true].nk-awb-icon,
+.vc_element-icon[data-is-container="true"].nk-awb-icon,
 .vc_element-icon.nk-awb-icon {
     background-position: 50% 50%;
 }
 .vc_element-icon.nk-awb-icon,
-.vc_element-icon[data-is-container=true].nk-awb-icon,
+.vc_element-icon[data-is-container="true"].nk-awb-icon,
 .vc_control-awb {
     position: relative;
-    background-image: url('icon.png');
-    background-size: cover;
-    background-position: 50% 50%;
-    border-radius: 50%;
     overflow: hidden;
+    background-image: url("icon.png");
+    background-position: 50% 50%;
+    background-size: cover;
+    border-radius: 50%;
 }
 .vc_add-element-container .vc_element-icon.nk-awb-icon {
     position: absolute;
@@ -30,8 +30,8 @@
 .vc_control-awb-overlay {
     position: absolute;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
+    left: 0;
     z-index: 2;
 }
