@@ -19,7 +19,7 @@
 
     // enable object-fit
     if (typeof objectFitImages !== 'undefined') {
-        objectFitImages();
+        objectFitImages('.jarallax-img');
     }
 
     /**
