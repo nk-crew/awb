@@ -3,10 +3,10 @@
  */
 
 (function ($) {
-    if (typeof AWBTinyMCEOptions === 'undefined') {
+    if (typeof window.AWBTinyMCEOptions === 'undefined') {
         return;
     }
-    const options = AWBTinyMCEOptions;
+    const options = window.AWBTinyMCEOptions;
 
     tinymce.PluginManager.add('awb', (editor) => {
         const shortcodeTag = 'nk_awb';

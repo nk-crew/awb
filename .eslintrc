@@ -1,4 +1,5 @@
 {
+    "parser": "babel-eslint",
     "extends": "airbnb",
     "rules": {
         "func-names": 0,
@@ -18,19 +19,35 @@
         "import/no-extraneous-dependencies": 0,
         "import/prefer-default-export": 0,
         "jsx-a11y/href-no-hash": "off",
-        "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }]
+        "jsx-a11y/media-has-caption": "off",
+        "jsx-a11y/anchor-is-valid": 0,
+        "react/react-in-jsx-scope": 0,
+        "react/jsx-indent": 0,
+        "react/jsx-indent-props": 0,
+        "react/prop-types": 0,
+        "react/no-danger": 0
     },
     "env": {
+        "es6": true,
         "browser": true,
         "node": true,
         "jquery": true
     },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true
+        }
+    },
+    "plugins": [
+        "react"
+    ],
     "globals": {
         "wp": true,
         "_": true,
         "vc": true,
         "tinymce": true,
-        "objectFitImages": true,
-        "AWBTinyMCEOptions": true
+        "objectFitImages": true
     }
 }

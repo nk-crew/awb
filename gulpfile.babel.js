@@ -59,7 +59,7 @@ gulp.task('clean', function() {
  */
 gulp.task('copy_to_dist', function () {
     return runStream(work_folders, function (itemData) {
-        return gulp.src([itemData.from + '/**/*', '!' + itemData.from + '/**/*.{js,scss}'])
+        return gulp.src([itemData.from + '/**/*', '!' + itemData.from + '/**/*.{js,jsx,scss}'])
             .pipe(gulp.dest(itemData.to))
     });
 });
@@ -71,14 +71,14 @@ gulp.task('copy_to_dist_vendors', function () {
 });
 gulp.task('build_js', function () {
     return runStream(work_folders, function (itemData) {
-        return gulp.src([itemData.from + '/**/*.js', '!' + itemData.from + '/**/vendor/**/*'])
+        return gulp.src([itemData.from + '/**/*.{js,jsx}', '!' + itemData.from + '/**/vendor/**/*'])
             .pipe($.plumber({ errorHandler }))
             .pipe(named())
             .pipe(webpack({
                 module: {
                     loaders: [
                         {
-                            test: /.js$/,
+                            test: /.jsx?$/,
                             loader: 'babel-loader',
                             exclude: /node_modules/
                         }
@@ -127,7 +127,7 @@ gulp.task('copy_to_dist_watch_php', function () {
 });
 gulp.task('copy_to_dist_watch_all', function () {
     return runStream(work_folders, function (itemData) {
-        return gulp.src([itemData.from + '/**/*', '!' + itemData.from + '/**/*.{php,js,scss}'])
+        return gulp.src([itemData.from + '/**/*', '!' + itemData.from + '/**/*.{php,js,jsx,scss}'])
             .pipe($.changed(itemData.to))
             .pipe(gulp.dest(itemData.to))
     });
@@ -146,7 +146,7 @@ gulp.task('copy_to_dist_watch_vendors', function () {
  */
 gulp.task('correct_lines_ending', function () {
     // copy files to the dist folder
-    return gulp.src([dist + '/**/*.js', dist + '/**/*.css'])
+    return gulp.src([dist + '/**/*.{js,jsx}', dist + '/**/*.css'])
         .pipe($.plumber({ errorHandler }))
         .pipe($.lineEndingCorrector())
         .pipe(gulp.dest(dist));
@@ -220,9 +220,9 @@ gulp.task('watch', ['build'], function() {
     for (var k = 0; k < work_folders.length; k++) {
         var itemData = work_folders[k];
         gulp.watch([itemData.from + '/**/*.php', '!' + itemData.from + '/*vendor/**/*'], ['watch_build_php']);
-        gulp.watch([itemData.from + '/**/*.js', '!' + itemData.from + '/*vendor/**/*'], ['build_js']);
+        gulp.watch([itemData.from + '/**/*.{js,jsx}', '!' + itemData.from + '/*vendor/**/*'], ['build_js']);
         gulp.watch([itemData.from + '/**/*.scss', '!' + itemData.from + '/*vendor/**/*'], ['build_scss']);
-        gulp.watch([itemData.from + '/**/*', '!' + itemData.from + '/**/*.{php,js,scss}', itemData.from + '/*vendor/**/*'], ['watch_build_all']);
+        gulp.watch([itemData.from + '/**/*', '!' + itemData.from + '/**/*.{php,js,jsx,scss}', itemData.from + '/*vendor/**/*'], ['watch_build_all']);
         gulp.watch(itemData.from + '/**/vendor/**/*', ['watch_build_vendors']);
     }
 });

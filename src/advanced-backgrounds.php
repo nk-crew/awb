@@ -79,16 +79,19 @@ class NK_AWB {
         $this->clear_expired_caches();
 
         // init classes.
+        new NK_AWB_Rest();
         new NK_AWB_Shortcode();
         new NK_AWB_VC_Extend();
         new NK_AWB_TinyMCE();
+        new NK_AWB_Gutenberg();
     }
 
     /**
      * Init hooks
      */
     public function init_hooks() {
-        add_action( 'wp_enqueue_scripts', array( $this, 'register_scripts' ) );
+        add_action( 'init', array( $this, 'register_scripts' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     }
 
     /**
@@ -100,7 +103,12 @@ class NK_AWB {
         wp_register_script( 'object-fit-images', nk_awb()->plugin_url . 'assets/vendor/object-fit-images/ofi.min.js', '', '', true );
         wp_register_script( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.js', array( 'jquery', 'jarallax', 'jarallax-video', 'object-fit-images' ), '@@plugin_version', true );
         wp_register_style( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.css', '', '@@plugin_version' );
+    }
 
+    /**
+     * Enqueue scripts.
+     */
+    public function enqueue_scripts() {
         // add styles to header to fix image jumping.
         wp_enqueue_style( 'nk-awb' );
     }
@@ -109,9 +117,11 @@ class NK_AWB {
      * Include dependencies
      */
     private function include_dependencies() {
+        require_once( $this->plugin_path . 'classes/class-rest.php' );
         require_once( $this->plugin_path . 'classes/class-shortcode.php' );
         require_once( $this->plugin_path . 'classes/class-vc-extend.php' );
         require_once( $this->plugin_path . 'classes/class-tinymce.php' );
+        require_once( $this->plugin_path . 'classes/class-gutenberg.php' );
     }
 
 
