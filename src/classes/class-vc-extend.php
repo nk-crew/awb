@@ -336,6 +336,7 @@ class NK_AWB_VC_Extend {
                 'description' => esc_html__( 'Supported YouTube and Vimeo URLs', '@@text_domain' ),
                 'group'       => $group_name,
                 'value'       => 'https://vimeo.com/110138539',
+                'edit_field_class' => 'vc_col-sm-6',
                 'save_always' => true,
                 'dependency' => array(
                     'element'    => 'awb_type',
@@ -396,6 +397,20 @@ class NK_AWB_VC_Extend {
                 ),
             )
         );
+        vc_add_param(
+            $element, array(
+                'type'        => 'checkbox',
+                'param_name'  => 'awb_video_mobile',
+                'heading'     => esc_html__( 'Enable on Mobile Devices', '@@text_domain' ),
+                'value'       => array( '' => true ),
+                'group'       => $group_name,
+                'edit_field_class' => 'vc_col-sm-6',
+                'dependency' => array(
+                    'element'    => 'awb_type',
+                    'value'      => array( 'yt_vm_video', 'video' ),
+                ),
+            )
+        );
 
         // Video Start / End Time.
         vc_add_param(
@@ -447,20 +462,6 @@ class NK_AWB_VC_Extend {
                 'param_name'  => 'awb_video_always_play',
                 'heading'     => esc_html__( 'Always play', '@@text_domain' ),
                 'description' => esc_html__( 'Play video also when not in viewport.', '@@text_domain' ),
-                'value'       => array( '' => true ),
-                'group'       => $group_name,
-                'edit_field_class' => 'vc_col-sm-6',
-                'dependency' => array(
-                    'element'    => 'awb_type',
-                    'value'      => array( 'yt_vm_video', 'video' ),
-                ),
-            )
-        );
-        vc_add_param(
-            $element, array(
-                'type'        => 'checkbox',
-                'param_name'  => 'awb_video_mobile',
-                'heading'     => esc_html__( 'Enable on Mobile Devices', '@@text_domain' ),
                 'value'       => array( '' => true ),
                 'group'       => $group_name,
                 'edit_field_class' => 'vc_col-sm-6',
