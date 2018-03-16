@@ -31,6 +31,7 @@
             awb_video_end_time: 0,
             awb_video_volume: 0,
             awb_video_always_play: 'false',
+            awb_video_mobile: 'false',
 
             awb_parallax: '',
             awb_parallax_speed: 0.5,
@@ -154,9 +155,13 @@
                     '<div data-cond="[name=awb_type] == yt_vm_video">',
                     '<div class="awb-clearfix"></div>',
                     '<h3 class="awb-title">Youtube / Vimeo</h3>',
-                    '<div class="awb-col-12">',
+                    '<div class="awb-col-6">',
                     `<input type="text" name="awb_video" value="${atts.awb_video}">`,
                     '<div class="awb-description">Supported YouTube and Vimeo URLs</div>',
+                    '</div>',
+                    '<div class="awb-col-6">',
+                    '<h3>Enable on Mobile Devices</h3>',
+                    `<input type="checkbox" value="1" name="awb_video_mobile" ${isChecked(atts.awb_video_mobile)}>`,
                     '</div>',
                     '</div>',
 

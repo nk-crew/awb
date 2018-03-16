@@ -456,6 +456,20 @@ class NK_AWB_VC_Extend {
                 ),
             )
         );
+        vc_add_param(
+            $element, array(
+                'type'        => 'checkbox',
+                'param_name'  => 'awb_video_mobile',
+                'heading'     => esc_html__( 'Enable on Mobile Devices', '@@text_domain' ),
+                'value'       => array( '' => true ),
+                'group'       => $group_name,
+                'edit_field_class' => 'vc_col-sm-6',
+                'dependency' => array(
+                    'element'    => 'awb_type',
+                    'value'      => array( 'yt_vm_video', 'video' ),
+                ),
+            )
+        );
 
         // Color.
         vc_add_param(

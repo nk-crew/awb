@@ -322,6 +322,7 @@
             let videoEndTime = 0;
             let videoVolume = 0;
             let videoAlwaysPlay = true;
+            let videoMobile = false;
             const parallax = $this.attr('data-awb-parallax');
             const parallaxSpeed = $this.attr('data-awb-parallax-speed');
             const parallaxMobile = $this.attr('data-awb-parallax-mobile') !== 'false';
@@ -333,6 +334,7 @@
                 videoEndTime = parseFloat($this.attr('data-awb-video-end-time')) || 0;
                 videoVolume = parseFloat($this.attr('data-awb-video-volume')) || 0;
                 videoAlwaysPlay = $this.attr('data-awb-video-always-play') === 'true';
+                videoMobile = $this.attr('data-awb-video-mobile') !== 'false';
             }
 
             // prevent if no parallax and no video
@@ -341,10 +343,11 @@
             }
 
             const jarallaxParams = {
+                automaticResize: true,
                 type: parallax,
                 speed: parallaxSpeed,
-                noAndroid: !parallaxMobile,
-                noIos: !parallaxMobile,
+                disableParallax: parallaxMobile ? false : /iPad|iPhone|iPod|Android/,
+                disableVideo: videoMobile ? false : /iPad|iPhone|iPod|Android/,
                 imgSize: imageBgSize || 'cover',
                 imgPosition: imageBgPosition || '50% 50%',
             };

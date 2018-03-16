@@ -97,7 +97,9 @@
         keywords: ['awb', 'background', 'parallax'],
 
         supports: {
+            anchor: true,
             className: true,
+            html: false,
         },
 
         attributes: {
@@ -163,6 +165,10 @@
                 default: 0,
             },
             videoAlwaysPlay: {
+                type: 'boolean',
+                default: false,
+            },
+            videoMobile: {
                 type: 'boolean',
                 default: false,
             },
@@ -277,6 +283,7 @@
                 videoEndTime,
                 videoVolume,
                 videoAlwaysPlay,
+                videoMobile,
 
                 color,
 
@@ -471,6 +478,11 @@
                                         </a>,
                                         <div style={{ marginBottom: 13 }} />,
                                     ] }
+                                    <ToggleControl
+                                        label={__('Enable on mobile devices')}
+                                        checked={!!videoMobile}
+                                        onChange={v => setAttributes({ videoMobile: v })}
+                                    />
 
                                     <TextControl
                                         label={__('Start time')}
@@ -725,6 +737,7 @@
                     if (attributes.videoAlwaysPlay) {
                         resultAtts.videoAlwaysPlay = attributes.videoAlwaysPlay;
                     }
+                    resultAtts.videoMobile = attributes.videoMobile;
                 }
                 // eslint-disable-next-line
             case 'image':
@@ -747,9 +760,7 @@
                 if (attributes.parallaxSpeed) {
                     resultAtts.parallaxSpeed = attributes.parallaxSpeed;
                 }
-                if (attributes.parallaxMobile) {
-                    resultAtts.parallaxMobile = attributes.parallaxMobile;
-                }
+                resultAtts.parallaxMobile = attributes.parallaxMobile;
             }
 
             if (attributes.mouseParallax) {
@@ -767,8 +778,8 @@
             if (attributes.color) {
                 wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${attributes.color};"></div>`;
             }
-            if (resultImg) {
-                wrapHTML += `<div class="nk-awb-inner">${resultImg}</div>`;
+            if (resultImg || resultAtts.video) {
+                wrapHTML += `<div class="nk-awb-inner">${resultImg || ''}</div>`;
             }
 
             return (

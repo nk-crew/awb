@@ -78,6 +78,7 @@ class NK_AWB_Shortcode {
                 'awb_video_end_time'    => 0,
                 'awb_video_volume'      => 0,
                 'awb_video_always_play' => 'false',
+                'awb_video_mobile'      => 'false',
 
                 'awb_parallax'          => 'false', // scroll, scale, opacity, scroll-opacity, scale-opacity.
                 'awb_parallax_speed'    => 0.5,
@@ -215,6 +216,9 @@ class NK_AWB_Shortcode {
             if ( filter_var( $atts['awb_video_always_play'], FILTER_VALIDATE_BOOLEAN ) ) {
                 $awb_wrap_attributes .= ' data-awb-video-always-play="true"';
             }
+
+            // show on mobile.
+            $awb_wrap_attributes .= ' data-awb-video-mobile="' . esc_attr( $atts['awb_video_mobile'] ) . '"';
         }
 
         // parallax.
