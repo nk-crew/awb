@@ -257,7 +257,7 @@
                 imageTagData: `/awb/v1/get_attachment_image/${image}?${query}`,
             };
         })(({
-            imageTagData, attributes, className, focus, setAttributes,
+            imageTagData, attributes, className, isSelected, setAttributes,
         }) => {
             // set image tag to attribute
             if (imageTagData && !imageTagData.isLoading && imageTagData.data && imageTagData.data.success) {
@@ -302,7 +302,7 @@
             }
 
             return [
-                ...focus ? [
+                isSelected ? [
                     <BlockControls key="controls">
                         <BlockAlignmentToolbar
                             controls={validAlignments}
