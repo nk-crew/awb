@@ -1,3 +1,19 @@
+// icon
+.awb-gutenberg-icon {
+    display: block;
+    width: 20px;
+
+    img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+
+    .editor-block-inspector__card-icon {
+        width: 18px;
+    }
+}
+
 .wp-block-nk-awb {
     // background for block
     .awb-gutenberg-preview-block {

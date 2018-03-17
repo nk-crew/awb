@@ -3,7 +3,7 @@ import { ChromePicker } from 'react-color';
 /**
  * Gutenberg block
  */
-(function (i18n, blocks, components) {
+(function (awbData, i18n, blocks, components) {
     const { __ } = i18n;
     const {
         registerBlockType,
@@ -25,6 +25,8 @@ import { ChromePicker } from 'react-color';
     } = components;
 
     const validAlignments = ['wide', 'full'];
+
+    const icon = `<img src="${awbData.icon}" alt="AWB" />`;
 
     /**
      * camelCaseToDash('userId') => "user-id"
@@ -91,7 +93,7 @@ import { ChromePicker } from 'react-color';
         description: 'Advanced Backgrounds',
 
         // add element with classname to support different icon sets like FontAwesome.
-        icon: <span className="dashicons dashicons-format-image" />,
+        icon: <span dangerouslySetInnerHTML={{ __html: icon }} className="awb-gutenberg-icon" />,
 
         category: 'layout',
 
@@ -705,7 +707,7 @@ import { ChromePicker } from 'react-color';
                 <div className={className} key="container">
                     <InnerBlocks />
                     <div className="awb-gutenberg-preview-block" />
-                    <div className="awb-gutenberg-preview-img" dangerouslySetInnerHTML={{ __html: (imageTag || '') + (colorOverlay || '') }} />
+                    <div className="awb-gutenberg-preview-img" dangerouslySetInnerHTML={{ __html: ((type === 'image' || type === 'video' || type === 'yt_vm_video') && imageTag ? imageTag : icon) + (colorOverlay || '') }} />
                 </div>,
             ];
         }),
@@ -801,4 +803,4 @@ import { ChromePicker } from 'react-color';
             );
         },
     });
-}(wp.i18n, wp.blocks, wp.components));
+}(window.AWBGutenbergData, wp.i18n, wp.blocks, wp.components));

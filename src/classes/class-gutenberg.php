@@ -59,5 +59,11 @@ class NK_AWB_Gutenberg {
             'script' => 'nk-awb',
             'style'  => 'nk-awb',
         ) );
+
+        // add variables to script.
+        $data = array(
+            'icon' => nk_awb()->plugin_url . 'assets/admin/gutenberg/icon.png',
+        );
+        wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );
     }
 }
