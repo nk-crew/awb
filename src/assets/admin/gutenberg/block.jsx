@@ -1,3 +1,5 @@
+import { ChromePicker } from 'react-color';
+
 /**
  * Gutenberg block
  */
@@ -7,7 +9,6 @@
         registerBlockType,
         InspectorControls,
         InnerBlocks,
-        ColorPalette,
         MediaUpload,
         BlockControls,
         BlockAlignmentToolbar,
@@ -606,9 +607,19 @@
                             ],
 
                             <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'}>
-                                <ColorPalette
-                                    value={color}
-                                    onChange={v => setAttributes({ color: v })}
+                                <ChromePicker
+                                    color={color}
+                                    onChangeComplete={(picker) => {
+                                        let newColor = picker.hex;
+
+                                        if (picker.rgb && picker.rgb.a < 1) {
+                                            newColor = `rgba(${picker.rgb.r}, ${picker.rgb.g}, ${picker.rgb.b}, ${picker.rgb.a})`;
+                                        }
+
+                                        setAttributes({ color: newColor });
+                                    }}
+                                    style={{ width: '100%' }}
+                                    disableAlpha={false}
                                 />
                             </PanelColor>,
 

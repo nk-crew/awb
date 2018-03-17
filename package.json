@@ -120,5 +120,9 @@
         "vinyl-named-with-path": "^1.0.0",
         "webpack": "^3.10.0",
         "webpack-stream": "^4.0.0"
+    },
+    "dependencies": {
+        "react": "^16.2.0",
+        "react-color": "^2.14.0"
     }
 }
