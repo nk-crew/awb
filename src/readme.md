@@ -13,7 +13,7 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo.
 
 == Description ==
 
-AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. There is available visual shortcode editor and support for Visual Composer page builder.
+AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. [Gutenberg](https://wordpress.org/gutenberg/) and Visual Composer support.
 
 See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.info/#awb)
 
@@ -22,7 +22,7 @@ See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.inf
     * Color
     * Image
     * Pattern images
-    * Local Video
+    * Local Hosted Video
     * Youtube / Vimeo Video
 * __Parallax__ options powered by high performance JavaScript plugin [Jarallax](https://github.com/nk-o/jarallax)
     * Custom speed option
@@ -64,16 +64,23 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 == Screenshots ==
 
-1. Insert shortcode in default editor
-2. Shortcode maker p.1
-3. Shortcode maker p.2
-4. Shortcode maker video
-5. Shortcode maker styles tab
+1. Gutenberg blocks
+2. Background color
+3. Background image
+4. Background video
+5. Background parallax and Mouse parallax
 6. Extended Visual Composer ROW options
 
 
 
 == Changelog ==
+
+= 1.4.0 =
+* added support for [Gutenberg](https://wordpress.org/gutenberg/) blocks builder
+* added option to disable video on mobile devices
+* fixed Visual Composer and Stretch row JS error on mobile devices 
+* fixed Visual Composer icon position
+* updated Jarallax to 1.10.1
 
 = 1.3.2 =
 * updated Jarallax to 1.9.1
@@ -115,8 +122,8 @@ The manual installation method involves downloading our AWB plugin and uploading
 * fixed Vimeo videos autoplay
 * fixed video iframe - reset some styles like max-width
 * fixed parallax for speed > 1 (wrong calculation)
-* fixed local video mute and loop
-* fixed showing Local videos if image is not set
+* fixed local hosted video mute and loop
+* fixed showing Local hosted videos if image is not set
 * fixed video set aspect ratio (in some situations added black lines)
 
 = 1.0.0 =
