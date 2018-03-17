@@ -38,6 +38,7 @@ See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.inf
 * __Overlay__ color with transparency options
 * Stretch option. Will be useful on boxed websites.
 * Visual shortcode maker. You can create shortcode using visual builder
+* [Gutenberg](https://wordpress.org/gutenberg/) supported
 * __Visual Composer__ supported (extended row and col options + separate shortcode)
 * Custom CSS offsets (paddings + margins)
 
