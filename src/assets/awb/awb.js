@@ -240,7 +240,12 @@
             args.forEach((item) => {
                 $(item).find('.nk-awb-rendered > .nk-awb-inner').each(function () {
                     if (this.jarallax) {
-                        this.jarallax.onResize();
+                        // Check if container exists
+                        // On mobile with Visual Composer this container is undefined
+                        // and onResize showed console error
+                        if (this.jarallax.image && this.jarallax.image.$container) {
+                            this.jarallax.onResize();
+                        }
                         this.jarallax.onScroll();
                     }
                 });
