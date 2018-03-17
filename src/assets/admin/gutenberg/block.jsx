@@ -337,7 +337,7 @@
 
                         {type && [
                             (type === 'yt_vm_video' || type === 'video') && [
-                                <PanelBody title={type === 'video' ? __('Video') : __('Video Youtube / Vimeo')} initialOpen={type === 'image' || type === 'video'}>
+                                <PanelBody title={type === 'video' ? __('Video') : __('Video Youtube / Vimeo')} initialOpen={type === 'yt_vm_video' || type === 'video'}>
                                     { type === 'yt_vm_video' &&
                                     <TextControl
                                         label={__('Video URL')}
