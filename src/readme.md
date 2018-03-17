@@ -76,6 +76,9 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 == Changelog ==
 
+= 1.4.1 =
+* updated jarallax to 1.10.2
+
 = 1.4.0 =
 * added support for [Gutenberg](https://wordpress.org/gutenberg/) blocks builder
 * added option to disable video on mobile devices
