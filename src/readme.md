@@ -76,6 +76,9 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 == Changelog ==
 
+= 1.4.2 =
+* fixed adding styles from Visual Composer "Design Options" tab in AWB shortcode
+
 = 1.4.1 =
 * updated jarallax to 1.10.2
 
