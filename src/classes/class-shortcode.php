@@ -93,6 +93,7 @@ class NK_AWB_Shortcode {
 
                 'awb_class'             => '',
                 'awb_styles'            => '',
+                'vc_css'                => '',
             ), $atts
         );
 
