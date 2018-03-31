@@ -76,11 +76,14 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 == Changelog ==
 
+= 1.4.3 =
+* updated Jarallax to 1.10.3
+
 = 1.4.2 =
 * fixed adding styles from Visual Composer "Design Options" tab in AWB shortcode
 
 = 1.4.1 =
-* updated jarallax to 1.10.2
+* updated Jarallax to 1.10.2
 
 = 1.4.0 =
 * added support for [Gutenberg](https://wordpress.org/gutenberg/) blocks builder
