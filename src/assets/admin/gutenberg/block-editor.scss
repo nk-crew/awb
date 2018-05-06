@@ -2,11 +2,32 @@
 .awb-gutenberg-icon {
     display: block;
     width: 20px;
+    pointer-events: none;
 
     img {
         display: block;
         width: 100%;
         height: auto;
+
+        .editor-default-block-appender .editor-inserter-with-shortcuts .components-icon-button & {
+            opacity: .4;
+            transition: .2s opacity;
+        }
+
+        .editor-default-block-appender:hover .editor-inserter-with-shortcuts .components-icon-button & {
+            opacity: 1;
+        }
+
+        .editor-inserter__block & {
+            opacity: .8;
+        }
+
+        .editor-inserter__block:not(:disabled):hover &,
+        .editor-inserter__block:not(:disabled).is-active &,
+        .editor-inserter__block:not(:disabled):active &,
+        .editor-inserter__block:not(:disabled):focus & {
+            opacity: 1;
+        }
     }
 
     .editor-block-inspector__card-icon {
@@ -14,65 +35,44 @@
     }
 }
 
-.wp-block-nk-awb {
-    // background for block
-    .awb-gutenberg-preview-block {
-        position: absolute;
-        top: -1px;
-        right: -1px;
-        bottom: -1px;
-        left: -1px;
-        pointer-events: none;
+// background for block
+.awb-gutenberg-preview-block {
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    bottom: -15px;
+    left: -15px;
+    pointer-events: none;
+    transition: .15s border ease-in-out;
+    z-index: -1;
+
+    &:empty {
         border: 1px solid #e2e4e7;
-        transition: .15s border ease-in-out;
-        z-index: 1;
 
-        @media (min-width: 600px) {
-            right: 47px;
-            left: 47px;
-
-            [data-align="full"].editor-block-list__block & {
-                right: 0;
-                left: 0;
-            }
-        }
-
-        .editor-block-list__block.is-selected & {
-            border: 2px solid #1a1e23;
-        }
         [data-align="full"].editor-block-list__block & {
             border-right: 0;
             border-left: 0;
         }
     }
 
-    // preview image
-    .awb-gutenberg-preview-img {
-        position: absolute;
-        top: 15px;
-        left: 0;
-        width: 25px;
-        height: 25px;
-        pointer-events: none;
-        z-index: 2;
-
+    @media (min-width: 600px) {
         [data-align="full"].editor-block-list__block & {
-            left: 15px;
-        }
-
-        > img,
-        > div {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-
-        > .nk-awb-overlay {
-            position: absolute;
-            top: 0;
+            right: 0;
             left: 0;
         }
+    }
+
+    > img,
+    > div {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    > .nk-awb-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
     }
 }
 

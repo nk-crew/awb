@@ -340,7 +340,7 @@ import { ChromePicker } from 'react-color';
 
                         {type && [
                             (type === 'yt_vm_video' || type === 'video') && [
-                                <PanelBody title={type === 'video' ? __('Video') : __('Video Youtube / Vimeo')} initialOpen={type === 'yt_vm_video' || type === 'video'}>
+                                <PanelBody title={type === 'video' ? __('Video') : __('Video Youtube / Vimeo')} initialOpen={type === 'yt_vm_video' || type === 'video'} key="video_bg">
                                     { type === 'yt_vm_video' &&
                                     <TextControl
                                         label={__('Video URL')}
@@ -352,7 +352,7 @@ import { ChromePicker } from 'react-color';
                                     }
 
                                     {/* Preview Video */}
-                                    { type === 'video' && (videoMp4 || videoOgv || videoWebm) && [
+                                    { type === 'video' && (videoMp4 || videoOgv || videoWebm) && (
                                         <video controls>
                                             { videoMp4 && (
                                                 <source src={videoMp4} type="video/mp4" />
@@ -363,11 +363,11 @@ import { ChromePicker } from 'react-color';
                                             { videoWebm && (
                                                 <source src={videoWebm} type="video/webm" />
                                             ) }
-                                        </video>,
-                                    ] }
+                                        </video>
+                                    ) }
 
                                     {/* Select Videos */}
-                                    { type === 'video' && !videoMp4 && [
+                                    { type === 'video' && !videoMp4 && (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 setAttributes({
@@ -388,24 +388,26 @@ import { ChromePicker } from 'react-color';
                                                     </Button>
                                                 </div>
                                             )}
-                                        />,
-                                    ] }
-                                    { type === 'video' && videoMp4 && [
-                                        <span>{ videoMp4.substring(videoMp4.lastIndexOf('/') + 1) } </span>,
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
-                                                setAttributes({
-                                                    videoMp4: '',
-                                                });
-                                                e.preventDefault();
-                                            }}
-                                        >
-                                            {__('(Remove)')}
-                                        </a>,
-                                        <div style={{ marginBottom: 13 }} />,
-                                    ] }
-                                    { type === 'video' && !videoOgv && [
+                                        />
+                                    ) }
+                                    { type === 'video' && videoMp4 && (
+                                        <div>
+                                            <span>{ videoMp4.substring(videoMp4.lastIndexOf('/') + 1) } </span>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    setAttributes({
+                                                        videoMp4: '',
+                                                    });
+                                                    e.preventDefault();
+                                                }}
+                                            >
+                                                {__('(Remove)')}
+                                            </a>
+                                            <div style={{ marginBottom: 13 }} />
+                                        </div>
+                                    ) }
+                                    { type === 'video' && !videoOgv && (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 setAttributes({
@@ -426,24 +428,26 @@ import { ChromePicker } from 'react-color';
                                                     </Button>
                                                 </div>
                                             )}
-                                        />,
-                                    ] }
-                                    { type === 'video' && videoOgv && [
-                                        <span>{ videoOgv.substring(videoOgv.lastIndexOf('/') + 1) } </span>,
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
-                                                setAttributes({
-                                                    videoOgv: '',
-                                                });
-                                                e.preventDefault();
-                                            }}
-                                        >
-                                            {__('(Remove)')}
-                                        </a>,
-                                        <div style={{ marginBottom: 13 }} />,
-                                    ] }
-                                    { type === 'video' && !videoWebm && [
+                                        />
+                                    ) }
+                                    { type === 'video' && videoOgv && (
+                                        <div>
+                                            <span>{ videoOgv.substring(videoOgv.lastIndexOf('/') + 1) } </span>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    setAttributes({
+                                                        videoOgv: '',
+                                                    });
+                                                    e.preventDefault();
+                                                }}
+                                            >
+                                                {__('(Remove)')}
+                                            </a>
+                                            <div style={{ marginBottom: 13 }} />
+                                        </div>
+                                    ) }
+                                    { type === 'video' && !videoWebm && (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 setAttributes({
@@ -464,23 +468,25 @@ import { ChromePicker } from 'react-color';
                                                     </Button>
                                                 </div>
                                             )}
-                                        />,
-                                    ] }
-                                    { type === 'video' && videoWebm && [
-                                        <span>{ videoWebm.substring(videoWebm.lastIndexOf('/') + 1) } </span>,
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
-                                                setAttributes({
-                                                    videoWebm: '',
-                                                });
-                                                e.preventDefault();
-                                            }}
-                                        >
-                                            {__('(Remove)')}
-                                        </a>,
-                                        <div style={{ marginBottom: 13 }} />,
-                                    ] }
+                                        />
+                                    ) }
+                                    { type === 'video' && videoWebm && (
+                                        <div>
+                                            <span>{ videoWebm.substring(videoWebm.lastIndexOf('/') + 1) } </span>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    setAttributes({
+                                                        videoWebm: '',
+                                                    });
+                                                    e.preventDefault();
+                                                }}
+                                            >
+                                                {__('(Remove)')}
+                                            </a>
+                                            <div style={{ marginBottom: 13 }} />
+                                        </div>
+                                    ) }
                                     <ToggleControl
                                         label={__('Enable on mobile devices')}
                                         checked={!!videoMobile}
@@ -517,10 +523,10 @@ import { ChromePicker } from 'react-color';
                                 </PanelBody>,
                             ],
 
-                            (type === 'image' || type === 'yt_vm_video' || type === 'video') && [
-                                <PanelBody title={__(type === 'image' ? 'Image' : 'Poster Image')} initialOpen={type === 'image'}>
+                            (type === 'image' || type === 'yt_vm_video' || type === 'video') && (
+                                <PanelBody title={__(type === 'image' ? 'Image' : 'Poster Image')} initialOpen={type === 'image'} key="image">
                                     {/* Select Image */}
-                                    { !image && [
+                                    { !image && (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 onImageSelect(media, setAttributes);
@@ -532,8 +538,8 @@ import { ChromePicker } from 'react-color';
                                                     {__('Select image')}
                                                 </Button>
                                             )}
-                                        />,
-                                    ] }
+                                        />
+                                    ) }
 
                                     { image && imageTag && [
                                         <MediaUpload
@@ -543,9 +549,23 @@ import { ChromePicker } from 'react-color';
                                             type="image"
                                             value={image}
                                             render={({ open }) => ([
-                                                <a href="#" onClick={open} className="awb-gutenberg-media-upload" style={{ display: 'block' }} dangerouslySetInnerHTML={{ __html: imageTag }} />,
-                                                <p className="blocks-base-control__help" style={{ marginBottom: '5px' }}>{__('Click the image to edit or update')}</p>,
+                                                <a
+                                                    href="#"
+                                                    onClick={open}
+                                                    className="awb-gutenberg-media-upload"
+                                                    style={{ display: 'block' }}
+                                                    dangerouslySetInnerHTML={{ __html: imageTag }}
+                                                    key="image_upload_preview"
+                                                />,
+                                                <p
+                                                    className="blocks-base-control__help"
+                                                    style={{ marginBottom: '5px' }}
+                                                    key="image_upload_preview_help"
+                                                >
+                                                    {__('Click the image to edit or update')}
+                                                </p>,
                                             ])}
+                                            key="image_upload"
                                         />,
                                         <a
                                             href="#"
@@ -557,10 +577,11 @@ import { ChromePicker } from 'react-color';
                                                 });
                                                 e.preventDefault();
                                             }}
+                                            key="image_remove"
                                         >
                                             {__('Remove image')}
                                         </a>,
-                                        <div style={{ marginBottom: 13 }} />,
+                                        <div style={{ marginBottom: 13 }} key="image_margin" />,
                                         imageSizes && (
                                             <SelectControl
                                                 label={__('Size')}
@@ -576,6 +597,7 @@ import { ChromePicker } from 'react-color';
                                                     return result;
                                                 })()}
                                                 onChange={v => setAttributes({ imageSize: v })}
+                                                key="image_size"
                                             />
                                         ),
                                         <SelectControl
@@ -596,6 +618,7 @@ import { ChromePicker } from 'react-color';
                                                 },
                                             ]}
                                             onChange={v => setAttributes({ imageBackgroundSize: v })}
+                                            key="image_bg_size"
                                         />,
                                         <TextControl
                                             label={__('Background position')}
@@ -603,12 +626,13 @@ import { ChromePicker } from 'react-color';
                                             value={imageBackgroundPosition}
                                             onChange={v => setAttributes({ imageBackgroundPosition: v })}
                                             help={__('Image position. Example: 50% 50%')}
+                                            key="image_bg_position"
                                         />,
                                     ] }
-                                </PanelBody>,
-                            ],
+                                </PanelBody>
+                            ),
 
-                            <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'}>
+                            <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'} key="color">
                                 <ChromePicker
                                     color={color}
                                     onChangeComplete={(picker) => {
@@ -626,7 +650,7 @@ import { ChromePicker } from 'react-color';
                             </PanelColor>,
 
                             (type === 'image' || type === 'yt_vm_video' || type === 'video') && [
-                                <PanelBody title={__('Parallax') + (parallax && parallaxSpeed !== '' ? ` (${parallax} ${parallaxSpeed})` : '')} initialOpen={false}>
+                                <PanelBody title={__('Parallax') + (parallax && parallaxSpeed !== '' ? ` (${parallax} ${parallaxSpeed})` : '')} initialOpen={false} key="parallax">
                                     <SelectControl
                                         value={parallax}
                                         options={[
@@ -667,15 +691,17 @@ import { ChromePicker } from 'react-color';
                                             max="2"
                                             onChange={v => setAttributes({ parallaxSpeed: v })}
                                             help={__('Provide number from -1.0 to 2.0')}
+                                            key="parallax_speed"
                                         />,
                                         <ToggleControl
                                             label={__('Enable on mobile devices')}
                                             checked={!!parallaxMobile}
                                             onChange={v => setAttributes({ parallaxMobile: v })}
+                                            key="parallax_mobile"
                                         />,
                                     ] }
                                 </PanelBody>,
-                                <PanelBody title={__('Mouse parallax')} initialOpen={false}>
+                                <PanelBody title={__('Mouse parallax')} initialOpen={false} key="parallax_mouse">
                                     <ToggleControl
                                         label={__('Enable')}
                                         checked={!!mouseParallax}
@@ -689,6 +715,7 @@ import { ChromePicker } from 'react-color';
                                             max="200"
                                             help={` ${__('px')}`}
                                             onChange={v => setAttributes({ mouseParallaxSize: v })}
+                                            key="parallax_mouse_size"
                                         />,
                                         <RangeControl
                                             label={__('Speed')}
@@ -697,6 +724,7 @@ import { ChromePicker } from 'react-color';
                                             max="20000"
                                             help={` ${__('ms')}`}
                                             onChange={v => setAttributes({ mouseParallaxSpeed: v })}
+                                            key="parallax_mouse_speed"
                                         />,
                                     ] }
                                 </PanelBody>,
@@ -706,8 +734,7 @@ import { ChromePicker } from 'react-color';
                 ] : [],
                 <div className={className} key="container">
                     <InnerBlocks />
-                    <div className="awb-gutenberg-preview-block" />
-                    <div className="awb-gutenberg-preview-img" dangerouslySetInnerHTML={{ __html: ((type === 'image' || type === 'video' || type === 'yt_vm_video') && imageTag ? imageTag : icon) + (colorOverlay || '') }} />
+                    <div className="awb-gutenberg-preview-block" dangerouslySetInnerHTML={{ __html: ((type === 'image' || type === 'video' || type === 'yt_vm_video') && imageTag ? imageTag : '') + (colorOverlay || '') }} />
                 </div>,
             ];
         }),
