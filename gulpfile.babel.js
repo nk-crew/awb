@@ -7,6 +7,7 @@ const merge  = require('merge-stream');
 const format = require('string-template');
 const named = require('vinyl-named-with-path');
 const webpack = require('webpack-stream');
+const webpackconfig = require('./webpack.config.js');
 
 const templateVars = data.gulp_config.variables;
 const work_folders = template(data.gulp_config.work_folders);
@@ -74,23 +75,7 @@ gulp.task('build_js', function () {
         return gulp.src([itemData.from + '/**/*.{js,jsx}', '!' + itemData.from + '/**/vendor/**/*'])
             .pipe($.plumber({ errorHandler }))
             .pipe(named())
-            .pipe(webpack({
-                module: {
-                    loaders: [
-                        {
-                            test: /.jsx?$/,
-                            loader: 'babel-loader',
-                            exclude: /node_modules/
-                        }
-                    ]
-                }
-            }))
-            // .pipe($.changed(itemData.to))
-            .pipe($.uglify({
-                output: {
-                    comments: /^!/
-                }
-            }))
+            .pipe(webpack(webpackconfig))
             .pipe($.rename({
                 suffix: '.min'
             }))

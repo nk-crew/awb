@@ -1,4 +1,5 @@
 import { ChromePicker } from 'react-color';
+import VideoWorker from 'video-worker';
 
 /**
  * Gutenberg block
@@ -88,6 +89,32 @@ function onImageSelect(media, setAttributes) {
     });
 }
 
+/**
+ * Load YouTube / Vimeo poster image
+ */
+const videoPosterCache = {};
+let videoPosterTimeout;
+function getVideoPoster(url, cb) {
+    if (videoPosterCache[url]) {
+        cb(videoPosterCache[url]);
+        return;
+    }
+
+    clearTimeout(videoPosterTimeout);
+    videoPosterTimeout = setTimeout(() => {
+        const videoObject = new VideoWorker(url);
+
+        if (videoObject.isValid()) {
+            videoObject.getImageURL((videoPosterUrl) => {
+                videoPosterCache[url] = videoPosterUrl;
+                cb(videoPosterUrl);
+            });
+        } else {
+            cb('');
+        }
+    }, 500);
+}
+
 registerBlockType('nk/awb', {
     title: 'Background (AWB)',
 
@@ -141,6 +168,10 @@ registerBlockType('nk/awb', {
         },
 
         video: {
+            type: 'string',
+            default: '',
+        },
+        videoPosterPreview: {
             type: 'string',
             default: '',
         },
@@ -280,6 +311,7 @@ registerBlockType('nk/awb', {
             imageBackgroundPosition,
 
             video,
+            videoPosterPreview,
             videoMp4,
             videoOgv,
             videoWebm,
@@ -303,6 +335,15 @@ registerBlockType('nk/awb', {
         let colorOverlay = false;
         if (color) {
             colorOverlay = `<div class="nk-awb-overlay" style="background-color: ${color};"></div>`;
+        }
+
+        // load YouTube / Vimeo poster
+        if (type === 'yt_vm_video' && video && !image) {
+            getVideoPoster(video, (url) => {
+                if (url !== videoPosterPreview) {
+                    setAttributes({ videoPosterPreview: url });
+                }
+            });
         }
 
         return [
@@ -778,7 +819,26 @@ registerBlockType('nk/awb', {
             ] : [],
             <div className={className} key="container">
                 <InnerBlocks />
-                <div className="awb-gutenberg-preview-block" dangerouslySetInnerHTML={{ __html: ((type === 'image' || type === 'video' || type === 'yt_vm_video') && imageTag ? imageTag : '') + (colorOverlay || '') }} />
+                <div
+                    className="awb-gutenberg-preview-block"
+                    dangerouslySetInnerHTML={{
+                        __html: (function () {
+                            let html = '';
+
+                            if (type === 'image' || type === 'video' || type === 'yt_vm_video') {
+                                if (imageTag) {
+                                    html = imageTag;
+                                } else if (type === 'yt_vm_video' && videoPosterPreview) {
+                                    html = `<img src="${videoPosterPreview}" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
+                                }
+                            }
+
+                            html += colorOverlay || '';
+
+                            return html;
+                        }()),
+                    }}
+                />
             </div>,
         ];
     }),
