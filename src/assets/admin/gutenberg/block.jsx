@@ -558,7 +558,7 @@ registerBlockType('nk/awb', {
                                                 key="image_upload_preview"
                                             />,
                                             <p
-                                                className="blocks-base-control__help"
+                                                className="components-base-control__help"
                                                 style={{ marginBottom: '5px' }}
                                                 key="image_upload_preview_help"
                                             >
