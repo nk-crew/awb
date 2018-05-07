@@ -7,7 +7,7 @@ Stable tag: @@plugin_version
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-AWB let you to use parallax backgrounds with images, videos, youtube and vimeo.
+Image backgrounds, YouTube / Vimeo / Local hosted video backgrounds with parallax support.
 
 
 
@@ -65,16 +65,19 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 == Screenshots ==
 
-1. Gutenberg blocks
-2. Background color
-3. Background image
-4. Background video
-5. Background parallax and Mouse parallax
-6. Extended Visual Composer ROW options
+1. Background color
+2. Background image
+3. Background video
+4. Background parallax and Mouse parallax
+5. Extended Visual Composer ROW options
 
 
 
 == Changelog ==
+
+= 1.4.4 =
+* improved Gutenberg backgrounds preview
+* fixed conflict with YouTube Embed Plus plugin
 
 = 1.4.3 =
 * updated Jarallax to 1.10.3
