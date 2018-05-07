@@ -15,6 +15,7 @@ const {
 } = wp.blocks;
 const {
     Button,
+    ButtonGroup,
     PanelBody,
     SelectControl,
     ToggleControl,
@@ -314,33 +315,76 @@ registerBlockType('nk/awb', {
                     />
                 </BlockControls>,
                 <InspectorControls key="inspector">
-                    <SelectControl
-                        label={__('Background type')}
-                        value={type}
-                        options={[
+                    <ButtonGroup aria-label={__('Background type')} style={{ marginTop: 15, marginBottom: 10 }}>
+                        {
+                            [
+                                {
+                                    label: __('Color'),
+                                    value: 'color',
+                                },
+                                {
+                                    label: __('Image'),
+                                    value: 'image',
+                                },
+                                {
+                                    label: __('Video'),
+                                    value: 'yt_vm_video',
+                                },
+                            ].map((val) => {
+                                let selected = type === val.value;
+
+                                // select video
+                                if (val.value === 'yt_vm_video') {
+                                    if (type === 'video' || type === 'yt_vm_video') {
+                                        selected = true;
+                                    }
+                                }
+
+                                return (
+                                    <Button
+                                        isLarge
+                                        isPrimary={selected}
+                                        aria-pressed={selected}
+                                        onClick={() => setAttributes({type: val.value})}
+                                        key={`type_${val.label}`}
+                                    >
+                                        {val.label}
+                                    </Button>
+                                );
+                            })
+                        }
+                    </ButtonGroup>
+
+                    {(type === 'video' || type === 'yt_vm_video') && (
+                        <ButtonGroup aria-label={__('Background video type')} style={{ marginBottom: 10 }}>
                             {
-                                label: __('Color'),
-                                value: 'color',
-                            },
-                            {
-                                label: __('Image'),
-                                value: 'image',
-                            },
-                            {
-                                label: __('YouTube / Vimeo'),
-                                value: 'yt_vm_video',
-                            },
-                            {
-                                label: __('Local Video'),
-                                value: 'video',
-                            },
-                        ]}
-                        onChange={v => setAttributes({ type: v })}
-                    />
+                                [
+                                    {
+                                        label: __('YouTube / Vimeo'),
+                                        value: 'yt_vm_video',
+                                    },
+                                    {
+                                        label: __('Local Hosted'),
+                                        value: 'video',
+                                    },
+                                ].map(val => (
+                                    <Button
+                                        isLarge
+                                        isPrimary={type === val.value}
+                                        aria-pressed={type === val.value}
+                                        onClick={() => setAttributes({type: val.value})}
+                                        key={`type_${val.label}`}
+                                    >
+                                        {val.label}
+                                    </Button>
+                                ))
+                            }
+                        </ButtonGroup>
+                    )}
 
                     {type && [
                         (type === 'yt_vm_video' || type === 'video') && [
-                            <PanelBody title={type === 'video' ? __('Video') : __('Video Youtube / Vimeo')} initialOpen={type === 'yt_vm_video' || type === 'video'} key="video_bg">
+                            <PanelBody title={__('Video')} initialOpen={type === 'yt_vm_video' || type === 'video'} key="video_bg">
                                 { type === 'yt_vm_video' &&
                                 <TextControl
                                     label={__('Video URL')}
