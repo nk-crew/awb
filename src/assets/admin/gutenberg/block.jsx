@@ -51,7 +51,9 @@ function camelCaseToDash(str) {
  * https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
  */
 function toTitleCase(str) {
-    return str.split(/[.,/ -_]/).map(word => word.replace(word[0], word[0].toUpperCase())).join(' ');
+    return str.split(/[.,/ -_]/).map((word) => {
+        return word && word.length ? word.replace(word[0], word[0].toUpperCase()) : word;
+    }).join(' ');
 }
 
 /**
