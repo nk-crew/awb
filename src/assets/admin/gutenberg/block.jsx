@@ -15,6 +15,7 @@ const {
     BlockAlignmentToolbar,
 } = wp.blocks;
 const {
+    BaseControl,
     Button,
     ButtonGroup,
     PanelBody,
@@ -603,10 +604,10 @@ registerBlockType('nk/awb', {
                                 />
                                 <ToggleControl
                                     label={__('Always play')}
+                                    help={__('Play video also when not in viewport')}
                                     checked={!!videoAlwaysPlay}
                                     onChange={v => setAttributes({ videoAlwaysPlay: v })}
                                 />
-                                <p className="blocks-base-control__help" style={{ marginTop: '-13px' }}>{__('Play video also when not in viewport')}</p>
                             </PanelBody>,
                         ],
 
@@ -635,23 +636,17 @@ registerBlockType('nk/awb', {
                                         }}
                                         type="image"
                                         value={image}
-                                        render={({ open }) => ([
-                                            <a
-                                                href="#"
-                                                onClick={open}
-                                                className="awb-gutenberg-media-upload"
-                                                style={{ display: 'block' }}
-                                                dangerouslySetInnerHTML={{ __html: imageTag }}
-                                                key="image_upload_preview"
-                                            />,
-                                            <p
-                                                className="components-base-control__help"
-                                                style={{ marginBottom: '5px' }}
-                                                key="image_upload_preview_help"
-                                            >
-                                                {__('Click the image to edit or update')}
-                                            </p>,
-                                        ])}
+                                        render={({ open }) => (
+                                            <BaseControl help={__('Click the image to edit or update')}>
+                                                <a
+                                                    href="#"
+                                                    onClick={open}
+                                                    className="awb-gutenberg-media-upload"
+                                                    style={{ display: 'block' }}
+                                                    dangerouslySetInnerHTML={{ __html: imageTag }}
+                                                />
+                                            </BaseControl>
+                                        )}
                                         key="image_upload"
                                     />,
                                     <a
