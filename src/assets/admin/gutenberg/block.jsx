@@ -6,6 +6,7 @@ import VideoWorker from 'video-worker';
  */
 const awbData = window.AWBGutenbergData;
 const { __ } = wp.i18n;
+const { Fragment } = wp.element;
 const {
     registerBlockType,
     InspectorControls,
@@ -295,7 +296,7 @@ registerBlockType('nk/awb', {
             imageTagData: `/awb/v1/get_attachment_image/${image}?${query}`,
         };
     })(({
-        imageTagData, attributes, className, isSelected, setAttributes,
+        imageTagData, attributes, className, setAttributes,
     }) => {
         // set image tag to attribute
         if (imageTagData && !imageTagData.isLoading && imageTagData.data && imageTagData.data.success) {
@@ -349,16 +350,16 @@ registerBlockType('nk/awb', {
             });
         }
 
-        return [
-            isSelected ? [
-                <BlockControls key="controls">
+        return (
+            <Fragment>
+                <BlockControls>
                     <BlockAlignmentToolbar
                         controls={validAlignments}
                         value={align}
                         onChange={v => setAttributes({ align: v })}
                     />
-                </BlockControls>,
-                <InspectorControls key="inspector">
+                </BlockControls>
+                <InspectorControls>
                     <ButtonGroup aria-label={__('Background type')} style={{ marginTop: 15, marginBottom: 10 }}>
                         {
                             [
@@ -389,7 +390,7 @@ registerBlockType('nk/awb', {
                                         isLarge
                                         isPrimary={selected}
                                         aria-pressed={selected}
-                                        onClick={() => setAttributes({type: val.value})}
+                                        onClick={() => setAttributes({ type: val.value })}
                                         key={`type_${val.label}`}
                                     >
                                         {val.label}
@@ -416,7 +417,7 @@ registerBlockType('nk/awb', {
                                         isLarge
                                         isPrimary={type === val.value}
                                         aria-pressed={type === val.value}
-                                        onClick={() => setAttributes({type: val.value})}
+                                        onClick={() => setAttributes({ type: val.value })}
                                         key={`type_${val.label}`}
                                     >
                                         {val.label}
@@ -426,418 +427,419 @@ registerBlockType('nk/awb', {
                         </ButtonGroup>
                     )}
 
-                    {type && [
-                        (type === 'yt_vm_video' || type === 'video') && [
-                            <PanelBody title={__('Video')} initialOpen={type === 'yt_vm_video' || type === 'video'} key="video_bg">
-                                { type === 'yt_vm_video' &&
-                                <TextControl
-                                    label={__('Video URL')}
-                                    type="url"
-                                    value={video}
-                                    onChange={v => setAttributes({ video: v })}
-                                    help={__('Supported YouTube and Vimeo URLs')}
-                                />
-                                }
-
-                                {/* Preview Video */}
-                                { type === 'video' && (videoMp4 || videoOgv || videoWebm) && (
-                                    <video controls>
-                                        { videoMp4 && (
-                                            <source src={videoMp4} type="video/mp4" />
-                                        ) }
-                                        { videoOgv && (
-                                            <source src={videoOgv} type="video/ogg" />
-                                        ) }
-                                        { videoWebm && (
-                                            <source src={videoWebm} type="video/webm" />
-                                        ) }
-                                    </video>
-                                ) }
-
-                                {/* Select Videos */}
-                                { type === 'video' && !videoMp4 && (
-                                    <MediaUpload
-                                        onSelect={(media) => {
-                                            setAttributes({
-                                                videoMp4: '',
-                                            });
-                                            wp.media.attachment(media.id).fetch().then((data) => {
-                                                setAttributes({
-                                                    videoMp4: data.url,
-                                                });
-                                            });
-                                        }}
-                                        type="video"
-                                        value={videoMp4}
-                                        render={({ open }) => (
-                                            <div style={{ marginBottom: 13 }}>
-                                                <Button onClick={open} isPrimary>
-                                                    {__('Select MP4')}
-                                                </Button>
-                                            </div>
-                                        )}
+                    {type && (
+                        <Fragment>
+                            {(type === 'yt_vm_video' || type === 'video') && (
+                                <PanelBody title={__('Video')} initialOpen={type === 'yt_vm_video' || type === 'video'}>
+                                    { type === 'yt_vm_video' &&
+                                    <TextControl
+                                        label={__('Video URL')}
+                                        type="url"
+                                        value={video}
+                                        onChange={v => setAttributes({ video: v })}
+                                        help={__('Supported YouTube and Vimeo URLs')}
                                     />
-                                ) }
-                                { type === 'video' && videoMp4 && (
-                                    <div>
-                                        <span>{ videoMp4.substring(videoMp4.lastIndexOf('/') + 1) } </span>
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
+                                    }
+
+                                    {/* Preview Video */}
+                                    { type === 'video' && (videoMp4 || videoOgv || videoWebm) && (
+                                        <video controls>
+                                            { videoMp4 && (
+                                                <source src={videoMp4} type="video/mp4" />
+                                            ) }
+                                            { videoOgv && (
+                                                <source src={videoOgv} type="video/ogg" />
+                                            ) }
+                                            { videoWebm && (
+                                                <source src={videoWebm} type="video/webm" />
+                                            ) }
+                                        </video>
+                                    ) }
+
+                                    {/* Select Videos */}
+                                    { type === 'video' && !videoMp4 && (
+                                        <MediaUpload
+                                            onSelect={(media) => {
                                                 setAttributes({
                                                     videoMp4: '',
                                                 });
-                                                e.preventDefault();
-                                            }}
-                                        >
-                                            {__('(Remove)')}
-                                        </a>
-                                        <div style={{ marginBottom: 13 }} />
-                                    </div>
-                                ) }
-                                { type === 'video' && !videoOgv && (
-                                    <MediaUpload
-                                        onSelect={(media) => {
-                                            setAttributes({
-                                                videoOgv: '',
-                                            });
-                                            wp.media.attachment(media.id).fetch().then((data) => {
-                                                setAttributes({
-                                                    videoOgv: data.url,
+                                                wp.media.attachment(media.id).fetch().then((data) => {
+                                                    setAttributes({
+                                                        videoMp4: data.url,
+                                                    });
                                                 });
-                                            });
-                                        }}
-                                        type="video"
-                                        value={videoOgv}
-                                        render={({ open }) => (
-                                            <div style={{ marginBottom: 13 }}>
-                                                <Button onClick={open} isPrimary>
-                                                    {__('Select OGV')}
-                                                </Button>
-                                            </div>
-                                        )}
-                                    />
-                                ) }
-                                { type === 'video' && videoOgv && (
-                                    <div>
-                                        <span>{ videoOgv.substring(videoOgv.lastIndexOf('/') + 1) } </span>
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
+                                            }}
+                                            type="video"
+                                            value={videoMp4}
+                                            render={({ open }) => (
+                                                <div style={{ marginBottom: 13 }}>
+                                                    <Button onClick={open} isPrimary>
+                                                        {__('Select MP4')}
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        />
+                                    ) }
+                                    { type === 'video' && videoMp4 && (
+                                        <div>
+                                            <span>{ videoMp4.substring(videoMp4.lastIndexOf('/') + 1) } </span>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    setAttributes({
+                                                        videoMp4: '',
+                                                    });
+                                                    e.preventDefault();
+                                                }}
+                                            >
+                                                {__('(Remove)')}
+                                            </a>
+                                            <div style={{ marginBottom: 13 }} />
+                                        </div>
+                                    ) }
+                                    { type === 'video' && !videoOgv && (
+                                        <MediaUpload
+                                            onSelect={(media) => {
                                                 setAttributes({
                                                     videoOgv: '',
                                                 });
-                                                e.preventDefault();
-                                            }}
-                                        >
-                                            {__('(Remove)')}
-                                        </a>
-                                        <div style={{ marginBottom: 13 }} />
-                                    </div>
-                                ) }
-                                { type === 'video' && !videoWebm && (
-                                    <MediaUpload
-                                        onSelect={(media) => {
-                                            setAttributes({
-                                                videoWebm: '',
-                                            });
-                                            wp.media.attachment(media.id).fetch().then((data) => {
-                                                setAttributes({
-                                                    videoWebm: data.url,
+                                                wp.media.attachment(media.id).fetch().then((data) => {
+                                                    setAttributes({
+                                                        videoOgv: data.url,
+                                                    });
                                                 });
-                                            });
-                                        }}
-                                        type="video"
-                                        value={videoWebm}
-                                        render={({ open }) => (
-                                            <div style={{ marginBottom: 13 }}>
-                                                <Button onClick={open} isPrimary>
-                                                    {__('Select WEBM')}
-                                                </Button>
-                                            </div>
-                                        )}
-                                    />
-                                ) }
-                                { type === 'video' && videoWebm && (
-                                    <div>
-                                        <span>{ videoWebm.substring(videoWebm.lastIndexOf('/') + 1) } </span>
-                                        <a
-                                            href="#"
-                                            onClick={(e) => {
+                                            }}
+                                            type="video"
+                                            value={videoOgv}
+                                            render={({ open }) => (
+                                                <div style={{ marginBottom: 13 }}>
+                                                    <Button onClick={open} isPrimary>
+                                                        {__('Select OGV')}
+                                                    </Button>
+                                                </div>
+                                            )}
+                                        />
+                                    ) }
+                                    { type === 'video' && videoOgv && (
+                                        <div>
+                                            <span>{ videoOgv.substring(videoOgv.lastIndexOf('/') + 1) } </span>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    setAttributes({
+                                                        videoOgv: '',
+                                                    });
+                                                    e.preventDefault();
+                                                }}
+                                            >
+                                                {__('(Remove)')}
+                                            </a>
+                                            <div style={{ marginBottom: 13 }} />
+                                        </div>
+                                    ) }
+                                    { type === 'video' && !videoWebm && (
+                                        <MediaUpload
+                                            onSelect={(media) => {
                                                 setAttributes({
                                                     videoWebm: '',
                                                 });
-                                                e.preventDefault();
-                                            }}
-                                        >
-                                            {__('(Remove)')}
-                                        </a>
-                                        <div style={{ marginBottom: 13 }} />
-                                    </div>
-                                ) }
-                                <ToggleControl
-                                    label={__('Enable on mobile devices')}
-                                    checked={!!videoMobile}
-                                    onChange={v => setAttributes({ videoMobile: v })}
-                                />
-
-                                <TextControl
-                                    label={__('Start time')}
-                                    type="number"
-                                    value={videoStartTime}
-                                    onChange={v => setAttributes({ videoStartTime: v })}
-                                    help={__('Start time in seconds when video will be started (this value will be applied also after loop)')}
-                                />
-                                <TextControl
-                                    label={__('End time')}
-                                    type="number"
-                                    value={videoEndTime}
-                                    onChange={v => setAttributes({ videoEndTime: v })}
-                                    help={__('End time in seconds when video will be ended')}
-                                />
-                                <RangeControl
-                                    label={__('Volume')}
-                                    value={videoVolume}
-                                    min="0"
-                                    max="100"
-                                    onChange={v => setAttributes({ videoVolume: v })}
-                                />
-                                <ToggleControl
-                                    label={__('Always play')}
-                                    help={__('Play video also when not in viewport')}
-                                    checked={!!videoAlwaysPlay}
-                                    onChange={v => setAttributes({ videoAlwaysPlay: v })}
-                                />
-                            </PanelBody>,
-                        ],
-
-                        (type === 'image' || type === 'yt_vm_video' || type === 'video') && (
-                            <PanelBody title={__(type === 'image' ? 'Image' : 'Poster Image')} initialOpen={type === 'image'} key="image">
-                                {/* Select Image */}
-                                { !image && (
-                                    <MediaUpload
-                                        onSelect={(media) => {
-                                            onImageSelect(media, setAttributes);
-                                        }}
-                                        type="image"
-                                        value={image}
-                                        render={({ open }) => (
-                                            <Button onClick={open} isPrimary>
-                                                {__('Select image')}
-                                            </Button>
-                                        )}
-                                    />
-                                ) }
-
-                                { image && imageTag && [
-                                    <MediaUpload
-                                        onSelect={(media) => {
-                                            onImageSelect(media, setAttributes);
-                                        }}
-                                        type="image"
-                                        value={image}
-                                        render={({ open }) => (
-                                            <BaseControl help={__('Click the image to edit or update')}>
-                                                <a
-                                                    href="#"
-                                                    onClick={open}
-                                                    className="awb-gutenberg-media-upload"
-                                                    style={{ display: 'block' }}
-                                                    dangerouslySetInnerHTML={{ __html: imageTag }}
-                                                />
-                                            </BaseControl>
-                                        )}
-                                        key="image_upload"
-                                    />,
-                                    <a
-                                        href="#"
-                                        onClick={(e) => {
-                                            setAttributes({
-                                                image: '',
-                                                imageTag: '',
-                                                imageSizes: '',
-                                            });
-                                            e.preventDefault();
-                                        }}
-                                        key="image_remove"
-                                    >
-                                        {__('Remove image')}
-                                    </a>,
-                                    <div style={{ marginBottom: 13 }} key="image_margin" />,
-                                    imageSizes && (
-                                        <SelectControl
-                                            label={__('Size')}
-                                            value={imageSize}
-                                            options={(() => {
-                                                const result = [];
-                                                Object.keys(imageSizes).forEach((k) => {
-                                                    result.push({
-                                                        value: k,
-                                                        label: toTitleCase(k),
+                                                wp.media.attachment(media.id).fetch().then((data) => {
+                                                    setAttributes({
+                                                        videoWebm: data.url,
                                                     });
                                                 });
-                                                return result;
-                                            })()}
-                                            onChange={v => setAttributes({ imageSize: v })}
-                                            key="image_size"
+                                            }}
+                                            type="video"
+                                            value={videoWebm}
+                                            render={({ open }) => (
+                                                <div style={{ marginBottom: 13 }}>
+                                                    <Button onClick={open} isPrimary>
+                                                        {__('Select WEBM')}
+                                                    </Button>
+                                                </div>
+                                            )}
                                         />
-                                    ),
-                                    <SelectControl
-                                        label={__('Background size')}
-                                        value={imageBackgroundSize}
-                                        options={[
-                                            {
-                                                label: __('Cover'),
-                                                value: 'cover',
-                                            },
-                                            {
-                                                label: __('Contain'),
-                                                value: 'contain',
-                                            },
-                                            {
-                                                label: __('Pattern'),
-                                                value: 'pattern',
-                                            },
-                                        ]}
-                                        onChange={v => setAttributes({ imageBackgroundSize: v })}
-                                        key="image_bg_size"
-                                    />,
-                                    <TextControl
-                                        label={__('Background position')}
-                                        type="text"
-                                        value={imageBackgroundPosition}
-                                        onChange={v => setAttributes({ imageBackgroundPosition: v })}
-                                        help={__('Image position. Example: 50% 50%')}
-                                        key="image_bg_position"
-                                    />,
-                                ] }
-                            </PanelBody>
-                        ),
-
-                        <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'} key="color">
-                            <ChromePicker
-                                color={color}
-                                onChangeComplete={(picker) => {
-                                    let newColor = picker.hex;
-
-                                    if (picker.rgb && picker.rgb.a < 1) {
-                                        newColor = `rgba(${picker.rgb.r}, ${picker.rgb.g}, ${picker.rgb.b}, ${picker.rgb.a})`;
-                                    }
-
-                                    setAttributes({ color: newColor });
-                                }}
-                                style={{ width: '100%' }}
-                                disableAlpha={false}
-                            />
-                        </PanelColor>,
-
-                        (type === 'image' || type === 'yt_vm_video' || type === 'video') && [
-                            <PanelBody title={__('Parallax') + (parallax && parallaxSpeed !== '' ? ` (${parallax} ${parallaxSpeed})` : '')} initialOpen={false} key="parallax">
-                                <SelectControl
-                                    value={parallax}
-                                    options={[
-                                        {
-                                            label: __('Disabled'),
-                                            value: '',
-                                        },
-                                        {
-                                            label: __('Scroll'),
-                                            value: 'scroll',
-                                        },
-                                        {
-                                            label: __('Scale'),
-                                            value: 'scale',
-                                        },
-                                        {
-                                            label: __('Opacity'),
-                                            value: 'opacity',
-                                        },
-                                        {
-                                            label: __('Opacity + Scroll'),
-                                            value: 'scroll-opacity',
-                                        },
-                                        {
-                                            label: __('Opacity + Scale'),
-                                            value: 'scale-opacity',
-                                        },
-                                    ]}
-                                    onChange={v => setAttributes({ parallax: v })}
-                                />
-                                { parallax && [
-                                    <TextControl
-                                        label={__('Speed')}
-                                        type="number"
-                                        value={parallaxSpeed}
-                                        step="0.1"
-                                        min="-1"
-                                        max="2"
-                                        onChange={v => setAttributes({ parallaxSpeed: v })}
-                                        help={__('Provide number from -1.0 to 2.0')}
-                                        key="parallax_speed"
-                                    />,
+                                    ) }
+                                    { type === 'video' && videoWebm && (
+                                        <div>
+                                            <span>{ videoWebm.substring(videoWebm.lastIndexOf('/') + 1) } </span>
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    setAttributes({
+                                                        videoWebm: '',
+                                                    });
+                                                    e.preventDefault();
+                                                }}
+                                            >
+                                                {__('(Remove)')}
+                                            </a>
+                                            <div style={{ marginBottom: 13 }} />
+                                        </div>
+                                    ) }
                                     <ToggleControl
                                         label={__('Enable on mobile devices')}
-                                        checked={!!parallaxMobile}
-                                        onChange={v => setAttributes({ parallaxMobile: v })}
-                                        key="parallax_mobile"
-                                    />,
-                                ] }
-                            </PanelBody>,
-                            <PanelBody title={__('Mouse parallax')} initialOpen={false} key="parallax_mouse">
-                                <ToggleControl
-                                    label={__('Enable')}
-                                    checked={!!mouseParallax}
-                                    onChange={v => setAttributes({ mouseParallax: v })}
+                                        checked={!!videoMobile}
+                                        onChange={v => setAttributes({ videoMobile: v })}
+                                    />
+
+                                    <TextControl
+                                        label={__('Start time')}
+                                        type="number"
+                                        value={videoStartTime}
+                                        onChange={v => setAttributes({ videoStartTime: v })}
+                                        help={__('Start time in seconds when video will be started (this value will be applied also after loop)')}
+                                    />
+                                    <TextControl
+                                        label={__('End time')}
+                                        type="number"
+                                        value={videoEndTime}
+                                        onChange={v => setAttributes({ videoEndTime: v })}
+                                        help={__('End time in seconds when video will be ended')}
+                                    />
+                                    <RangeControl
+                                        label={__('Volume')}
+                                        value={videoVolume}
+                                        min="0"
+                                        max="100"
+                                        onChange={v => setAttributes({ videoVolume: v })}
+                                    />
+                                    <ToggleControl
+                                        label={__('Always play')}
+                                        help={__('Play video also when not in viewport')}
+                                        checked={!!videoAlwaysPlay}
+                                        onChange={v => setAttributes({ videoAlwaysPlay: v })}
+                                    />
+                                </PanelBody>
+                            )}
+
+                            {(type === 'image' || type === 'yt_vm_video' || type === 'video') && (
+                                <PanelBody title={__(type === 'image' ? 'Image' : 'Poster Image')} initialOpen={type === 'image'}>
+                                    {/* Select Image */}
+                                    { !image && (
+                                        <MediaUpload
+                                            onSelect={(media) => {
+                                                onImageSelect(media, setAttributes);
+                                            }}
+                                            type="image"
+                                            value={image}
+                                            render={({ open }) => (
+                                                <Button onClick={open} isPrimary>
+                                                    {__('Select image')}
+                                                </Button>
+                                            )}
+                                        />
+                                    ) }
+
+                                    { image && imageTag && (
+                                        <Fragment>
+                                            <MediaUpload
+                                                onSelect={(media) => {
+                                                    onImageSelect(media, setAttributes);
+                                                }}
+                                                type="image"
+                                                value={image}
+                                                render={({ open }) => (
+                                                    <BaseControl help={__('Click the image to edit or update')}>
+                                                        <a
+                                                            href="#"
+                                                            onClick={open}
+                                                            className="awb-gutenberg-media-upload"
+                                                            style={{ display: 'block' }}
+                                                            dangerouslySetInnerHTML={{ __html: imageTag }}
+                                                        />
+                                                    </BaseControl>
+                                                )}
+                                            />
+                                            <a
+                                                href="#"
+                                                onClick={(e) => {
+                                                    setAttributes({
+                                                        image: '',
+                                                        imageTag: '',
+                                                        imageSizes: '',
+                                                    });
+                                                    e.preventDefault();
+                                                }}
+                                            >
+                                                {__('Remove image')}
+                                            </a>
+                                            <div style={{ marginBottom: 13 }} />
+                                            { imageSizes && (
+                                                <SelectControl
+                                                    label={__('Size')}
+                                                    value={imageSize}
+                                                    options={(() => {
+                                                        const result = [];
+                                                        Object.keys(imageSizes).forEach((k) => {
+                                                            result.push({
+                                                                value: k,
+                                                                label: toTitleCase(k),
+                                                            });
+                                                        });
+                                                        return result;
+                                                    })()}
+                                                    onChange={v => setAttributes({ imageSize: v })}
+                                                />
+                                            ) }
+                                            <SelectControl
+                                                label={__('Background size')}
+                                                value={imageBackgroundSize}
+                                                options={[
+                                                    {
+                                                        label: __('Cover'),
+                                                        value: 'cover',
+                                                    },
+                                                    {
+                                                        label: __('Contain'),
+                                                        value: 'contain',
+                                                    },
+                                                    {
+                                                        label: __('Pattern'),
+                                                        value: 'pattern',
+                                                    },
+                                                ]}
+                                                onChange={v => setAttributes({ imageBackgroundSize: v })}
+                                            />
+                                            <TextControl
+                                                label={__('Background position')}
+                                                type="text"
+                                                value={imageBackgroundPosition}
+                                                onChange={v => setAttributes({ imageBackgroundPosition: v })}
+                                                help={__('Image position. Example: 50% 50%')}
+                                            />
+                                        </Fragment>
+                                    ) }
+                                </PanelBody>
+                            )}
+
+                            <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'}>
+                                <ChromePicker
+                                    color={color}
+                                    onChangeComplete={(picker) => {
+                                        let newColor = picker.hex;
+
+                                        if (picker.rgb && picker.rgb.a < 1) {
+                                            newColor = `rgba(${picker.rgb.r}, ${picker.rgb.g}, ${picker.rgb.b}, ${picker.rgb.a})`;
+                                        }
+
+                                        setAttributes({ color: newColor });
+                                    }}
+                                    style={{ width: '100%' }}
+                                    disableAlpha={false}
                                 />
-                                { mouseParallax && [
-                                    <RangeControl
-                                        label={__('Size')}
-                                        value={mouseParallaxSize}
-                                        min="0"
-                                        max="200"
-                                        help={` ${__('px')}`}
-                                        onChange={v => setAttributes({ mouseParallaxSize: v })}
-                                        key="parallax_mouse_size"
-                                    />,
-                                    <RangeControl
-                                        label={__('Speed')}
-                                        value={mouseParallaxSpeed}
-                                        min="0"
-                                        max="20000"
-                                        help={` ${__('ms')}`}
-                                        onChange={v => setAttributes({ mouseParallaxSpeed: v })}
-                                        key="parallax_mouse_speed"
-                                    />,
-                                ] }
-                            </PanelBody>,
-                        ],
-                    ] }
-                </InspectorControls>,
-            ] : [],
-            <div className={className} key="container">
-                <InnerBlocks />
-                <div
-                    className="awb-gutenberg-preview-block"
-                    dangerouslySetInnerHTML={{
-                        __html: (function () {
-                            let html = '';
+                            </PanelColor>
 
-                            if (type === 'image' || type === 'video' || type === 'yt_vm_video') {
-                                if (imageTag) {
-                                    html = imageTag;
-                                } else if (type === 'yt_vm_video' && videoPosterPreview) {
-                                    html = `<img src="${videoPosterPreview}" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
+                            {(type === 'image' || type === 'yt_vm_video' || type === 'video') && (
+                                <Fragment>
+                                    <PanelBody title={__('Parallax') + (parallax && parallaxSpeed !== '' ? ` (${parallax} ${parallaxSpeed})` : '')} initialOpen={false}>
+                                        <SelectControl
+                                            value={parallax}
+                                            options={[
+                                                {
+                                                    label: __('Disabled'),
+                                                    value: '',
+                                                },
+                                                {
+                                                    label: __('Scroll'),
+                                                    value: 'scroll',
+                                                },
+                                                {
+                                                    label: __('Scale'),
+                                                    value: 'scale',
+                                                },
+                                                {
+                                                    label: __('Opacity'),
+                                                    value: 'opacity',
+                                                },
+                                                {
+                                                    label: __('Opacity + Scroll'),
+                                                    value: 'scroll-opacity',
+                                                },
+                                                {
+                                                    label: __('Opacity + Scale'),
+                                                    value: 'scale-opacity',
+                                                },
+                                            ]}
+                                            onChange={v => setAttributes({ parallax: v })}
+                                        />
+                                        { parallax && (
+                                            <Fragment>
+                                                <TextControl
+                                                    label={__('Speed')}
+                                                    type="number"
+                                                    value={parallaxSpeed}
+                                                    step="0.1"
+                                                    min="-1"
+                                                    max="2"
+                                                    onChange={v => setAttributes({ parallaxSpeed: v })}
+                                                    help={__('Provide number from -1.0 to 2.0')}
+                                                />
+                                                <ToggleControl
+                                                    label={__('Enable on mobile devices')}
+                                                    checked={!!parallaxMobile}
+                                                    onChange={v => setAttributes({ parallaxMobile: v })}
+                                                />
+                                            </Fragment>
+                                        ) }
+                                    </PanelBody>
+                                    <PanelBody title={__('Mouse parallax')} initialOpen={false}>
+                                        <ToggleControl
+                                            label={__('Enable')}
+                                            checked={!!mouseParallax}
+                                            onChange={v => setAttributes({ mouseParallax: v })}
+                                        />
+                                        { mouseParallax && (
+                                            <Fragment>
+                                                <RangeControl
+                                                    label={__('Size')}
+                                                    value={mouseParallaxSize}
+                                                    min="0"
+                                                    max="200"
+                                                    help={` ${__('px')}`}
+                                                    onChange={v => setAttributes({ mouseParallaxSize: v })}
+                                                />
+                                                <RangeControl
+                                                    label={__('Speed')}
+                                                    value={mouseParallaxSpeed}
+                                                    min="0"
+                                                    max="20000"
+                                                    help={` ${__('ms')}`}
+                                                    onChange={v => setAttributes({ mouseParallaxSpeed: v })}
+                                                />
+                                            </Fragment>
+                                        ) }
+                                    </PanelBody>
+                                </Fragment>
+                            )}
+                        </Fragment>
+                    ) }
+                </InspectorControls>
+                <div className={className}>
+                    <InnerBlocks />
+                    <div
+                        className="awb-gutenberg-preview-block"
+                        dangerouslySetInnerHTML={{
+                            __html: (function () {
+                                let html = '';
+
+                                if (type === 'image' || type === 'video' || type === 'yt_vm_video') {
+                                    if (imageTag) {
+                                        html = imageTag;
+                                    } else if (type === 'yt_vm_video' && videoPosterPreview) {
+                                        html = `<img src="${videoPosterPreview}" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
+                                    }
                                 }
-                            }
 
-                            html += colorOverlay || '';
+                                html += colorOverlay || '';
 
-                            return html;
-                        }()),
-                    }}
-                />
-            </div>,
-        ];
+                                return html;
+                            }()),
+                        }}
+                    />
+                </div>
+            </Fragment>
+        );
     }),
 
     save({ attributes, className }) {
