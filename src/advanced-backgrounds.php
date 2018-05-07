@@ -92,6 +92,7 @@ class NK_AWB {
     public function init_hooks() {
         add_action( 'init', array( $this, 'register_scripts' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_action( 'wp_enqueue_scripts', array( $this, 'fix_youtube_embed_plus_plugin' ), 101 );
     }
 
     /**
@@ -112,6 +113,28 @@ class NK_AWB {
     public function enqueue_scripts() {
         // add styles to header to fix image jumping.
         wp_enqueue_style( 'nk-awb' );
+    }
+
+    /**
+     * Fix for YouTube Embed Plus plugin.
+     * https://wordpress.org/support/topic/video-does-not-loop/#post-10102519
+     */
+    public function fix_youtube_embed_plus_plugin() {
+        wp_add_inline_script( '__ytprefs__', '
+        (function () {
+            if (window._EPYT_ && window._EPYT_.evselector) {
+                var selectors = window._EPYT_.evselector.split(", ");
+                window._EPYT_.evselector = "";
+    
+                for (var k = 0; k < selectors.length; k++) {
+                    if (window._EPYT_.evselector) {
+                        window._EPYT_.evselector += ", ";
+                    }
+                    window._EPYT_.evselector += ":not([id*=\"jarallax-container\"]) > " + selectors[k];
+                }
+            }
+        }());
+        ' );
     }
 
     /**
