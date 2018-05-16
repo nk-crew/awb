@@ -75,6 +75,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 == Changelog ==
 
+= 1.4.5 =
+* fixed js error toUpperCase of undefined in Gutenberg editor
+* minor code improvements for Gutenberg blocks
+* changed jquery ready event to DOMContentLoaded
+
 = 1.4.4 =
 * improved Gutenberg backgrounds preview
 * fixed conflict with YouTube Embed Plus plugin
