@@ -380,7 +380,7 @@
     window.nkAwbInit();
 
     // init after dom ready and load
-    $wnd.on('ready load', () => {
+    $doc.on('DOMContentLoaded load', () => {
         window.nkAwbInit();
     });
 
