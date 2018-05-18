@@ -9,12 +9,16 @@ const { __ } = wp.i18n;
 const { Fragment } = wp.element;
 const {
     registerBlockType,
+} = wp.blocks;
+
+const {
     InspectorControls,
     InnerBlocks,
     MediaUpload,
     BlockControls,
     BlockAlignmentToolbar,
-} = wp.blocks;
+} = wp.editor;
+
 const {
     BaseControl,
     Button,
@@ -816,7 +820,6 @@ registerBlockType('nk/awb', {
                     ) }
                 </InspectorControls>
                 <div className={className}>
-                    <InnerBlocks />
                     <div
                         className="awb-gutenberg-preview-block"
                         dangerouslySetInnerHTML={{
@@ -837,6 +840,7 @@ registerBlockType('nk/awb', {
                             }()),
                         }}
                     />
+                    <InnerBlocks />
                 </div>
             </Fragment>
         );

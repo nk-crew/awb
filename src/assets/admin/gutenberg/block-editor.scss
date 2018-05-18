@@ -44,7 +44,6 @@
     left: -15px;
     pointer-events: none;
     transition: .15s border ease-in-out;
-    z-index: -1;
 
     &:empty {
         border: 1px solid #e2e4e7;
