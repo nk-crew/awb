@@ -40,7 +40,7 @@ class NK_AWB_Gutenberg {
         wp_register_script(
             'awb-gutenberg',
             nk_awb()->plugin_url . 'assets/admin/gutenberg/block.min.js',
-            array( 'wp-blocks', 'wp-i18n', 'wp-element', 'underscore' ),
+            array( 'wp-editor', 'wp-i18n', 'wp-element', 'underscore' ),
             filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/block.min.js' )
         );
 
