@@ -32,7 +32,7 @@ const {
     withAPIData,
 } = wp.components;
 
-const validAlignments = ['wide', 'full'];
+const validAlignments = ['full'];
 
 const icon = `<img src="${awbData.icon}" alt="AWB" />`;
 
