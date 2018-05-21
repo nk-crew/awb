@@ -1,17 +1,16 @@
-=== Advanced WordPress Backgrounds ===
-Contributors: nko
-Tags: parallax, video, youtube, background, visual composer
-Requires at least: 4.0.0
-Tested up to: 4.9
-Stable tag: @@plugin_version
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# Advanced WordPress Backgrounds #
+* Contributors: nko
+* Tags: parallax, video, youtube, background, visual composer
+* Requires at least: 4.0.0
+* Tested up to: 4.9
+* Stable tag: @@plugin_version
+* License: GPLv2 or later
+* License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Image backgrounds, YouTube / Vimeo / Local hosted video backgrounds with parallax support.
 
 
-
-== Description ==
+## Description ##
 
 AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. [Gutenberg](https://wordpress.org/gutenberg/) and Visual Composer support.
 
@@ -49,21 +48,59 @@ See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.inf
 
 
 
-== Installation ==
+## Installation ##
 
-= Automatic installation =
+#### Automatic installation ####
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of AWB, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
 
 In the search field type AWB and click Search Plugins. Once you’ve found our plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking “Install Now”.
 
-= Manual installation =
+#### Manual installation ####
 
 The manual installation method involves downloading our AWB plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
 
 
-== Screenshots ==
+## Frequently Asked Questions ##
+
+#### How to enable `Stretch` with Gutenberg ####
+Since the Gutenberg support `Wide` blocks, you can make stretch for AWB in theme code:
+
+1. Enable support for `Wide` blocks in theme. [Read here how](https://wordpress.org/gutenberg/handbook/extensibility/theme-support/#wide-alignment)
+2. Add this JS code to your theme or in 3rd-party plugin:
+```javascript
+(function ($) {
+    var $body = $('body');
+
+    // fullwidth gutenberg feature.
+    function stretchAWB() {
+        var wndW = $body.width();
+    
+        $('.nk-awb.alignfull > .nk-awb-wrap').each(function () {
+            var $this = $(this);
+    
+            var rect = this.getBoundingClientRect();
+            var left = rect.left;
+            var right = wndW - rect.right;
+    
+            var ml = parseFloat($this.css('margin-left') || 0);
+            var mr = parseFloat($this.css('margin-right') || 0);
+
+            $this.css({
+                'margin-left': ml - left,
+                'margin-right': mr - right,
+            });
+        });
+    }
+    stretchAWB();
+    $(window).on('resize orientationchange load', stretchAWB);
+}(jQuery));
+```
+Note: this code for example only, your theme may not work with it properly (it may not work correctly with theme sidebars). So, you will need to change this code manually depending on your theme styles.
+
+
+## Screenshots ##
 
 1. Background color
 2. Background image
@@ -73,7 +110,7 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 
 
-== Changelog ==
+## Changelog ##
 
 = 1.4.5 =
 * fixed js error toUpperCase of undefined in Gutenberg editor
