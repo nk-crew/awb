@@ -7,7 +7,6 @@ import VideoWorker from 'video-worker';
 const awbData = window.AWBGutenbergData;
 const { __ } = wp.i18n;
 const { Fragment } = wp.element;
-const { addFilter } = wp.hooks;
 const {
     registerBlockType,
 } = wp.blocks;
@@ -62,24 +61,6 @@ function toTitleCase(str) {
         return word && word.length ? word.replace(word[0], word[0].toUpperCase()) : word;
     }).join(' ');
 }
-
-/**
- * Allow custom indents from GhostKit extension.
- *
- * @param {Boolean} allow Original block allow custom styles.
- * @param {Object} settings Original block settings.
- * @param {String} name Original block name.
- *
- * @return {Object} Filtered block settings.
- */
-function allowCustomIndents(allow, settings, name) {
-    if (!allow) {
-        allow = name && name === 'nk/awb';
-    }
-    return allow;
-}
-addFilter('ghostkit.blocks.allowCustomIndents', 'nk/awb/allow-custom-indents', allowCustomIndents);
-
 
 /**
  * Change attributes to data-attributes.
@@ -158,6 +139,8 @@ registerBlockType('nk/awb', {
         anchor: true,
         className: true,
         html: false,
+        ghostkitIndents: true,
+        ghostkitDisplay: true,
     },
 
     attributes: {
