@@ -1,37 +1,27 @@
 // icon
-.awb-gutenberg-icon {
-    display: block;
-    width: 20px;
+img.awb-gutenberg-icon {
+    max-width: 20px;
+    height: auto;
     pointer-events: none;
+}
 
-    img {
-        display: block;
-        width: 100%;
-        height: auto;
-
-        .editor-default-block-appender .editor-inserter-with-shortcuts .components-icon-button & {
-            opacity: .4;
-            transition: .2s opacity;
-        }
-
-        .editor-default-block-appender:hover .editor-inserter-with-shortcuts .components-icon-button & {
-            opacity: 1;
-        }
-
-        .editor-inserter__block & {
-            opacity: .8;
-        }
-
-        .editor-inserter__block:not(:disabled):hover &,
-        .editor-inserter__block:not(:disabled).is-active &,
-        .editor-inserter__block:not(:disabled):active &,
-        .editor-inserter__block:not(:disabled):focus & {
-            opacity: 1;
-        }
+.wp-block-nk-awb {
+    .editor-block-list__layout {
+        margin-right: 0;
+        margin-left: 0;
     }
 
-    .editor-block-inspector__card-icon {
-        width: 18px;
+    // Fullwide: show margin left/right to ensure there's room for the side UI
+    // This is not a 1:1 preview with the front-end where these margins would presumably be zero
+    // @todo this could be revisited, by for example showing this margin only when the parent block was selected first
+    // Then at least an unselected columns block would be an accurate preview
+    .editor-block-list__block[data-align="full"][data-type="nk/awb"] & .editor-block-list__layout {
+        &:first-child {
+            margin-left: 30px;
+        }
+        &:last-child {
+            margin-right: 30px;
+        }
     }
 }
 
@@ -39,9 +29,9 @@
 .awb-gutenberg-preview-block {
     position: absolute;
     top: -15px;
-    right: -15px;
+    right: -29px;
     bottom: -15px;
-    left: -15px;
+    left: -29px;
     pointer-events: none;
     transition: .15s border ease-in-out;
 

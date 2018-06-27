@@ -34,8 +34,6 @@ const {
 
 const validAlignments = ['full'];
 
-const icon = `<img src="${awbData.icon}" alt="AWB" />`;
-
 /**
  * camelCaseToDash('userId') => "user-id"
  * camelCaseToDash('waitAMoment') => "wait-a-moment"
@@ -129,7 +127,7 @@ registerBlockType('nk/awb', {
     description: 'Advanced Backgrounds',
 
     // add element with classname to support different icon sets like FontAwesome.
-    icon: <span dangerouslySetInnerHTML={{ __html: icon }} className="awb-gutenberg-icon" />,
+    icon: <img className="dashicon awb-gutenberg-icon" src={awbData.icon} alt="AWB" />,
 
     category: 'layout',
 
