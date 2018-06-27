@@ -28,12 +28,25 @@ img.awb-gutenberg-icon {
 // background for block
 .awb-gutenberg-preview-block {
     position: absolute;
-    top: -15px;
-    right: -29px;
-    bottom: -15px;
-    left: -29px;
+    top: -14px;
+    right: -14px;
+    bottom: -14px;
+    left: -14px;
     pointer-events: none;
     transition: .15s border ease-in-out;
+
+    // inside nested block
+    .editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit .editor-block-list__block-edit & {
+        right: -14px;
+        left: -14px;
+    }
+
+    @media (min-width: 600px) {
+        .editor-block-list__layout .editor-block-list__block & {
+            right: -27px;
+            left: -27px;
+        }
+    }
 
     &:empty {
         border: 1px solid #e2e4e7;
@@ -63,6 +76,27 @@ img.awb-gutenberg-icon {
         top: 0;
         left: 0;
     }
+}
+// fix wide inside nested block
+.editor-block-list__layout .editor-block-list__block-edit .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
+    margin-right: 0;
+    margin-left: 0;
+
+    .awb-gutenberg-preview-block {
+        right: 0;
+        left: 0;
+    }
+}
+
+// fix for Ghostkit Columns
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"],
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
+    position: static;
+}
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit::before,
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] .awb-gutenberg-preview-block {
+    top: 0;
+    bottom: 0;
 }
 
 // preview image with background pattern in Inspector Controls
