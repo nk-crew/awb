@@ -123,7 +123,6 @@
         "webpack-stream": "^4.0.0"
     },
     "dependencies": {
-        "react": "^16.2.0",
         "react-color": "^2.14.0",
         "video-worker": "^1.1.1"
     }
