@@ -10,19 +10,6 @@ img.awb-gutenberg-icon {
         margin-right: 0;
         margin-left: 0;
     }
-
-    // Fullwide: show margin left/right to ensure there's room for the side UI
-    // This is not a 1:1 preview with the front-end where these margins would presumably be zero
-    // @todo this could be revisited, by for example showing this margin only when the parent block was selected first
-    // Then at least an unselected columns block would be an accurate preview
-    .editor-block-list__block[data-align="full"][data-type="nk/awb"] & .editor-block-list__layout {
-        &:first-child {
-            margin-left: 30px;
-        }
-        &:last-child {
-            margin-right: 30px;
-        }
-    }
 }
 
 // background for block
