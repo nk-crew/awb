@@ -227,7 +227,7 @@
         "selector-list-comma-newline-before": "never-multi-line",
         "selector-list-comma-space-after": "always-single-line",
         "selector-list-comma-space-before": "never-single-line",
-        "selector-max-attribute": 2,
+        "selector-max-attribute": 3,
         "selector-max-class": 5,
         "selector-max-compound-selectors": 10,
         "selector-max-empty-lines": 1,
