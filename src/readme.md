@@ -112,6 +112,11 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.4.6 =
+* added support for Gutenberg 3.4.0
+* added support for [Ghostkit](https://wordpress.org/plugins/ghostkit/) Indents extension (you can add paddings and margins to AWB block)
+* fixed JS error when select image with specific image size title
+
 = 1.4.5 =
 * fixed js error toUpperCase of undefined in Gutenberg editor
 * minor code improvements for Gutenberg blocks
