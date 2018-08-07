@@ -6,7 +6,7 @@ import VideoWorker from 'video-worker';
  */
 const awbData = window.AWBGutenbergData;
 const { __ } = wp.i18n;
-const { Fragment } = wp.element;
+const { Component, Fragment } = wp.element;
 const {
     registerBlockType,
 } = wp.blocks;
@@ -119,6 +119,120 @@ function getVideoPoster(url, cb) {
             cb('');
         }
     }, 500);
+}
+
+class BlockSave extends Component {
+    constructor() {
+        super(...arguments);
+
+        // inside exported xml file almost all symbols are escaped.
+        const imageTag = this.props.attributes.imageTag;
+        if (imageTag && /^u003c/g.test(imageTag)) {
+            this.props.attributes.imageTag = imageTag
+                .replace(/u003c/g, '<')
+                .replace(/u003e/g, '>')
+                .replace(/u0022/g, '"')
+                .replace(/u0026/g, '&');
+        }
+    }
+
+    render() {
+        const {
+            attributes,
+        } = this.props;
+        let {
+            className,
+        } = this.props;
+
+        const resultAtts = {
+            type: attributes.type,
+        };
+        let resultImg = false;
+        let video = attributes.video;
+        className = `nk-awb${className || ''}${attributes.align ? ` align${attributes.align}` : ''}`;
+
+        switch (attributes.type) {
+        case 'color':
+            break;
+        case 'video':
+            video = '';
+            if (attributes.videoMp4) {
+                video += `mp4:${attributes.videoMp4}`;
+            }
+            if (attributes.videoOgv) {
+                video += `${attributes.video.length ? ',' : ''}ogv:${attributes.videoOgv}`;
+            }
+            if (attributes.videoWebm) {
+                video += `${attributes.video.length ? ',' : ''}webm:${attributes.videoWebm}`;
+            }
+        // eslint-disable-next-line
+        case 'yt_vm_video':
+            if (video) {
+                resultAtts.video = video;
+                if (attributes.videoStartTime) {
+                    resultAtts.videoStartTime = attributes.videoStartTime;
+                }
+                if (attributes.videoEndTime) {
+                    resultAtts.videoEndTime = attributes.videoEndTime;
+                }
+                if (attributes.videoVolume) {
+                    resultAtts.videoVolume = attributes.videoVolume;
+                }
+                if (attributes.videoAlwaysPlay) {
+                    resultAtts.videoAlwaysPlay = attributes.videoAlwaysPlay;
+                }
+                resultAtts.videoMobile = attributes.videoMobile;
+            }
+        // eslint-disable-next-line
+        case 'image':
+            if (attributes.imageTag) {
+                resultImg = attributes.imageTag;
+                if (attributes.imageBackgroundSize) {
+                    resultAtts.imageBackgroundSize = attributes.imageBackgroundSize;
+                }
+                if (attributes.imageBackgroundPosition) {
+                    resultAtts.imageBackgroundPosition = attributes.imageBackgroundPosition;
+                }
+            }
+            break;
+        default:
+            break;
+        }
+
+        if (attributes.parallax) {
+            resultAtts.parallax = attributes.parallax;
+            if (attributes.parallaxSpeed) {
+                resultAtts.parallaxSpeed = attributes.parallaxSpeed;
+            }
+            resultAtts.parallaxMobile = attributes.parallaxMobile;
+        }
+
+        if (attributes.mouseParallax) {
+            resultAtts.mouseParallax = attributes.mouseParallax;
+            if (attributes.mouseParallaxSize) {
+                resultAtts.mouseParallaxSize = attributes.mouseParallaxSize;
+            }
+            if (attributes.mouseParallaxSpeed) {
+                resultAtts.mouseParallaxSpeed = attributes.mouseParallaxSpeed;
+            }
+        }
+
+        // awb wrap inner html
+        let wrapHTML = '';
+        if (attributes.color) {
+            wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${attributes.color};"></div>`;
+        }
+        if (resultImg || resultAtts.video) {
+            wrapHTML += `<div class="nk-awb-inner">${resultImg || ''}</div>`;
+        }
+
+        return (
+            <div className={className}>
+                { wrapHTML ? <div className="nk-awb-wrap" {...getDataAttributes(resultAtts)} dangerouslySetInnerHTML={{ __html: wrapHTML }} /> : '' }
+                <InnerBlocks.Content />
+            </div>
+        );
+    }
 }
 
 registerBlockType('nk/awb', {
@@ -853,94 +967,5 @@ registerBlockType('nk/awb', {
         );
     }),
 
-    save({ attributes, className }) {
-        const resultAtts = {
-            type: attributes.type,
-        };
-        let resultImg = false;
-        let video = attributes.video;
-        className = `nk-awb${className || ''}${attributes.align ? ` align${attributes.align}` : ''}`;
-
-        switch (attributes.type) {
-        case 'color':
-            break;
-        case 'video':
-            video = '';
-            if (attributes.videoMp4) {
-                video += `mp4:${attributes.videoMp4}`;
-            }
-            if (attributes.videoOgv) {
-                video += `${attributes.video.length ? ',' : ''}ogv:${attributes.videoOgv}`;
-            }
-            if (attributes.videoWebm) {
-                video += `${attributes.video.length ? ',' : ''}webm:${attributes.videoWebm}`;
-            }
-            // eslint-disable-next-line
-        case 'yt_vm_video':
-            if (video) {
-                resultAtts.video = video;
-                if (attributes.videoStartTime) {
-                    resultAtts.videoStartTime = attributes.videoStartTime;
-                }
-                if (attributes.videoEndTime) {
-                    resultAtts.videoEndTime = attributes.videoEndTime;
-                }
-                if (attributes.videoVolume) {
-                    resultAtts.videoVolume = attributes.videoVolume;
-                }
-                if (attributes.videoAlwaysPlay) {
-                    resultAtts.videoAlwaysPlay = attributes.videoAlwaysPlay;
-                }
-                resultAtts.videoMobile = attributes.videoMobile;
-            }
-            // eslint-disable-next-line
-        case 'image':
-            if (attributes.imageTag) {
-                resultImg = attributes.imageTag;
-                if (attributes.imageBackgroundSize) {
-                    resultAtts.imageBackgroundSize = attributes.imageBackgroundSize;
-                }
-                if (attributes.imageBackgroundPosition) {
-                    resultAtts.imageBackgroundPosition = attributes.imageBackgroundPosition;
-                }
-            }
-            break;
-        default:
-            break;
-        }
-
-        if (attributes.parallax) {
-            resultAtts.parallax = attributes.parallax;
-            if (attributes.parallaxSpeed) {
-                resultAtts.parallaxSpeed = attributes.parallaxSpeed;
-            }
-            resultAtts.parallaxMobile = attributes.parallaxMobile;
-        }
-
-        if (attributes.mouseParallax) {
-            resultAtts.mouseParallax = attributes.mouseParallax;
-            if (attributes.mouseParallaxSize) {
-                resultAtts.mouseParallaxSize = attributes.mouseParallaxSize;
-            }
-            if (attributes.mouseParallaxSpeed) {
-                resultAtts.mouseParallaxSpeed = attributes.mouseParallaxSpeed;
-            }
-        }
-
-        // awb wrap inner html
-        let wrapHTML = '';
-        if (attributes.color) {
-            wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${attributes.color};"></div>`;
-        }
-        if (resultImg || resultAtts.video) {
-            wrapHTML += `<div class="nk-awb-inner">${resultImg || ''}</div>`;
-        }
-
-        return (
-            <div className={className}>
-                { wrapHTML ? <div className="nk-awb-wrap" {...getDataAttributes(resultAtts)} dangerouslySetInnerHTML={{ __html: wrapHTML }} /> : '' }
-                <InnerBlocks.Content />
-            </div>
-        );
-    },
+    save: BlockSave,
 });
