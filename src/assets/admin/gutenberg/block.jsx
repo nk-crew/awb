@@ -439,7 +439,6 @@ registerBlockType('nk/awb', {
             videoWebm,
             videoStartTime,
             videoEndTime,
-            videoVolume,
             videoAlwaysPlay,
             videoMobile,
 
@@ -721,13 +720,6 @@ registerBlockType('nk/awb', {
                                         value={videoEndTime}
                                         onChange={v => setAttributes({ videoEndTime: v })}
                                         help={__('End time in seconds when video will be ended')}
-                                    />
-                                    <RangeControl
-                                        label={__('Volume')}
-                                        value={videoVolume}
-                                        min="0"
-                                        max="100"
-                                        onChange={v => setAttributes({ videoVolume: v })}
                                     />
                                     <ToggleControl
                                         label={__('Always play')}

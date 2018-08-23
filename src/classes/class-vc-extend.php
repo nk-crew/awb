@@ -443,21 +443,6 @@ class NK_AWB_VC_Extend {
         );
         vc_add_param(
             $element, array(
-                'type'        => 'textfield',
-                'param_name'  => 'awb_video_volume',
-                'heading'     => esc_html__( 'Volume', '@@text_domain' ),
-                'description' => esc_html__( 'Volume from 0 to 100.', '@@text_domain' ),
-                'group'       => $group_name,
-                'value'       => '0',
-                'edit_field_class' => 'vc_col-sm-6',
-                'dependency' => array(
-                    'element'    => 'awb_type',
-                    'value'      => array( 'yt_vm_video', 'video' ),
-                ),
-            )
-        );
-        vc_add_param(
-            $element, array(
                 'type'        => 'checkbox',
                 'param_name'  => 'awb_video_always_play',
                 'heading'     => esc_html__( 'Always play', '@@text_domain' ),

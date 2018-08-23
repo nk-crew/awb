@@ -198,14 +198,9 @@
                     '</div>',
                     '</div>',
 
-                    // Video Volume / Always Play
+                    // Video Always Play
                     '<div data-cond="[name=awb_type] *= video">',
                     '<div class="awb-clearfix"></div>',
-                    '<div class="awb-col-6">',
-                    '<h3>Volume</h3>',
-                    `<input type="text" name="awb_video_volume" value="${atts.awb_video_volume}">`,
-                    '<div class="awb-description">Volume from 0 to 100.</div>',
-                    '</div>',
                     '<div class="awb-col-6">',
                     '<h3>Always Play</h3>',
                     `<input type="checkbox" value="1" name="awb_video_always_play" ${isChecked(atts.awb_video_always_play)}>`,
