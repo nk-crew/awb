@@ -6,7 +6,7 @@
     "author": "nK <https://nkdev.info>",
     "scripts": {
         "build": "gulp",
-        "watch": "gulp watch",
+        "dev": "gulp watch",
         "production": "gulp production",
         "php-lint": "composer run-script phpcs",
         "php-lint-fix": "composer run-script phpcbf",
