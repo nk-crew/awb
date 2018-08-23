@@ -55,9 +55,9 @@ function camelCaseToDash(str) {
  * https://stackoverflow.com/questions/196972/convert-string-to-title-case-with-javascript
  */
 function toTitleCase(str) {
-    return str.split(/[.,/ \-_]/).map((word) => {
-        return word && word.length ? word.replace(word[0], word[0].toUpperCase()) : word;
-    }).join(' ');
+    return str.split(/[.,/ \-_]/).map(word => (
+        word && word.length ? word.replace(word[0], word[0].toUpperCase()) : word
+    )).join(' ');
 }
 
 /**
@@ -235,191 +235,40 @@ class BlockSave extends Component {
     }
 }
 
-registerBlockType('nk/awb', {
-    title: 'Background (AWB)',
+/* eslint-disable react/no-multi-comp */
+class BlockEdit extends Component {
+    constructor() {
+        super(...arguments);
+        this.onUpdate = this.onUpdate.bind(this);
+    }
 
-    description: 'Advanced Backgrounds',
+    componentDidMount() {
+        this.onUpdate();
+    }
+    componentDidUpdate() {
+        this.onUpdate();
+    }
 
-    // add element with classname to support different icon sets like FontAwesome.
-    icon: <img className="dashicon awb-gutenberg-icon" src={awbData.icon} alt="AWB" />,
+    onUpdate() {
+        const {
+            imageTagData,
+            setAttributes,
+        } = this.props;
 
-    category: 'layout',
-
-    keywords: ['awb', 'background', 'parallax'],
-
-    supports: {
-        anchor: true,
-        className: true,
-        html: false,
-        ghostkitIndents: true,
-        ghostkitDisplay: true,
-    },
-
-    attributes: {
-        type: {
-            type: 'string',
-            default: 'color',
-        },
-        align: {
-            type: 'string',
-        },
-
-        image: {
-            type: 'string',
-            default: '',
-        },
-        imageTag: {
-            type: 'string',
-            default: '',
-        },
-        imageSizes: {
-            type: 'object',
-            default: '',
-        },
-        imageSize: {
-            type: 'string',
-            default: 'full',
-        },
-        imageBackgroundSize: {
-            type: 'string',
-            default: 'cover',
-        },
-        imageBackgroundPosition: {
-            type: 'string',
-            default: '50% 50%',
-        },
-
-        video: {
-            type: 'string',
-            default: '',
-        },
-        videoPosterPreview: {
-            type: 'string',
-            default: '',
-        },
-        videoMp4: {
-            type: 'string',
-            default: '',
-        },
-        videoOgv: {
-            type: 'string',
-            default: '',
-        },
-        videoWebm: {
-            type: 'string',
-            default: '',
-        },
-        videoStartTime: {
-            type: 'string',
-            default: '',
-        },
-        videoEndTime: {
-            type: 'string',
-            default: '',
-        },
-        videoVolume: {
-            type: 'number',
-            default: 0,
-        },
-        videoAlwaysPlay: {
-            type: 'boolean',
-            default: false,
-        },
-        videoMobile: {
-            type: 'boolean',
-            default: false,
-        },
-
-        color: {
-            type: 'string',
-            default: '',
-        },
-
-        parallax: {
-            type: 'string',
-            default: '',
-        },
-        parallaxSpeed: {
-            type: 'number',
-            default: 0.5,
-        },
-        parallaxMobile: {
-            type: 'boolean',
-            default: false,
-        },
-
-        mouseParallax: {
-            type: 'boolean',
-            default: false,
-        },
-        mouseParallaxSize: {
-            type: 'number',
-            default: 30,
-        },
-        mouseParallaxSpeed: {
-            type: 'number',
-            default: 10000,
-        },
-    },
-
-    getEditWrapperProps(attributes) {
-        const { align } = attributes;
-        if (validAlignments.indexOf(align) !== -1) {
-            return { 'data-align': align };
-        }
-        return {};
-    },
-
-
-    edit: withAPIData(({ attributes }) => {
-        const { image } = attributes;
-        if (!image) {
-            return {};
-        }
-
-        let query = `size=${encodeURIComponent(attributes.imageSize)}&attr[class]=jarallax-img`;
-        let style = '';
-
-        // <img> tag with object-fit style
-        if (attributes.imageBackgroundSize !== 'pattern') {
-            if (attributes.imageBackgroundSize) {
-                style += `object-fit: ${attributes.imageBackgroundSize};`;
-            }
-            if (attributes.imageBackgroundPosition) {
-                style += `object-position: ${attributes.imageBackgroundPosition};`;
-            }
-
-            // ofi polyfill
-            if (style) {
-                style += `font-family: "${style}";`;
-            }
-
-        // background image with pattern size
-        } else {
-            if (attributes.imageBackgroundSize) {
-                style += 'background-repeat: repeat;';
-            }
-            if (attributes.imageBackgroundPosition) {
-                style += `background-position: ${attributes.imageBackgroundPosition};`;
-            }
-            query += '&div_tag=1';
-        }
-
-        // add styles to query
-        if (style) {
-            query += `&attr[style]=${encodeURIComponent(style)}`;
-        }
-
-        return {
-            imageTagData: `/awb/v1/get_attachment_image/${image}?${query}`,
-        };
-    })(({
-        imageTagData, attributes, className, setAttributes,
-    }) => {
         // set image tag to attribute
         if (imageTagData && !imageTagData.isLoading && imageTagData.data && imageTagData.data.success) {
             setAttributes({ imageTag: imageTagData.data.response });
         }
+    }
+
+    render() {
+        const {
+            attributes,
+            setAttributes,
+        } = this.props;
+        let {
+            className,
+        } = this.props;
 
         const {
             type,
@@ -470,8 +319,8 @@ registerBlockType('nk/awb', {
         }
 
         // add custom classname.
-        if ( ghostkitClassname ) {
-            className = ( className ? `${className} ` : '' ) + ghostkitClassname;
+        if (ghostkitClassname) {
+            className = (className ? `${className} ` : '') + ghostkitClassname;
         }
 
         return (
@@ -957,7 +806,188 @@ registerBlockType('nk/awb', {
                 </div>
             </Fragment>
         );
-    }),
+    }
+}
+
+registerBlockType('nk/awb', {
+    title: 'Background (AWB)',
+
+    description: 'Advanced Backgrounds',
+
+    // add element with classname to support different icon sets like FontAwesome.
+    icon: <img className="dashicon awb-gutenberg-icon" src={awbData.icon} alt="AWB" />,
+
+    category: 'layout',
+
+    keywords: ['awb', 'background', 'parallax'],
+
+    supports: {
+        anchor: true,
+        className: true,
+        html: false,
+        ghostkitIndents: true,
+        ghostkitDisplay: true,
+    },
+
+    attributes: {
+        type: {
+            type: 'string',
+            default: 'color',
+        },
+        align: {
+            type: 'string',
+        },
+
+        image: {
+            type: 'string',
+            default: '',
+        },
+        imageTag: {
+            type: 'string',
+            default: '',
+        },
+        imageSizes: {
+            type: 'object',
+            default: '',
+        },
+        imageSize: {
+            type: 'string',
+            default: 'full',
+        },
+        imageBackgroundSize: {
+            type: 'string',
+            default: 'cover',
+        },
+        imageBackgroundPosition: {
+            type: 'string',
+            default: '50% 50%',
+        },
+
+        video: {
+            type: 'string',
+            default: '',
+        },
+        videoPosterPreview: {
+            type: 'string',
+            default: '',
+        },
+        videoMp4: {
+            type: 'string',
+            default: '',
+        },
+        videoOgv: {
+            type: 'string',
+            default: '',
+        },
+        videoWebm: {
+            type: 'string',
+            default: '',
+        },
+        videoStartTime: {
+            type: 'string',
+            default: '',
+        },
+        videoEndTime: {
+            type: 'string',
+            default: '',
+        },
+        videoVolume: {
+            type: 'number',
+            default: 0,
+        },
+        videoAlwaysPlay: {
+            type: 'boolean',
+            default: false,
+        },
+        videoMobile: {
+            type: 'boolean',
+            default: false,
+        },
+
+        color: {
+            type: 'string',
+            default: '',
+        },
+
+        parallax: {
+            type: 'string',
+            default: '',
+        },
+        parallaxSpeed: {
+            type: 'number',
+            default: 0.5,
+        },
+        parallaxMobile: {
+            type: 'boolean',
+            default: false,
+        },
+
+        mouseParallax: {
+            type: 'boolean',
+            default: false,
+        },
+        mouseParallaxSize: {
+            type: 'number',
+            default: 30,
+        },
+        mouseParallaxSpeed: {
+            type: 'number',
+            default: 10000,
+        },
+    },
+
+    getEditWrapperProps(attributes) {
+        const { align } = attributes;
+        if (validAlignments.indexOf(align) !== -1) {
+            return { 'data-align': align };
+        }
+        return {};
+    },
+
+
+    edit: withAPIData(({ attributes }) => {
+        const { image } = attributes;
+        if (!image) {
+            return {};
+        }
+
+        let query = `size=${encodeURIComponent(attributes.imageSize)}&attr[class]=jarallax-img`;
+        let style = '';
+
+        // <img> tag with object-fit style
+        if (attributes.imageBackgroundSize !== 'pattern') {
+            if (attributes.imageBackgroundSize) {
+                style += `object-fit: ${attributes.imageBackgroundSize};`;
+            }
+            if (attributes.imageBackgroundPosition) {
+                style += `object-position: ${attributes.imageBackgroundPosition};`;
+            }
+
+            // ofi polyfill
+            if (style) {
+                style += `font-family: "${style}";`;
+            }
+
+        // background image with pattern size
+        } else {
+            if (attributes.imageBackgroundSize) {
+                style += 'background-repeat: repeat;';
+            }
+            if (attributes.imageBackgroundPosition) {
+                style += `background-position: ${attributes.imageBackgroundPosition};`;
+            }
+            query += '&div_tag=1';
+        }
+
+        // add styles to query
+        if (style) {
+            query += `&attr[style]=${encodeURIComponent(style)}`;
+        }
+
+        return {
+            imageTagData: `/awb/v1/get_attachment_image/${image}?${query}`,
+        };
+    })(BlockEdit),
 
     save: BlockSave,
 });
