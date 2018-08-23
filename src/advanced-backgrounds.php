@@ -100,8 +100,8 @@ class NK_AWB {
      */
     public function register_scripts() {
         wp_register_script( 'resize-observer-polyfill', nk_awb()->plugin_url . 'assets/vendor/resize-observer-polyfill/ResizeObserver.global.min.js', array(), '1.5.0', true );
-        wp_register_script( 'jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax.min.js', array( 'jquery', 'resize-observer-polyfill' ), '1.10.3', true );
-        wp_register_script( 'jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax-video.min.js', array( 'jarallax' ), '1.10.3', true );
+        wp_register_script( 'jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax.min.js', array( 'jquery', 'resize-observer-polyfill' ), '1.10.4', true );
+        wp_register_script( 'jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax-video.min.js', array( 'jarallax' ), '1.10.4', true );
         wp_register_script( 'object-fit-images', nk_awb()->plugin_url . 'assets/vendor/object-fit-images/ofi.min.js', '', '', true );
         wp_register_script( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.js', array( 'jquery', 'jarallax', 'jarallax-video', 'object-fit-images' ), '@@plugin_version', true );
         wp_register_style( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.css', '', '@@plugin_version' );
@@ -125,7 +125,7 @@ class NK_AWB {
             if (window._EPYT_ && window._EPYT_.evselector) {
                 var selectors = window._EPYT_.evselector.split(", ");
                 window._EPYT_.evselector = "";
-    
+
                 for (var k = 0; k < selectors.length; k++) {
                     if (window._EPYT_.evselector) {
                         window._EPYT_.evselector += ", ";
