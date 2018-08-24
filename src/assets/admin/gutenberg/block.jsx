@@ -1,3 +1,5 @@
+import 'babel-polyfill';
+
 import { ChromePicker } from 'react-color';
 import VideoWorker from 'video-worker';
 
@@ -29,8 +31,13 @@ const {
     TextControl,
     RangeControl,
     PanelColor,
-    withAPIData,
 } = wp.components;
+
+const { apiFetch } = wp;
+const {
+    registerStore,
+    withSelect,
+} = wp.data;
 
 const validAlignments = ['full'];
 
@@ -235,7 +242,65 @@ class BlockSave extends Component {
     }
 }
 
-/* eslint-disable react/no-multi-comp */
+
+const actions = {
+    setImageTagData(query, image) {
+        return {
+            type: 'SET_IMAGE_TAG_DATA',
+            query,
+            image,
+        };
+    },
+
+    getImageTagData(query) {
+        return {
+            type: 'GET_IMAGE_TAG_DATA',
+            query,
+        };
+    },
+};
+
+registerStore('nk/awb', {
+    reducer(state = { images: {} }, action) {
+        switch (action.type) {
+        case 'SET_IMAGE_TAG_DATA':
+            if (!state.images[action.query] && action.image) {
+                state.images[action.query] = action.image;
+            }
+            return state;
+        case 'GET_IMAGE_TAG_DATA':
+            return action.images[action.query];
+        // no default
+        }
+
+        return state;
+    },
+
+    actions,
+
+    selectors: {
+        getImageTagData(state, query) {
+            return state.images[query];
+        },
+    },
+
+    resolvers: {
+        * getImageTagData(state, query) {
+            const image = apiFetch({ path: query })
+                .then((fetchedData) => {
+                    if (fetchedData && fetchedData.success && fetchedData.response) {
+                        return actions.setImageTagData(query, fetchedData.response);
+                    }
+
+                    return false;
+                });
+            yield image;
+        },
+    },
+});
+
+
+// eslint-disable-next-line react/no-multi-comp
 class BlockEdit extends Component {
     constructor() {
         super(...arguments);
@@ -251,13 +316,13 @@ class BlockEdit extends Component {
 
     onUpdate() {
         const {
-            imageTagData,
+            fetchImageTag,
             setAttributes,
         } = this.props;
 
         // set image tag to attribute
-        if (imageTagData && !imageTagData.isLoading && imageTagData.data && imageTagData.data.success) {
-            setAttributes({ imageTag: imageTagData.data.response });
+        if (fetchImageTag) {
+            setAttributes({ imageTag: fetchImageTag });
         }
     }
 
@@ -944,11 +1009,12 @@ registerBlockType('nk/awb', {
         return {};
     },
 
-
-    edit: withAPIData(({ attributes }) => {
+    edit: withSelect((select, props) => {
+        const { attributes } = props;
         const { image } = attributes;
+
         if (!image) {
-            return {};
+            return false;
         }
 
         let query = `size=${encodeURIComponent(attributes.imageSize)}&attr[class]=jarallax-img`;
@@ -985,7 +1051,7 @@ registerBlockType('nk/awb', {
         }
 
         return {
-            imageTagData: `/awb/v1/get_attachment_image/${image}?${query}`,
+            fetchImageTag: select('nk/awb').getImageTagData(`/awb/v1/get_attachment_image/${image}?${query}`),
         };
     })(BlockEdit),
 
