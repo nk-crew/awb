@@ -119,7 +119,9 @@ Note: this code for example only, your theme may not work with it properly (it m
 * added support for Gutenberg 3.7.0 deprecations
 * added __wp_admin > Settings > AWB__ page
 * added settings to disable parallax on mobile devices and in some browsers
+* updated Jarallax and object-fit-images scripts
 * removed Video Volume option since browsers don't support autoplay with sound [https://developers.google.com/web/updates/2017/09/autoplay-policy-changes](https://developers.google.com/web/updates/2017/09/autoplay-policy-changes)
+* fixed compatibility with WordPress Import/Export content (Gutenberg)
 * fixed drag event on image backgrounds (without parallax)
 
 = 1.4.6 =
