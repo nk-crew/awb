@@ -877,7 +877,7 @@ class BlockEdit extends Component {
 registerBlockType('nk/awb', {
     title: 'Background (AWB)',
 
-    description: 'Advanced Backgrounds',
+    description: __('Create sections with color, image and video backgrounds.'),
 
     // add element with classname to support different icon sets like FontAwesome.
     icon: <img className="dashicon awb-gutenberg-icon" src={awbData.icon} alt="AWB" />,
