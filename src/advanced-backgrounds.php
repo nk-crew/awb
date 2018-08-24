@@ -104,6 +104,14 @@ class NK_AWB {
         wp_register_script( 'jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/jarallax-video.min.js', array( 'jarallax' ), '1.10.4', true );
         wp_register_script( 'object-fit-images', nk_awb()->plugin_url . 'assets/vendor/object-fit-images/ofi.min.js', array(), '3.2.4', true );
         wp_register_script( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.js', array( 'jquery', 'jarallax', 'jarallax-video', 'object-fit-images' ), '@@plugin_version', true );
+
+        wp_localize_script( 'nk-awb', 'AWBData', array(
+            'settings' => array(
+                'disable_parallax' => array_keys( AWB_Settings::get_option( 'disable_parallax', 'awb_general', array() ) ? : array() ),
+                'disable_video' => array_keys( AWB_Settings::get_option( 'disable_video', 'awb_general', array() ) ? : array() ),
+            ),
+        ));
+
         wp_register_style( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.css', '', '@@plugin_version' );
     }
 
@@ -141,6 +149,7 @@ class NK_AWB {
      * Include dependencies
      */
     private function include_dependencies() {
+        require_once( $this->plugin_path . 'classes/class-settings.php' );
         require_once( $this->plugin_path . 'classes/class-rest.php' );
         require_once( $this->plugin_path . 'classes/class-shortcode.php' );
         require_once( $this->plugin_path . 'classes/class-vc-extend.php' );
