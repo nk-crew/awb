@@ -1,4 +1,6 @@
-import 'babel-polyfill';
+if ( ! global._babelPolyfill ) {
+    require( 'babel-polyfill' );
+}
 
 import { ChromePicker } from 'react-color';
 import VideoWorker from 'video-worker';
