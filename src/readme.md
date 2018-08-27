@@ -115,8 +115,13 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.4.8 =
+
+* fixed JS error "only one instance of babel-polyfill is allowed" in Gutenberg editor
+
 = 1.4.7 =
-* added support for Gutenberg 3.7.0 deprecations
+
+* added support for Gutenberg 3.7.0
 * added __wp_admin > Settings > AWB__ page
 * added settings to disable parallax on mobile devices and in some browsers
 * updated Jarallax and object-fit-images scripts
@@ -125,29 +130,36 @@ Note: this code for example only, your theme may not work with it properly (it m
 * fixed drag event on image backgrounds (without parallax)
 
 = 1.4.6 =
+
 * added support for Gutenberg 3.4.0
 * added support for [Ghostkit](https://wordpress.org/plugins/ghostkit/) Indents extension (you can add paddings and margins to AWB block)
 * fixed JS error when select image with specific image size title
 
 = 1.4.5 =
+
 * fixed js error toUpperCase of undefined in Gutenberg editor
 * minor code improvements for Gutenberg blocks
 * changed jquery ready event to DOMContentLoaded
 
 = 1.4.4 =
+
 * improved Gutenberg backgrounds preview
 * fixed conflict with YouTube Embed Plus plugin
 
 = 1.4.3 =
+
 * updated Jarallax to 1.10.3
 
 = 1.4.2 =
+
 * fixed adding styles from Visual Composer "Design Options" tab in AWB shortcode
 
 = 1.4.1 =
+
 * updated Jarallax to 1.10.2
 
 = 1.4.0 =
+
 * added support for [Gutenberg](https://wordpress.org/gutenberg/) blocks builder
 * added option to disable video on mobile devices
 * fixed Visual Composer and Stretch row JS error on mobile devices 
@@ -155,12 +167,15 @@ Note: this code for example only, your theme may not work with it properly (it m
 * updated Jarallax to 1.10.1
 
 = 1.3.2 =
+
 * updated Jarallax to 1.9.1
 
 = 1.3.1 =
+
 * fixed parallax resize inside stretched Visual Composer row
 
 = 1.3.0 =
+
 * added video volume option
 * added video always play option
 * added background image size option (support for pattern backgrounds)
@@ -171,26 +186,32 @@ Note: this code for example only, your theme may not work with it properly (it m
 * updated wp-color-picker-alpha plugin to support WordPress 4.9
 
 = 1.2.4 =
+
 * improved mouse parallax (removed GSAP, now this is pure CSS animation)
 
 = 1.2.3 =
+
 * fixed url escaping in style attribute
 
 = 1.2.1 =
+
 * fixed stretch columns in some situations
 * prevent stretch column when row is stretched
 
 = 1.2.0 =
+
 * added support for Visual Composer column background
 * added icons with images and overlay in Visual Composer backend view
 * small fix for stretch option
 
 = 1.1.1 =
+
 * added Mouse Parallax support with GSAP
 * added support to wrap selected content in default MCE shortcode
 * fix for safari image z position
 
 = 1.0.1 =
+
 * fixed Vimeo videos autoplay
 * fixed video iframe - reset some styles like max-width
 * fixed parallax for speed > 1 (wrong calculation)
@@ -199,4 +220,5 @@ Note: this code for example only, your theme may not work with it properly (it m
 * fixed video set aspect ratio (in some situations added black lines)
 
 = 1.0.0 =
+
 * Initial Release
