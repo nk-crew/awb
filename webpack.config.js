@@ -6,6 +6,12 @@ module.exports = {
             {
                 test: /(\.jsx|\.js)$/,
                 loader: 'babel-loader',
+            }, {
+                test: /\.svg$/,
+                use: [
+                    'svg-react-loader',
+                    'svgo-loader',
+                ],
             },
         ],
     },

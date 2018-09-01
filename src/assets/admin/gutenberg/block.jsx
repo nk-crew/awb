@@ -1,14 +1,14 @@
-if ( ! global._babelPolyfill ) {
-    require( 'babel-polyfill' );
-}
-
 import { ChromePicker } from 'react-color';
 import VideoWorker from 'video-worker';
+import elementIcon from './icon.svg';
+
+if (!global._babelPolyfill) {
+    require('babel-polyfill');
+}
 
 /**
  * Gutenberg block
  */
-const awbData = window.AWBGutenbergData;
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
 const {
@@ -882,7 +882,7 @@ registerBlockType('nk/awb', {
     description: __('Create sections with color, image and video backgrounds.'),
 
     // add element with classname to support different icon sets like FontAwesome.
-    icon: <img className="dashicon awb-gutenberg-icon" src={awbData.icon} alt="AWB" />,
+    icon: elementIcon,
 
     category: 'layout',
 

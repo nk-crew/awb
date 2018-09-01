@@ -62,6 +62,7 @@ class NK_AWB_Gutenberg {
 
         // add variables to script.
         $data = array(
+            // TODO: remove this since used svg icon.
             'icon' => nk_awb()->plugin_url . 'assets/admin/gutenberg/icon.png',
         );
         wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );
