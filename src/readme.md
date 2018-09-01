@@ -14,7 +14,10 @@ Image backgrounds, YouTube / Vimeo / Local hosted video backgrounds with paralla
 
 AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. [Gutenberg](https://wordpress.org/gutenberg/) and Visual Composer support.
 
-See __Online Demo__ here - [https://demo.nkdev.info/#awb](https://demo.nkdev.info/#awb)
+#### Links ####
+
+* [Live Demo](https://demo.nkdev.info/#awb)
+* [GitHub](https://github.com/nk-o/awb)
 
 = Features =
 * Background __Types__:
