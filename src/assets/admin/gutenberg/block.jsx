@@ -1,6 +1,15 @@
 import { ChromePicker } from 'react-color';
 import VideoWorker from 'video-worker';
-import elementIcon from './icon.svg';
+import classnames from 'classnames/dedupe';
+import iconAWB from './icons/awb.svg';
+import iconFullHeight from './icons/fullheight.svg';
+import iconVerticalCenter from './icons/vertical-center.svg';
+import iconVerticalTop from './icons/vertical-top.svg';
+import iconVerticalBottom from './icons/vertical-bottom.svg';
+import iconFullHeightWhite from './icons/fullheight-white.svg';
+import iconVerticalCenterWhite from './icons/vertical-center-white.svg';
+import iconVerticalTopWhite from './icons/vertical-top-white.svg';
+import iconVerticalBottomWhite from './icons/vertical-bottom-white.svg';
 
 if (!global._babelPolyfill) {
     require('babel-polyfill');
@@ -33,6 +42,8 @@ const {
     TextControl,
     RangeControl,
     PanelColor,
+    Toolbar,
+    IconButton,
 } = wp.components;
 
 const { apiFetch } = wp;
@@ -42,6 +53,10 @@ const {
 } = wp.data;
 
 const validAlignments = ['full'];
+
+function getToolbarIcon(Svg) {
+    return <Svg viewBox="0 0 24 24" />;
+}
 
 /**
  * camelCaseToDash('userId') => "user-id"
@@ -158,7 +173,13 @@ class BlockSave extends Component {
         };
         let resultImg = false;
         let video = attributes.video;
-        className = `nk-awb${className || ''}${attributes.align ? ` align${attributes.align}` : ''}`;
+
+        className = classnames('nk-awb', className, attributes.align ? ` align${attributes.align}` : '');
+
+        // add full height classname.
+        if (attributes.fullHeight) {
+            className = classnames(className, 'nk-awb-fullheight', attributes.fullHeightAlign ? `nk-awb-content-valign-${attributes.fullHeightAlign}` : '');
+        }
 
         switch (attributes.type) {
         case 'color':
@@ -340,6 +361,8 @@ class BlockEdit extends Component {
         const {
             type,
             align,
+            fullHeight,
+            fullHeightAlign,
 
             image,
             imageTag,
@@ -385,9 +408,14 @@ class BlockEdit extends Component {
             });
         }
 
+        // add full height classname.
+        if (fullHeight) {
+            className = classnames(className, 'nk-awb-fullheight', fullHeightAlign ? `nk-awb-content-valign-${fullHeightAlign}` : '');
+        }
+
         // add custom classname.
         if (ghostkitClassname) {
-            className = (className ? `${className} ` : '') + ghostkitClassname;
+            className = classnames(className, ghostkitClassname);
         }
 
         return (
@@ -398,6 +426,38 @@ class BlockEdit extends Component {
                         value={align}
                         onChange={v => setAttributes({ align: v })}
                     />
+                    <Toolbar controls={[
+                        {
+                            icon: getToolbarIcon(fullHeight ? iconFullHeightWhite : iconFullHeight),
+                            title: __('Full Height'),
+                            onClick: () => setAttributes({ fullHeight: !fullHeight }),
+                            isActive: fullHeight,
+                        },
+                    ]}
+                    />
+                    { fullHeight ? (
+                        <Toolbar controls={[
+                            {
+                                icon: getToolbarIcon(fullHeightAlign === 'top' ? iconVerticalTopWhite : iconVerticalTop),
+                                title: __('Content Vertical Top'),
+                                onClick: () => setAttributes({ fullHeightAlign: 'top' }),
+                                isActive: fullHeightAlign === 'top',
+                            },
+                            {
+                                icon: getToolbarIcon(fullHeightAlign === 'center' ? iconVerticalCenterWhite : iconVerticalCenter),
+                                title: __('Content Vertical Center'),
+                                onClick: () => setAttributes({ fullHeightAlign: 'center' }),
+                                isActive: fullHeightAlign === 'center',
+                            },
+                            {
+                                icon: getToolbarIcon(fullHeightAlign === 'bottom' ? iconVerticalBottomWhite : iconVerticalBottom),
+                                title: __('Content Vertical Bottom'),
+                                onClick: () => setAttributes({ fullHeightAlign: 'bottom' }),
+                                isActive: fullHeightAlign === 'bottom',
+                            },
+                        ]}
+                        />
+                    ) : '' }
                 </BlockControls>
                 <InspectorControls>
                     <ButtonGroup aria-label={__('Background type')} style={{ marginTop: 15, marginBottom: 10 }}>
@@ -882,7 +942,7 @@ registerBlockType('nk/awb', {
     description: __('Create sections with color, image and video backgrounds.'),
 
     // add element with classname to support different icon sets like FontAwesome.
-    icon: elementIcon,
+    icon: iconAWB,
 
     category: 'layout',
 
@@ -903,6 +963,13 @@ registerBlockType('nk/awb', {
         },
         align: {
             type: 'string',
+        },
+        fullHeight: {
+            type: 'boolean',
+            default: false,
+        },
+        fullHeightAlign: {
+            type: 'center',
         },
 
         image: {

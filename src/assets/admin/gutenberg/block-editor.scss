@@ -12,6 +12,21 @@ img.awb-gutenberg-icon {
     }
 }
 
+// Fullheight
+// 32px - wordpress top bar
+// 56px - gutenberg top bar
+// 28px - block padding
+.gutenberg .wp-block-nk-awb.nk-awb-fullheight {
+    min-height: calc(100vh - 32px - 56px - 28px);
+
+    @media screen and (max-width: 782px) {
+        min-height: calc(100vh - 42px - 56px - 28px);
+    }
+    @media screen and (max-width: 600px - 56px - 28px) {
+        min-height: calc(100vh - 56px - 28px);
+    }
+}
+
 // background for block
 .awb-gutenberg-preview-block {
     position: absolute;

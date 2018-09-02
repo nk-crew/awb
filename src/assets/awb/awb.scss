@@ -19,6 +19,37 @@
     transform: translateX(0);
 }
 
+/* Fullheight */
+.nk-awb-fullheight {
+    min-height: 100vh;
+
+    body.admin-bar & {
+        min-height: calc(100vh - 32px);
+
+        @media screen and (max-width: 782px) {
+            min-height: calc(100vh - 42px);
+        }
+        @media screen and (max-width: 600px) {
+            min-height: 100vh;
+        }
+    }
+}
+
+/* Vertical align */
+.nk-awb-content-valign-center,
+.nk-awb-content-valign-top,
+.nk-awb-content-valign-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.nk-awb-content-valign-top {
+    justify-content: flex-start;
+}
+.nk-awb-content-valign-bottom {
+    justify-content: flex-end;
+}
+
 /* Fix for Safari */
 .nk-awb .nk-awb-overlay {
     z-index: 0;
