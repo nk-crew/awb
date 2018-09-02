@@ -2,6 +2,9 @@
  * Name    : Advanced WordPress Backgrounds
  * Author  : nK https://nkdev.info
  */
+
+import { throttle } from 'throttle-debounce';
+
 (function ($) {
     // variables
     const { AWBData } = window;
@@ -314,6 +317,62 @@
 
             $this.css(css);
         });
+
+        // Gutenberg stretch fallback
+        if (AWBData.settings.full_width_fallback) {
+            $('.nk-awb.alignfull').each(function () {
+                const $this = $(this).children('.nk-awb-wrap');
+
+                if (!$this[0]) {
+                    return;
+                }
+
+                const rect = $this[0].getBoundingClientRect();
+                const left = rect.left;
+                const right = wndW - rect.right;
+                const bottom = rect.bottom;
+
+                const ml = parseFloat($this.css('margin-left') || 0);
+                const mr = parseFloat($this.css('margin-right') || 0);
+                const mb = parseFloat($this.css('margin-bottom') || 0);
+
+                let changeLeft = ml - left;
+                let changeRight = mr - right;
+                let changeBottom = '';
+
+                // Ghostkit column support
+                if ($this.closest('.ghostkit-col').length) {
+                    const $row = $this.closest('.ghostkit-grid');
+                    const $col = $this.closest('.ghostkit-col');
+                    const rectRow = $row[0].getBoundingClientRect();
+                    const rectCol = $col[0].getBoundingClientRect();
+                    const leftRow = rectRow.left;
+                    const rightRow = wndW - rectRow.right;
+                    const leftCol = rectCol.left;
+                    const rightCol = wndW - rectCol.right;
+                    const bottomCol = rectCol.bottom;
+
+                    // We need to round numbers because in some situations the same blocks has different offsets, for example
+                    // Row right is 68
+                    // Col right is 68.015625
+                    // I don't know why :(
+                    if (Math.round(leftRow) !== Math.round(leftCol)) {
+                        changeLeft = leftCol - left + ml;
+                    }
+                    if (Math.round(rightRow) !== Math.round(rightCol)) {
+                        changeRight = rightCol - right + mr;
+                    }
+
+                    changeBottom = mb - (bottomCol - bottom);
+                }
+
+                $this.css({
+                    'margin-left': changeLeft,
+                    'margin-right': changeRight,
+                    'margin-bottom': changeBottom,
+                });
+            });
+        }
     }
 
     /**
@@ -475,5 +534,5 @@
     });
 
     // init stretch
-    $wnd.on('resize orientationchange', stretchAwb);
+    $wnd.on('resize orientationchange load', throttle(200, stretchAwb));
 }(jQuery));

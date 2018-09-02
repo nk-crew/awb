@@ -64,6 +64,7 @@ class NK_AWB_Gutenberg {
         $data = array(
             // TODO: remove this since used svg icon.
             'icon' => nk_awb()->plugin_url . 'assets/admin/gutenberg/icon.png',
+            'full_width_fallback' => ! get_theme_support( 'align-wide' ),
         );
         wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );
     }

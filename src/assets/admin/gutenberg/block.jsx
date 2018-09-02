@@ -24,6 +24,8 @@ const {
     registerBlockType,
 } = wp.blocks;
 
+const AWBData = window.AWBGutenbergData;
+
 const {
     InspectorControls,
     InnerBlocks,
@@ -43,7 +45,6 @@ const {
     RangeControl,
     PanelColor,
     Toolbar,
-    IconButton,
 } = wp.components;
 
 const { apiFetch } = wp;
@@ -421,11 +422,24 @@ class BlockEdit extends Component {
         return (
             <Fragment>
                 <BlockControls>
-                    <BlockAlignmentToolbar
-                        controls={validAlignments}
-                        value={align}
-                        onChange={v => setAttributes({ align: v })}
-                    />
+                    { AWBData.full_width_fallback ? (
+                        /* Fallback for align full */
+                        <Toolbar controls={[
+                            {
+                                icon: 'align-full-width',
+                                title: __('Full Width'),
+                                onClick: () => setAttributes({ align: align === 'full' ? '' : 'full' }),
+                                isActive: align === 'full',
+                            },
+                        ]}
+                        />
+                    ) : (
+                        <BlockAlignmentToolbar
+                            controls={validAlignments}
+                            value={align}
+                            onChange={v => setAttributes({ align: v })}
+                        />
+                    ) }
                     <Toolbar controls={[
                         {
                             icon: getToolbarIcon(fullHeight ? iconFullHeightWhite : iconFullHeight),
