@@ -45,6 +45,8 @@ const {
     RangeControl,
     PanelColor,
     Toolbar,
+    IconButton,
+    DropdownMenu,
 } = wp.components;
 
 const { apiFetch } = wp;
@@ -419,9 +421,43 @@ class BlockEdit extends Component {
             className = classnames(className, ghostkitClassname);
         }
 
+        let currentTypeIcon = 'format-image';
+        if (type === 'color') {
+            currentTypeIcon = 'art';
+        }
+        if (type === 'yt_vm_video' || type === 'video') {
+            currentTypeIcon = 'format-video';
+        }
+
         return (
             <Fragment>
                 <BlockControls>
+                    <Toolbar>
+                        <DropdownMenu
+                            icon={currentTypeIcon}
+                            label={__('Type')}
+                            controls={[
+                                {
+                                    title: __('Color'),
+                                    icon: 'art',
+                                    onClick: () => setAttributes({ type: 'color' }),
+                                    isActive: type === 'color',
+                                },
+                                {
+                                    title: __('Image'),
+                                    icon: 'format-image',
+                                    onClick: () => setAttributes({ type: 'image' }),
+                                    isActive: type === 'image',
+                                },
+                                {
+                                    title: __('Video'),
+                                    icon: 'format-video',
+                                    onClick: () => setAttributes({ type: 'yt_vm_video' }),
+                                    isActive: type === 'yt_vm_video',
+                                },
+                            ]}
+                        />
+                    </Toolbar>
                     { AWBData.full_width_fallback ? (
                         /* Fallback for align full */
                         <Toolbar controls={[
@@ -471,6 +507,36 @@ class BlockEdit extends Component {
                             },
                         ]}
                         />
+                    ) : '' }
+                    { type === 'image' ? (
+                        <Toolbar>
+                            <MediaUpload
+                                onSelect={(media) => {
+                                    onImageSelect(media, setAttributes);
+                                }}
+                                type="image"
+                                value={image}
+                                render={({ open }) => (
+                                    <IconButton
+                                        className="components-toolbar__control"
+                                        label={__('Edit image')}
+                                        icon="edit"
+                                        onClick={open}
+                                    />
+                                )}
+                            />
+                        </Toolbar>
+                    ) : '' }
+                    { type === 'yt_vm_video' ? (
+                        <Toolbar>
+                            <input
+                                aria-label={__('YouTube / Vimeo URL')}
+                                type="url"
+                                value={video}
+                                onChange={event => setAttributes({ video: event.target.value })}
+                                placeholder={__('YouTube / Vimeo URL')}
+                            />
+                        </Toolbar>
                     ) : '' }
                 </BlockControls>
                 <InspectorControls>
