@@ -118,6 +118,13 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.4.9 =
+
+* added Full Height option in Gutenberg AWB toolbar
+* added fallback for align full. If the theme don't support align-wide, AWB will still show the button for it
+* added some helpful controls in Gutenberg block toolbar
+* changed icon to svg in Gutenberg block
+
 = 1.4.8 =
 
 * fixed JS error "only one instance of babel-polyfill is allowed" in Gutenberg editor
