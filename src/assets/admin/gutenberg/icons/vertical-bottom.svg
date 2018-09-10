@@ -1,9 +1,4 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="vertical-bottom">
-<g id="outline-vertical_align_bottom-24px">
-<g id="Outline">
-<path id="Vector" d="M16 13H13V3H11V13H8L12 17L16 13ZM4 19V21H20V19H4Z" fill="#555D66"/>
-</g>
-</g>
-</g>
+<rect x="2.75" y="2.75" width="18.5" height="18.5" rx="1.25" fill="white" stroke="#555D66" stroke-width="1.5"/>
+<line x1="5" y1="17.5" x2="19" y2="17.5" stroke="#555D66" stroke-width="3"/>
 </svg>

@@ -1,7 +1,5 @@
 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="fullheight">
-<rect id="Rectangle" x="2" y="2" width="20" height="20" fill="#555D66"/>
-<path id="Vector" d="M11 17V13H13V17H16L12 21L8 17H11Z" fill="white"/>
-<path id="Vector_2" d="M11 7V11H13V7H16L12 3L8 7H11Z" fill="white"/>
-</g>
+<rect x="2" y="2" width="20" height="20" rx="2" fill="#555D66"/>
+<path d="M11.25 17V14H12.75V17H15L12 20L9 17H11.25Z" fill="white"/>
+<path d="M11.25 7V10H12.75V7H15L12 4L9 7H11.25Z" fill="white"/>
 </svg>
