@@ -1,4 +1,5 @@
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const md5 = require('md5');
 
 module.exports = {
     module: {
@@ -8,9 +9,18 @@ module.exports = {
                 loader: 'babel-loader',
             }, {
                 test: /\.svg$/,
-                use: [
-                    '@svgr/webpack',
-                ],
+                use: ({ resource }) => ({
+                    loader: '@svgr/webpack',
+                    options: {
+                        svgoConfig: {
+                            plugins: [{
+                                cleanupIDs: {
+                                    prefix: `awb-${md5(resource)}-`,
+                                },
+                            }],
+                        },
+                    },
+                }),
             },
         ],
     },
