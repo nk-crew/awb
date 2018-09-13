@@ -13,11 +13,16 @@ module.exports = {
                     loader: '@svgr/webpack',
                     options: {
                         svgoConfig: {
-                            plugins: [{
-                                cleanupIDs: {
-                                    prefix: `awb-${md5(resource)}-`,
+                            plugins: [
+                                {
+                                    removeViewBox: false,
                                 },
-                            }],
+                                {
+                                    cleanupIDs: {
+                                        prefix: `awb-${md5(resource)}-`,
+                                    },
+                                },
+                            ],
                         },
                     },
                 }),
