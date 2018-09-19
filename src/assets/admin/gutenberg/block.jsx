@@ -901,6 +901,19 @@ class BlockEdit extends Component {
                                     style={{ width: '100%' }}
                                     disableAlpha={false}
                                 />
+                                { color ? (
+                                    <div style={{
+                                        marginTop: 10,
+                                        textAlign: 'right',
+                                    }} >
+                                        <Button
+                                            onClick={() => setAttributes({ color: '' })}
+                                            isDefault
+                                        >
+                                            { __('Reset') }
+                                        </Button>
+                                    </div>
+                                ) : '' }
                             </PanelColor>
 
                             {(type === 'image' || type === 'yt_vm_video' || type === 'video') && (
