@@ -1,6 +1,6 @@
 <?php
 /**
- * Extend Visual Composer vc_row, add video attachment control
+ * Extend WPBakery Page Builder vc_row, add video attachment control
  *
  * @package @@plugin_name
  */

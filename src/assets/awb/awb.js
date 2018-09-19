@@ -386,7 +386,7 @@ import { throttle } from 'throttle-debounce';
                 $(item).find('.nk-awb-rendered > .nk-awb-inner').each(function () {
                     if (this.jarallax) {
                         // Check if container exists
-                        // On mobile with Visual Composer this container is undefined
+                        // On mobile with WPBakery Page Builder this container is undefined
                         // and onResize showed console error
                         if (this.jarallax.image && this.jarallax.image.$container) {
                             this.jarallax.onResize();

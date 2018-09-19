@@ -1,6 +1,6 @@
 # Advanced WordPress Backgrounds #
 * Contributors: nko
-* Tags: parallax, video, youtube, background, visual composer
+* Tags: parallax, video, youtube, background, gutenberg
 * Requires at least: 4.0.0
 * Tested up to: 4.9
 * Stable tag: @@plugin_version
@@ -12,7 +12,7 @@ Image backgrounds, YouTube / Vimeo / Local hosted video backgrounds with paralla
 
 ## Description ##
 
-AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. [Gutenberg](https://wordpress.org/gutenberg/) and Visual Composer support.
+AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. [Gutenberg](https://wordpress.org/gutenberg/) and WPBakery Page Builder support.
 
 #### Links ####
 
@@ -41,7 +41,7 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. 
 * Stretch option. Will be useful on boxed websites.
 * Visual shortcode maker. You can create shortcode using visual builder
 * [Gutenberg](https://wordpress.org/gutenberg/) supported
-* __Visual Composer__ supported (extended row and col options + separate shortcode)
+* __WPBakery Page Builder__ supported (extended row and col options + separate shortcode)
 * Custom CSS offsets (paddings + margins)
 
 
@@ -112,7 +112,7 @@ Note: this code for example only, your theme may not work with it properly (it m
 2. Background image
 3. Background video
 4. Background parallax and Mouse parallax
-5. Extended Visual Composer ROW options
+5. Extended WPBakery Page Builder ROW options
 
 
 
@@ -170,7 +170,7 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 = 1.4.2 =
 
-* fixed adding styles from Visual Composer "Design Options" tab in AWB shortcode
+* fixed adding styles from WPBakery Page Builder "Design Options" tab in AWB shortcode
 
 = 1.4.1 =
 
@@ -180,8 +180,8 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 * added support for [Gutenberg](https://wordpress.org/gutenberg/) blocks builder
 * added option to disable video on mobile devices
-* fixed Visual Composer and Stretch row JS error on mobile devices 
-* fixed Visual Composer icon position
+* fixed WPBakery Page Builder and Stretch row JS error on mobile devices 
+* fixed WPBakery Page Builder icon position
 * updated Jarallax to 1.10.1
 
 = 1.3.2 =
@@ -190,7 +190,7 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 = 1.3.1 =
 
-* fixed parallax resize inside stretched Visual Composer row
+* fixed parallax resize inside stretched WPBakery Page Builder row
 
 = 1.3.0 =
 
@@ -218,8 +218,8 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 = 1.2.0 =
 
-* added support for Visual Composer column background
-* added icons with images and overlay in Visual Composer backend view
+* added support for WPBakery Page Builder column background
+* added icons with images and overlay in WPBakery Page Builder backend view
 * small fix for stretch option
 
 = 1.1.1 =
