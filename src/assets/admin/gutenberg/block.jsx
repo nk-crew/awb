@@ -589,7 +589,7 @@ class BlockEdit extends Component {
                                         value: 'yt_vm_video',
                                     },
                                     {
-                                        label: __('Local Hosted'),
+                                        label: __('Self Hosted'),
                                         value: 'video',
                                     },
                                 ].map(val => (
