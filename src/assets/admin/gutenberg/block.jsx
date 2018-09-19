@@ -193,10 +193,10 @@ class BlockSave extends Component {
                 video += `mp4:${attributes.videoMp4}`;
             }
             if (attributes.videoOgv) {
-                video += `${attributes.video.length ? ',' : ''}ogv:${attributes.videoOgv}`;
+                video += `${video ? ',' : ''}ogv:${attributes.videoOgv}`;
             }
             if (attributes.videoWebm) {
-                video += `${attributes.video.length ? ',' : ''}webm:${attributes.videoWebm}`;
+                video += `${video ? ',' : ''}webm:${attributes.videoWebm}`;
             }
         // eslint-disable-next-line
         case 'yt_vm_video':
