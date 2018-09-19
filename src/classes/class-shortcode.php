@@ -217,8 +217,10 @@ class NK_AWB_Shortcode {
             if ( filter_var( $atts['awb_video_always_play'], FILTER_VALIDATE_BOOLEAN ) ) {
                 $awb_wrap_attributes .= ' data-awb-video-always-play="true"';
             }
+        }
 
-            // show on mobile.
+        // show video on mobile.
+        if ( 'video' === $atts['awb_type'] || 'yt_vm_video' === $atts['awb_type'] ) {
             $awb_wrap_attributes .= ' data-awb-video-mobile="' . esc_attr( $atts['awb_video_mobile'] ) . '"';
         }
 

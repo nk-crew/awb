@@ -475,7 +475,7 @@ import { throttle } from 'throttle-debounce';
             let videoMobile = false;
             const parallax = $this.attr('data-awb-parallax');
             const parallaxSpeed = $this.attr('data-awb-parallax-speed');
-            const parallaxMobile = $this.attr('data-awb-parallax-mobile') !== 'false';
+            const parallaxMobile = $this.attr('data-awb-parallax-mobile') === 'true' || $this.attr('data-awb-parallax-mobile') === '1';
 
             // video type
             if (type === 'yt_vm_video' || type === 'video') {
@@ -484,7 +484,7 @@ import { throttle } from 'throttle-debounce';
                 videoEndTime = parseFloat($this.attr('data-awb-video-end-time')) || 0;
                 videoVolume = parseFloat($this.attr('data-awb-video-volume')) || 0;
                 videoAlwaysPlay = $this.attr('data-awb-video-always-play') === 'true';
-                videoMobile = $this.attr('data-awb-video-mobile') !== 'false';
+                videoMobile = $this.attr('data-awb-video-mobile') === '1' || $this.attr('data-awb-video-mobile') === 'true';
             }
 
             // prevent if no parallax and no video
