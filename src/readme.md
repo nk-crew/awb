@@ -118,6 +118,14 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.4.10 =
+
+* added Reset button to Color Picker in Gutenberg block
+* updated icons in Gutenberg block
+* fixed disable on mobile devices checkboxes in WPBakery Page Builder
+* fixed Vimeo autoplay on mobile devices
+* fixed self hosted video url building string in Gutenberg block
+
 = 1.4.9 =
 
 * added Full Height option in Gutenberg AWB toolbar
