@@ -50,7 +50,7 @@ class NK_AWB_TinyMCE {
             wp_enqueue_style( 'wp-color-picker' );
             wp_enqueue_script( 'wp-color-picker' );
             wp_enqueue_script( 'wp-color-picker-alpha', nk_awb()->plugin_url . 'assets/vendor/wp-color-picker-alpha/wp-color-picker-alpha.min.js', array( 'wp-color-picker' ), '2.0.0' );
-            wp_enqueue_script( 'conditionize', nk_awb()->plugin_url . 'assets/vendor/conditionize/conditionize.js' );
+            wp_enqueue_script( 'conditionize', nk_awb()->plugin_url . 'assets/vendor/conditionize/conditionize.min.js', array( 'jquery' ), '1.0.0' );
 
             wp_enqueue_style( 'awb-tinymce-attach-video', nk_awb()->plugin_url . 'assets/admin/tinymce/mce-awb-attach-video.min.css', '', '@@plugin_version' );
             wp_enqueue_script( 'awb-tinymce-attach-video', nk_awb()->plugin_url . 'assets/admin/tinymce/mce-awb-attach-video.min.js', '', '@@plugin_version' );
