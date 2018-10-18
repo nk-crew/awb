@@ -30,10 +30,10 @@ img.awb-gutenberg-icon {
 // background for block
 .awb-gutenberg-preview-block {
     position: absolute;
-    top: -14px;
-    right: -14px;
-    bottom: -14px;
-    left: -14px;
+    top: -15px;
+    right: -15px;
+    bottom: -15px;
+    left: -15px;
     pointer-events: none;
     transition: .15s border ease-in-out;
 
@@ -41,13 +41,6 @@ img.awb-gutenberg-icon {
     .editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit .editor-block-list__block-edit & {
         right: -14px;
         left: -14px;
-    }
-
-    @media (min-width: 600px) {
-        .editor-block-list__layout .editor-block-list__block & {
-            right: -27px;
-            left: -27px;
-        }
     }
 
     &:empty {
