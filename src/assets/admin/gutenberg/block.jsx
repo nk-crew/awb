@@ -268,7 +268,6 @@ class BlockSave extends Component {
     }
 }
 
-
 const actions = {
     setImageTagData(query, image) {
         return {
@@ -767,14 +766,14 @@ class BlockEdit extends Component {
                                         label={__('Start time')}
                                         type="number"
                                         value={videoStartTime}
-                                        onChange={v => setAttributes({ videoStartTime: v })}
+                                        onChange={v => setAttributes({ videoStartTime: parseFloat(v) })}
                                         help={__('Start time in seconds when video will be started (this value will be applied also after loop)')}
                                     />
                                     <TextControl
                                         label={__('End time')}
                                         type="number"
                                         value={videoEndTime}
-                                        onChange={v => setAttributes({ videoEndTime: v })}
+                                        onChange={v => setAttributes({ videoEndTime: parseFloat(v) })}
                                         help={__('End time in seconds when video will be ended')}
                                     />
                                     <ToggleControl
@@ -958,7 +957,7 @@ class BlockEdit extends Component {
                                                     step="0.1"
                                                     min="-1"
                                                     max="2"
-                                                    onChange={v => setAttributes({ parallaxSpeed: v })}
+                                                    onChange={v => setAttributes({ parallaxSpeed: parseFloat(v) })}
                                                     help={__('Provide number from -1.0 to 2.0')}
                                                 />
                                                 <ToggleControl
