@@ -4,6 +4,7 @@
  */
 
 import { throttle } from 'throttle-debounce';
+import rafl from 'rafl';
 
 (function ($) {
     // variables
@@ -255,7 +256,7 @@ import { throttle } from 'throttle-debounce';
         // run force without timeout
         clearTimeout(parallaxMouseTimeout);
         if (force) {
-            run();
+            rafl(run);
         } else {
             parallaxMouseTimeout = setTimeout(parallaxMouseTimeout, 100);
         }
@@ -408,16 +409,20 @@ import { throttle } from 'throttle-debounce';
             return;
         }
 
-        $('.nk-awb[data-ghostkit-styles]').each(function () {
-            customStyles += $(this).attr('data-ghostkit-styles');
-            $(this).removeAttr('data-ghostkit-styles');
-        });
+        const $blocksWithStyles = $('.nk-awb[data-ghostkit-styles]');
 
-        let $style = $('#ghostkit-awb-custom-css-inline-css');
-        if (!$style.length) {
-            $style = $('<style id="ghostkit-awb-custom-css-inline-css">').appendTo('head');
+        if ($blocksWithStyles.length) {
+            $blocksWithStyles.each(function () {
+                customStyles += $(this).attr('data-ghostkit-styles');
+                $(this).removeAttr('data-ghostkit-styles');
+            });
+
+            let $style = $('#ghostkit-awb-custom-css-inline-css');
+            if (!$style.length) {
+                $style = $('<style id="ghostkit-awb-custom-css-inline-css">').appendTo('head');
+            }
+            $style.html(customStyles);
         }
-        $style.html(customStyles);
     }
 
 
@@ -426,8 +431,11 @@ import { throttle } from 'throttle-debounce';
      */
     window.nkAwbInit = function () {
         // init mouse parallax
-        $('.nk-awb .nk-awb-wrap[data-awb-mouse-parallax-size]').addClass('nk-awb-mouse-parallax');
-        parallaxMouseInit(true);
+        const $newMousePrallax = $('.nk-awb .nk-awb-wrap[data-awb-mouse-parallax-size]:not(.nk-awb-mouse-parallax)');
+        if ($newMousePrallax.length) {
+            $newMousePrallax.addClass('nk-awb-mouse-parallax');
+            parallaxMouseInit(true);
+        }
 
         // prepare vc_row
         $('.nk-awb-after-vc_row').each(function () {
@@ -547,14 +555,25 @@ import { throttle } from 'throttle-debounce';
         });
     };
 
-
-    // init immediately
-    window.nkAwbInit();
-
-    // init after dom ready and load
-    $doc.on('DOMContentLoaded load', () => {
+    // init awb.
+    rafl(() => {
         window.nkAwbInit();
     });
+    const throttledInitAwb = throttle(200, () => {
+        rafl(() => {
+            window.nkAwbInit();
+        });
+    });
+    if (window.MutationObserver) {
+        new window.MutationObserver(throttledInitAwb)
+            .observe(document.documentElement, {
+                childList: true, subtree: true,
+            });
+    } else {
+        $(document).on('DOMContentLoaded DOMNodeInserted load', () => {
+            throttledInitAwb();
+        });
+    }
 
     // init stretch
     $wnd.on('resize orientationchange load', throttle(200, stretchAwb));
