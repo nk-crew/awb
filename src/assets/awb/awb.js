@@ -198,6 +198,11 @@ import rafl from 'rafl';
         });
         parallaxMouseFirstRun = 0;
     }
+    const throttledParallaxMouseRun = throttle(200, (x, y, deviceOrientation) => {
+        rafl(() => {
+            parallaxMouseRun(x, y, deviceOrientation);
+        });
+    });
 
     function parallaxMouseInit(force) {
         function run() {
@@ -213,17 +218,13 @@ import rafl from 'rafl';
 
                     if (isMobile && window.DeviceOrientationEvent) {
                         $wnd.on('deviceorientation', (event) => {
-                            requestAnimationFrame(() => {
-                                parallaxMouseRun(event.gamma / 90, event.beta / 180, true);
-                            });
+                            throttledParallaxMouseRun(event.originalEvent.gamma / 90, event.originalEvent.beta / 180, true);
                         });
 
                     // no smooth on firefox
                     } else {
                         $wnd.on('mousemove', (event) => {
-                            requestAnimationFrame(() => {
-                                parallaxMouseRun(event.clientX, event.clientY);
-                            });
+                            throttledParallaxMouseRun(event.clientX, event.clientY);
                         });
                     }
                 }
