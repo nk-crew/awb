@@ -117,3 +117,117 @@ img.awb-gutenberg-icon {
 .components-panel .awb-gutenberg-media-upload > div {
     height: 150px;
 }
+
+
+/**
+ * Spacings Control.
+ */
+.awb-ghostkit-control-spacing {
+    position: relative;
+    width: 100%;
+    padding-top: 87%;
+    border: 1px solid #e8eaec;
+
+    .components-base-control,
+    .components-base-control__field {
+        margin: 0 !important; // stylelint-disable-line
+    }
+
+    .awb-ghostkit-control-spacing-margin,
+    .awb-ghostkit-control-spacing-padding {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+        height: calc(100% - 10px);
+
+        > span {
+            position: absolute;
+            top: 2px;
+            left: 6px;
+            font-size: .7em;
+        }
+
+        > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input {
+            width: 39px;
+            padding: 3px 5px;
+            text-align: center;
+            background: none;
+            border: none;
+        }
+    }
+
+    // margins
+    .awb-ghostkit-control-spacing-margin {
+        .awb-ghostkit-control-spacing-margin-top {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+        }
+        .awb-ghostkit-control-spacing-margin-right {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+        }
+        .awb-ghostkit-control-spacing-margin-bottom {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+        }
+        .awb-ghostkit-control-spacing-margin-left {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+        }
+    }
+
+    // paddings.
+    .awb-ghostkit-control-spacing-padding {
+        top: 36px;
+        left: 50px;
+        width: calc(100% - 100px);
+        height: calc(100% - 72px);
+        background-color: #f2f2f2;
+
+        > span {
+            top: 6px;
+            left: 10px;
+        }
+
+        // paddings.
+        .awb-ghostkit-control-spacing-padding-top {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            width: calc(100% - 10px);
+        }
+        .awb-ghostkit-control-spacing-padding-right {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            height: calc(100% - 10px);
+        }
+        .awb-ghostkit-control-spacing-padding-bottom {
+            position: absolute;
+            bottom: 5px;
+            left: 5px;
+            width: calc(100% - 10px);
+        }
+        .awb-ghostkit-control-spacing-padding-left {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            height: calc(100% - 10px);
+        }
+    }
+}

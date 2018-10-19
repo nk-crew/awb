@@ -400,6 +400,28 @@ import { throttle } from 'throttle-debounce';
 
 
     /**
+     * Custom styles fallback if GhostKit plugin is not installed.
+     */
+    let customStyles = '';
+    function maybeFallbackGhostkitStyles() {
+        if (window.GHOSTKIT) {
+            return;
+        }
+
+        $('.nk-awb[data-ghostkit-styles]').each(function () {
+            customStyles += $(this).attr('data-ghostkit-styles');
+            $(this).removeAttr('data-ghostkit-styles');
+        });
+
+        let $style = $('#ghostkit-awb-custom-css-inline-css');
+        if (!$style.length) {
+            $style = $('<style id="ghostkit-awb-custom-css-inline-css">').appendTo('head');
+        }
+        $style.html(customStyles);
+    }
+
+
+    /**
      * Main AWB Init
      */
     window.nkAwbInit = function () {
@@ -452,10 +474,11 @@ import { throttle } from 'throttle-debounce';
             $this.remove();
         });
 
+        // Ghostkit styles fallback
+        maybeFallbackGhostkitStyles();
 
         // stretch
         stretchAwb();
-
 
         // init jarallax
         if (typeof $.fn.jarallax === 'undefined') {
