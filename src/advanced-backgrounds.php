@@ -72,6 +72,9 @@ class NK_AWB {
         // load textdomain.
         load_plugin_textdomain( '@@text_domain', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
+        // register images sizes.
+        $this->add_image_sizes();
+
         // include helper files.
         $this->include_dependencies();
 
@@ -144,6 +147,17 @@ class NK_AWB {
             }
         }());
         ' );
+    }
+
+    /**
+     * Add image sizes.
+     */
+    public function add_image_sizes() {
+        // custom image sizes.
+        add_image_size( 'awb_sm', 500 );
+        add_image_size( 'awb_md', 800 );
+        add_image_size( 'awb_lg', 1280 );
+        add_image_size( 'awb_xl', 1920 );
     }
 
     /**
