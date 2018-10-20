@@ -1065,7 +1065,7 @@ registerBlockType('nk/awb', {
         },
 
         image: {
-            type: 'string',
+            type: 'number',
             default: '',
         },
         imageTag: {
