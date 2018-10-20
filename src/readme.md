@@ -118,6 +118,10 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.5.1 =
+
+* fixed selected image preview in Inspector
+
 = 1.5.0 =
 
 * added default padding to the AWB block on frontend and in Gutenberg editor
