@@ -579,7 +579,7 @@ class BlockEdit extends Component {
                         }
                     </ButtonGroup>
 
-                    {(type === 'video' || type === 'yt_vm_video') && (
+                    {(type === 'video' || type === 'yt_vm_video') ? (
                         <ButtonGroup aria-label={__('Background video type')} style={{ marginBottom: 10 }}>
                             {
                                 [
@@ -604,39 +604,39 @@ class BlockEdit extends Component {
                                 ))
                             }
                         </ButtonGroup>
-                    )}
+                    ) : '' }
 
-                    {type && (
+                    {type ? (
                         <Fragment>
-                            {(type === 'yt_vm_video' || type === 'video') && (
+                            {(type === 'yt_vm_video' || type === 'video') ? (
                                 <PanelBody title={__('Video')} initialOpen={type === 'yt_vm_video' || type === 'video'}>
-                                    { type === 'yt_vm_video' &&
-                                    <TextControl
-                                        label={__('Video URL')}
-                                        type="url"
-                                        value={video}
-                                        onChange={v => setAttributes({ video: v })}
-                                        help={__('Supported YouTube and Vimeo URLs')}
-                                    />
-                                    }
+                                    { type === 'yt_vm_video' ? (
+                                        <TextControl
+                                            label={__('Video URL')}
+                                            type="url"
+                                            value={video}
+                                            onChange={v => setAttributes({ video: v })}
+                                            help={__('Supported YouTube and Vimeo URLs')}
+                                        />
+                                    ) : '' }
 
                                     {/* Preview Video */}
-                                    { type === 'video' && (videoMp4 || videoOgv || videoWebm) && (
+                                    { type === 'video' && (videoMp4 || videoOgv || videoWebm) ? (
                                         <video controls>
-                                            { videoMp4 && (
+                                            { videoMp4 ? (
                                                 <source src={videoMp4} type="video/mp4" />
-                                            ) }
-                                            { videoOgv && (
+                                            ) : '' }
+                                            { videoOgv ? (
                                                 <source src={videoOgv} type="video/ogg" />
-                                            ) }
-                                            { videoWebm && (
+                                            ) : '' }
+                                            { videoWebm ? (
                                                 <source src={videoWebm} type="video/webm" />
-                                            ) }
+                                            ) : '' }
                                         </video>
-                                    ) }
+                                    ) : '' }
 
                                     {/* Select Videos */}
-                                    { type === 'video' && !videoMp4 && (
+                                    { type === 'video' && !videoMp4 ? (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 setAttributes({
@@ -658,8 +658,8 @@ class BlockEdit extends Component {
                                                 </div>
                                             )}
                                         />
-                                    ) }
-                                    { type === 'video' && videoMp4 && (
+                                    ) : '' }
+                                    { type === 'video' && videoMp4 ? (
                                         <div>
                                             <span>{ videoMp4.substring(videoMp4.lastIndexOf('/') + 1) } </span>
                                             <a
@@ -675,8 +675,8 @@ class BlockEdit extends Component {
                                             </a>
                                             <div style={{ marginBottom: 13 }} />
                                         </div>
-                                    ) }
-                                    { type === 'video' && !videoOgv && (
+                                    ) : '' }
+                                    { type === 'video' && !videoOgv ? (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 setAttributes({
@@ -698,8 +698,8 @@ class BlockEdit extends Component {
                                                 </div>
                                             )}
                                         />
-                                    ) }
-                                    { type === 'video' && videoOgv && (
+                                    ) : '' }
+                                    { type === 'video' && videoOgv ? (
                                         <div>
                                             <span>{ videoOgv.substring(videoOgv.lastIndexOf('/') + 1) } </span>
                                             <a
@@ -715,8 +715,8 @@ class BlockEdit extends Component {
                                             </a>
                                             <div style={{ marginBottom: 13 }} />
                                         </div>
-                                    ) }
-                                    { type === 'video' && !videoWebm && (
+                                    ) : '' }
+                                    { type === 'video' && !videoWebm ? (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 setAttributes({
@@ -738,8 +738,8 @@ class BlockEdit extends Component {
                                                 </div>
                                             )}
                                         />
-                                    ) }
-                                    { type === 'video' && videoWebm && (
+                                    ) : '' }
+                                    { type === 'video' && videoWebm ? (
                                         <div>
                                             <span>{ videoWebm.substring(videoWebm.lastIndexOf('/') + 1) } </span>
                                             <a
@@ -755,7 +755,7 @@ class BlockEdit extends Component {
                                             </a>
                                             <div style={{ marginBottom: 13 }} />
                                         </div>
-                                    ) }
+                                    ) : '' }
                                     <ToggleControl
                                         label={__('Enable on mobile devices')}
                                         checked={!!videoMobile}
@@ -783,12 +783,12 @@ class BlockEdit extends Component {
                                         onChange={v => setAttributes({ videoAlwaysPlay: v })}
                                     />
                                 </PanelBody>
-                            )}
+                            ) : '' }
 
-                            {(type === 'image' || type === 'yt_vm_video' || type === 'video') && (
+                            {(type === 'image' || type === 'yt_vm_video' || type === 'video') ? (
                                 <PanelBody title={__(type === 'image' ? 'Image' : 'Poster Image')} initialOpen={type === 'image'}>
                                     {/* Select Image */}
-                                    { !image && (
+                                    { !image ? (
                                         <MediaUpload
                                             onSelect={(media) => {
                                                 onImageSelect(media, setAttributes);
@@ -801,9 +801,9 @@ class BlockEdit extends Component {
                                                 </Button>
                                             )}
                                         />
-                                    ) }
+                                    ) : '' }
 
-                                    { image && imageTag && (
+                                    { image && imageTag ? (
                                         <Fragment>
                                             <MediaUpload
                                                 onSelect={(media) => {
@@ -837,7 +837,7 @@ class BlockEdit extends Component {
                                                 {__('Remove image')}
                                             </a>
                                             <div style={{ marginBottom: 13 }} />
-                                            { imageSizes && (
+                                            { imageSizes ? (
                                                 <SelectControl
                                                     label={__('Size')}
                                                     value={imageSize}
@@ -853,7 +853,7 @@ class BlockEdit extends Component {
                                                     })()}
                                                     onChange={v => setAttributes({ imageSize: v })}
                                                 />
-                                            ) }
+                                            ) : '' }
                                             <SelectControl
                                                 label={__('Background size')}
                                                 value={imageBackgroundSize}
@@ -881,9 +881,9 @@ class BlockEdit extends Component {
                                                 help={__('Image position. Example: 50% 50%')}
                                             />
                                         </Fragment>
-                                    ) }
+                                    ) : '' }
                                 </PanelBody>
-                            )}
+                            ) : '' }
 
                             <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'}>
                                 <ChromePicker
@@ -915,7 +915,7 @@ class BlockEdit extends Component {
                                 ) : '' }
                             </PanelColor>
 
-                            {(type === 'image' || type === 'yt_vm_video' || type === 'video') && (
+                            {(type === 'image' || type === 'yt_vm_video' || type === 'video') ? (
                                 <Fragment>
                                     <PanelBody title={__('Parallax') + (parallax && parallaxSpeed !== '' ? ` (${parallax} ${parallaxSpeed})` : '')} initialOpen={false}>
                                         <SelectControl
@@ -948,7 +948,7 @@ class BlockEdit extends Component {
                                             ]}
                                             onChange={v => setAttributes({ parallax: v })}
                                         />
-                                        { parallax && (
+                                        { parallax ? (
                                             <Fragment>
                                                 <TextControl
                                                     label={__('Speed')}
@@ -966,7 +966,7 @@ class BlockEdit extends Component {
                                                     onChange={v => setAttributes({ parallaxMobile: v })}
                                                 />
                                             </Fragment>
-                                        ) }
+                                        ) : '' }
                                     </PanelBody>
                                     <PanelBody title={__('Mouse parallax')} initialOpen={false}>
                                         <ToggleControl
@@ -974,7 +974,7 @@ class BlockEdit extends Component {
                                             checked={!!mouseParallax}
                                             onChange={v => setAttributes({ mouseParallax: v })}
                                         />
-                                        { mouseParallax && (
+                                        { mouseParallax ? (
                                             <Fragment>
                                                 <RangeControl
                                                     label={__('Size')}
@@ -993,12 +993,12 @@ class BlockEdit extends Component {
                                                     onChange={v => setAttributes({ mouseParallaxSpeed: v })}
                                                 />
                                             </Fragment>
-                                        ) }
+                                        ) : '' }
                                     </PanelBody>
                                 </Fragment>
-                            )}
+                            ) : '' }
                         </Fragment>
-                    ) }
+                    ) : '' }
                 </InspectorControls>
                 <div className={className}>
                     <div
