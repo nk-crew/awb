@@ -118,6 +118,11 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.5.3 =
+
+* fixed image fetch error in Gutenberg 4.2
+* changed color picker to Gutenberg component
+
 = 1.5.2 =
 
 * removed default paddings from AWB shortcode, keep it only for Gutenberg block
