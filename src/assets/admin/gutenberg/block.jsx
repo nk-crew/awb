@@ -269,18 +269,17 @@ class BlockSave extends Component {
 }
 
 const actions = {
+    apiFetch(request) {
+        return {
+            type: 'API_FETCH',
+            request,
+        };
+    },
     setImageTagData(query, image) {
         return {
             type: 'SET_IMAGE_TAG_DATA',
             query,
             image,
-        };
-    },
-
-    getImageTagData(query) {
-        return {
-            type: 'GET_IMAGE_TAG_DATA',
-            query,
         };
     },
 };
@@ -293,33 +292,32 @@ registerStore('nk/awb', {
                 state.images[action.query] = action.image;
             }
             return state;
-        case 'GET_IMAGE_TAG_DATA':
-            return action.images[action.query];
         // no default
         }
 
         return state;
     },
-
     actions,
-
     selectors: {
         getImageTagData(state, query) {
             return state.images[query];
         },
     },
-
-    resolvers: {
-        * getImageTagData(state, query) {
-            const image = apiFetch({ path: query })
+    controls: {
+        API_FETCH({ request }) {
+            return apiFetch(request)
                 .then((fetchedData) => {
                     if (fetchedData && fetchedData.success && fetchedData.response) {
-                        return actions.setImageTagData(query, fetchedData.response);
+                        return fetchedData.response;
                     }
-
                     return false;
                 });
-            yield image;
+        },
+    },
+    resolvers: {
+        * getImageTagData(query) {
+            const image = yield actions.apiFetch({ path: query });
+            return actions.setImageTagData(query, image);
         },
     },
 });
