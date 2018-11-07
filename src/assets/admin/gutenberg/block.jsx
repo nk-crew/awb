@@ -1,4 +1,3 @@
-import { ChromePicker } from 'react-color';
 import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
 import iconAWB from './icons/awb.svg';
@@ -14,6 +13,8 @@ import iconVerticalBottomWhite from './icons/vertical-bottom-white.svg';
 if (!global._babelPolyfill) {
     require('babel-polyfill');
 }
+
+const WPColorPicker = wp.components.ColorPicker;
 
 /**
  * Gutenberg block
@@ -884,19 +885,24 @@ class BlockEdit extends Component {
                             ) : '' }
 
                             <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'}>
-                                <ChromePicker
+                                <WPColorPicker
                                     color={color}
-                                    onChangeComplete={(picker) => {
-                                        let newColor = picker.hex;
+                                    onChangeComplete={(colorData) => {
+                                        let colorString;
 
-                                        if (picker.rgb && picker.rgb.a < 1) {
-                                            newColor = `rgba(${picker.rgb.r}, ${picker.rgb.g}, ${picker.rgb.b}, ${picker.rgb.a})`;
+                                        if (typeof colorData.rgb === 'undefined' || colorData.rgb.a === 1) {
+                                            colorString = colorData.hex;
+                                        } else {
+                                            const {
+                                                r, g, b, a,
+                                            } = colorData.rgb;
+                                            colorString = `rgba(${r}, ${g}, ${b}, ${a})`;
                                         }
 
-                                        setAttributes({ color: newColor });
+                                        setAttributes({ color: colorString });
                                     }}
-                                    style={{ width: '100%' }}
                                     disableAlpha={false}
+                                    className="nk-awb-color-picker"
                                 />
                                 { color ? (
                                     <div style={{

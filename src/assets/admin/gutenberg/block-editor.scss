@@ -118,6 +118,18 @@ img.awb-gutenberg-icon {
     height: 150px;
 }
 
+// color picker
+.nk-awb-color-picker {
+    .components-color-picker__body {
+        padding: 16px 0;
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            margin: 0;
+            -webkit-appearance: none; // stylelint-disable-line
+        }
+    }
+}
 
 /**
  * Spacings Control.
