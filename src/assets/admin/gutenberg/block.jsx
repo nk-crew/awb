@@ -44,10 +44,10 @@ const {
     ToggleControl,
     TextControl,
     RangeControl,
-    PanelColor,
     Toolbar,
     IconButton,
     DropdownMenu,
+    ColorIndicator,
 } = wp.components;
 
 const { apiFetch } = wp;
@@ -884,7 +884,15 @@ class BlockEdit extends Component {
                                 </PanelBody>
                             ) : '' }
 
-                            <PanelColor title={__(type === 'color' ? 'Color' : 'Overlay Color')} colorValue={color} initialOpen={type === 'color'}>
+                            <PanelBody
+                                title={(
+                                    <Fragment>
+                                        {__(type === 'color' ? 'Color' : 'Overlay Color')}
+                                        <ColorIndicator colorValue={color} />
+                                    </Fragment>
+                                )}
+                                initialOpen={type === 'color'}
+                            >
                                 <WPColorPicker
                                     color={color}
                                     onChangeComplete={(colorData) => {
@@ -917,7 +925,7 @@ class BlockEdit extends Component {
                                         </Button>
                                     </div>
                                 ) : '' }
-                            </PanelColor>
+                            </PanelBody>
 
                             {(type === 'image' || type === 'yt_vm_video' || type === 'video') ? (
                                 <Fragment>
