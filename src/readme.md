@@ -118,6 +118,10 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.5.5 =
+
+* added file types limitations in image and self hosted videos selection
+
 = 1.5.4 =
 
 * updated Conditionize script
