@@ -512,7 +512,7 @@ class BlockEdit extends Component {
                                 onSelect={(media) => {
                                     onImageSelect(media, setAttributes);
                                 }}
-                                type="image"
+                                allowedTypes={['image']}
                                 value={image}
                                 render={({ open }) => (
                                     <IconButton
@@ -647,7 +647,7 @@ class BlockEdit extends Component {
                                                     });
                                                 });
                                             }}
-                                            type="video"
+                                            allowedTypes={['video/mp4', 'video/m4v']}
                                             value={videoMp4}
                                             render={({ open }) => (
                                                 <div style={{ marginBottom: 13 }}>
@@ -687,7 +687,7 @@ class BlockEdit extends Component {
                                                     });
                                                 });
                                             }}
-                                            type="video"
+                                            allowedTypes={['video/ogv', 'video/ogg']}
                                             value={videoOgv}
                                             render={({ open }) => (
                                                 <div style={{ marginBottom: 13 }}>
@@ -727,7 +727,7 @@ class BlockEdit extends Component {
                                                     });
                                                 });
                                             }}
-                                            type="video"
+                                            allowedTypes={['video/webm']}
                                             value={videoWebm}
                                             render={({ open }) => (
                                                 <div style={{ marginBottom: 13 }}>
@@ -792,7 +792,7 @@ class BlockEdit extends Component {
                                             onSelect={(media) => {
                                                 onImageSelect(media, setAttributes);
                                             }}
-                                            type="image"
+                                            allowedTypes={['image']}
                                             value={image}
                                             render={({ open }) => (
                                                 <Button onClick={open} isPrimary>
@@ -808,7 +808,7 @@ class BlockEdit extends Component {
                                                 onSelect={(media) => {
                                                     onImageSelect(media, setAttributes);
                                                 }}
-                                                type="image"
+                                                allowedTypes={['image']}
                                                 value={image}
                                                 render={({ open }) => (
                                                     <BaseControl help={__('Click the image to edit or update')}>
