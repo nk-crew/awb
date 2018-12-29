@@ -89,16 +89,16 @@ img.awb-gutenberg-icon {
 }
 
 // fix for Ghostkit Columns
-[data-col-class*="ghostkit-col"] .editor-block-list__block[data-align="full"][data-type="nk/awb"],
-[data-col-class*="ghostkit-col"] .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"],
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
     position: static;
 }
-[data-col-class*="ghostkit-col"] .editor-block-list__block[data-align="full"][data-type="nk/awb"] {
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] {
     padding-right: 10px;
     padding-left: 10px;
 }
-[data-col-class*="ghostkit-col"] .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit::before,
-[data-col-class*="ghostkit-col"] .editor-block-list__block[data-align="full"][data-type="nk/awb"] .awb-gutenberg-preview-block {
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit::before,
+.ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] .awb-gutenberg-preview-block {
     top: -14px;
     right: -14px;
     bottom: -14px;

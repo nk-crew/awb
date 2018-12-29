@@ -72,7 +72,7 @@ gulp.task('copy_to_dist_vendors', function () {
 });
 gulp.task('build_js', function () {
     return runStream(work_folders, function (itemData) {
-        return gulp.src([itemData.from + '/**/*.{js,jsx}', '!' + itemData.from + '/**/vendor/**/*'])
+        return gulp.src([itemData.from + '/**/*.js', itemData.from + '/**/*index.jsx', '!' + itemData.from + '/**/vendor/**/*'])
             .pipe($.plumber({ errorHandler }))
             .pipe(named())
             .pipe(webpack(webpackconfig))

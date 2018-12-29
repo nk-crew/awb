@@ -4,6 +4,8 @@ import shorthash from 'shorthash';
 import classnames from 'classnames/dedupe';
 import deepEqual from 'deep-equal';
 
+const AWBData = window.AWBGutenbergData;
+
 const { __ } = wp.i18n;
 
 const {
@@ -34,11 +36,11 @@ const {
  *
  * @return {Boolean} block supported.
  */
-function isFallbackEnabled(name) {
-    return !window.GHOSTKIT && name && /^nk\/awb/.test(name);
+function isFallbackEnabled( name ) {
+    return ! window.GHOSTKIT && name && /^nk\/awb/.test( name );
 }
 
-const cssPropsWithPixels = ['margin-left', 'margin-right', 'margin-top', 'margin-bottom', 'margin', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom', 'padding'];
+const cssPropsWithPixels = [ 'margin-left', 'margin-right', 'margin-top', 'margin-bottom', 'margin', 'padding-left', 'padding-right', 'padding-top', 'padding-bottom', 'padding' ];
 
 /**
  * camelCaseToDash('userId') => "user-id"
@@ -50,12 +52,12 @@ const cssPropsWithPixels = ['margin-left', 'margin-right', 'margin-top', 'margin
  * @param {string} str - camel-cased string.
  * @return {string} - new dashed string.
  */
-function camelCaseToDash(str) {
-    if (typeof str !== 'string') {
+function camelCaseToDash( str ) {
+    if ( typeof str !== 'string' ) {
         return str;
     }
 
-    str = str.replace(/[a-z]([A-Z])+/g, m => `${m[0]}-${m.substring(1)}`);
+    str = str.replace( /[a-z]([A-Z])+/g, m => `${ m[ 0 ] }-${ m.substring( 1 ) }` );
 
     return str && str.toLowerCase ? str.toLowerCase() : str;
 }
@@ -67,46 +69,46 @@ function camelCaseToDash(str) {
  * @param {string} selector - current styles selector (useful for nested styles).
  * @return {string} - ready to use styles string.
  */
-function getStyles(data = {}, selector = '') {
+function getStyles( data = {}, selector = '' ) {
     const result = {};
     let resultCSS = '';
 
     // add styles.
-    Object.keys(data).forEach((key) => {
+    Object.keys( data ).forEach( ( key ) => {
         // object values.
-        if (data[key] !== null && typeof data[key] === 'object') {
+        if ( data[ key ] !== null && typeof data[ key ] === 'object' ) {
             let nestedSelector = selector;
-            if (nestedSelector) {
-                nestedSelector = `${nestedSelector} ${key}`;
+            if ( nestedSelector ) {
+                nestedSelector = `${ nestedSelector } ${ key }`;
             } else {
                 nestedSelector = key;
             }
-            resultCSS += (resultCSS ? ' ' : '') + getStyles(data[key], nestedSelector);
+            resultCSS += ( resultCSS ? ' ' : '' ) + getStyles( data[ key ], nestedSelector );
 
         // style properties and values.
-        } else if (typeof data[key] !== 'undefined' && data[key] !== false) {
-            if (!result[selector]) {
-                result[selector] = '';
+        } else if ( typeof data[ key ] !== 'undefined' && data[ key ] !== false ) {
+            if ( ! result[ selector ] ) {
+                result[ selector ] = '';
             }
-            const propName = camelCaseToDash(key);
-            let propValue = data[key];
+            const propName = camelCaseToDash( key );
+            let propValue = data[ key ];
 
             // add pixels.
             if (
-                (typeof propValue === 'number' && propValue !== 0 && cssPropsWithPixels.includes(propName)) ||
+                ( typeof propValue === 'number' && propValue !== 0 && cssPropsWithPixels.includes( propName ) ) ||
                 (typeof propValue === 'string' && /^[0-9.\-]*$/.test(propValue)) // eslint-disable-line
             ) {
                 propValue += 'px';
             }
 
-            result[selector] += ` ${propName}: ${propValue};`;
+            result[ selector ] += ` ${ propName }: ${ propValue };`;
         }
-    });
+    } );
 
     // add styles to selectors.
-    Object.keys(result).forEach((key) => {
-        resultCSS = `${key} {${result[key]} }${resultCSS ? ` ${resultCSS}` : ''}`;
-    });
+    Object.keys( result ).forEach( ( key ) => {
+        resultCSS = `${ key } {${ result[ key ] } }${ resultCSS ? ` ${ resultCSS }` : '' }`;
+    } );
 
     return resultCSS;
 }
@@ -117,9 +119,9 @@ function getStyles(data = {}, selector = '') {
  * @param {object} data - styles data.
  * @return {string} - data attribute with styles.
  */
-function getCustomStylesAttr(data = {}) {
+function getCustomStylesAttr( data = {} ) {
     return {
-        'data-ghostkit-styles': getStyles(data),
+        'data-ghostkit-styles': getStyles( data ),
     };
 }
 
@@ -131,29 +133,29 @@ function getCustomStylesAttr(data = {}) {
  *
  * @return {Object} Filtered block settings.
  */
-function addAttribute(settings, name) {
-    const allow = isFallbackEnabled(name);
+function addAttribute( settings, name ) {
+    const allow = isFallbackEnabled( name );
 
-    if (allow) {
-        if (!settings.attributes.ghostkitStyles) {
+    if ( allow ) {
+        if ( ! settings.attributes.ghostkitStyles ) {
             settings.attributes.ghostkitStyles = {
                 type: 'object',
                 default: '',
             };
         }
-        if (!settings.attributes.ghostkitClassname) {
+        if ( ! settings.attributes.ghostkitClassname ) {
             settings.attributes.ghostkitClassname = {
                 type: 'string',
                 default: '',
             };
         }
-        if (!settings.attributes.ghostkitId) {
+        if ( ! settings.attributes.ghostkitId ) {
             settings.attributes.ghostkitId = {
                 type: 'string',
                 default: '',
             };
         }
-        if (!settings.attributes.ghostkitSpacings) {
+        if ( ! settings.attributes.ghostkitSpacings ) {
             settings.attributes.ghostkitSpacings = {
                 type: 'object',
                 default: {},
@@ -178,42 +180,42 @@ const usedIds = {};
  *
  * @return {string} Wrapped component.
  */
-const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b, c) => {
+const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) => {
     class GhostkitSpacingsFallback extends Component {
         constructor() {
-            super(...arguments);
+            super( ...arguments );
 
-            this.onUpdate = this.onUpdate.bind(this);
-            this.updateSpacings = this.updateSpacings.bind(this);
-            this.getCurrentSpacing = this.getCurrentSpacing.bind(this);
+            this.onUpdate = this.onUpdate.bind( this );
+            this.updateSpacings = this.updateSpacings.bind( this );
+            this.getCurrentSpacing = this.getCurrentSpacing.bind( this );
 
-            if (!isFallbackEnabled(this.props.name)) {
+            if ( ! isFallbackEnabled( this.props.name ) ) {
                 return;
             }
 
             // add new ghostkit props.
-            if (this.props.clientId && typeof this.props.attributes.ghostkitId !== 'undefined') {
+            if ( this.props.clientId && typeof this.props.attributes.ghostkitId !== 'undefined' ) {
                 let ID = this.props.attributes.ghostkitId || '';
 
                 // check if ID already exist.
                 let tryCount = 10;
-                while (!ID || (typeof usedIds[ID] !== 'undefined' && usedIds[ID] !== this.props.clientId && tryCount > 0)) {
-                    ID = shorthash.unique(this.props.clientId);
+                while ( ! ID || ( typeof usedIds[ ID ] !== 'undefined' && usedIds[ ID ] !== this.props.clientId && tryCount > 0 ) ) {
+                    ID = shorthash.unique( this.props.clientId );
                     tryCount--;
                 }
 
-                if (ID && typeof usedIds[ID] === 'undefined') {
-                    usedIds[ID] = this.props.clientId;
+                if ( ID && typeof usedIds[ ID ] === 'undefined' ) {
+                    usedIds[ ID ] = this.props.clientId;
                 }
 
-                if (ID !== this.props.attributes.ghostkitId) {
+                if ( ID !== this.props.attributes.ghostkitId ) {
                     this.props.attributes.ghostkitId = ID;
-                    this.props.attributes.ghostkitClassname = `${this.props.name.replace('/', '-')}-${ID}`;
+                    this.props.attributes.ghostkitClassname = `${ this.props.name.replace( '/', '-' ) }-${ ID }`;
                 }
 
                 // force update when new ID.
-                if (tryCount < 10) {
-                    this.onUpdate(false);
+                if ( tryCount < 10 ) {
+                    this.onUpdate( false );
                 }
             }
         }
@@ -225,13 +227,13 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b
             this.onUpdate();
         }
 
-        onUpdate(useSetAttributes = true) {
+        onUpdate( useSetAttributes = true ) {
             const {
                 setAttributes,
                 attributes,
             } = this.props;
 
-            if (!isFallbackEnabled(this.props.name)) {
+            if ( ! isFallbackEnabled( this.props.name ) ) {
                 return;
             }
 
@@ -240,16 +242,16 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b
                 ghostkitClassname,
             } = attributes;
 
-            if (ghostkitClassname) {
+            if ( ghostkitClassname ) {
                 const customStyles = {};
 
-                if (ghostkitSpacings && Object.keys(ghostkitSpacings).length) {
-                    customStyles[`.${ghostkitClassname}`] = ghostkitSpacings;
+                if ( ghostkitSpacings && Object.keys( ghostkitSpacings ).length ) {
+                    customStyles[ `.${ ghostkitClassname }` ] = ghostkitSpacings;
                 }
 
-                if (!deepEqual(attributes.ghostkitStyles, customStyles)) {
-                    if (useSetAttributes) {
-                        setAttributes({ ghostkitStyles: customStyles });
+                if ( ! deepEqual( attributes.ghostkitStyles, customStyles ) ) {
+                    if ( useSetAttributes ) {
+                        setAttributes( { ghostkitStyles: customStyles } );
                     } else {
                         this.props.attributes.ghostkitStyles = customStyles;
                     }
@@ -264,11 +266,11 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b
          *
          * @returns {String} spacing value.
          */
-        getCurrentSpacing(name) {
+        getCurrentSpacing( name ) {
             const { ghostkitSpacings = {} } = this.props.attributes;
 
-            if (ghostkitSpacings[name]) {
-                return ghostkitSpacings[name];
+            if ( ghostkitSpacings[ name ] ) {
+                return ghostkitSpacings[ name ];
             }
 
             return '';
@@ -280,30 +282,30 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b
          * @param {String} name - name of new spacing.
          * @param {String} val - value for new spacing.
          */
-        updateSpacings(name, val) {
+        updateSpacings( name, val ) {
             const { setAttributes } = this.props;
             let { ghostkitSpacings = {} } = this.props.attributes;
             const result = {};
             const newSpacings = {};
 
-            newSpacings[name] = val;
+            newSpacings[ name ] = val;
 
             // add default properties to keep sorting.
-            ghostkitSpacings = deepAssign({}, ghostkitSpacings, newSpacings);
+            ghostkitSpacings = deepAssign( {}, ghostkitSpacings, newSpacings );
 
             // validate values.
-            Object.keys(ghostkitSpacings).forEach((key) => {
-                if (ghostkitSpacings[key]) {
+            Object.keys( ghostkitSpacings ).forEach( ( key ) => {
+                if ( ghostkitSpacings[ key ] ) {
                     // device object supported bu GhostKit plugin only.
-                    if (typeof ghostkitSpacings[key] !== 'object') {
-                        result[key] = ghostkitSpacings[key];
+                    if ( typeof ghostkitSpacings[ key ] !== 'object' ) {
+                        result[ key ] = ghostkitSpacings[ key ];
                     }
                 }
-            });
+            } );
 
-            setAttributes({
+            setAttributes( {
                 ghostkitSpacings: result,
-            });
+            } );
         }
 
         render() {
@@ -312,93 +314,93 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b
                 attributes,
             } = this.props;
 
-            const allow = isFallbackEnabled(props.name);
+            const allow = isFallbackEnabled( props.name );
 
-            if (!allow) {
-                return <OriginalComponent {...props} />;
+            if ( ! allow ) {
+                return <OriginalComponent { ...props } />;
             }
 
             // add new spacings controls.
             return (
                 <Fragment>
                     <OriginalComponent
-                        {...props}
-                        {...this.state}
-                        setState={this.setState}
+                        { ...props }
+                        { ...this.state }
+                        setState={ this.setState }
                     />
-                    {attributes.ghostkitClassname && attributes.ghostkitStyles && Object.keys(attributes.ghostkitStyles).length ? (
-                        <style>{getStyles(attributes.ghostkitStyles)}</style>
-                    ) : ''}
+                    { attributes.ghostkitClassname && attributes.ghostkitStyles && Object.keys( attributes.ghostkitStyles ).length ? (
+                        <style>{ getStyles( attributes.ghostkitStyles ) }</style>
+                    ) : '' }
                     <InspectorControls>
                         <PanelBody
-                            title={__('Spacings')}
-                            initialOpen={false}
+                            title={ __( 'Spacings' ) }
+                            initialOpen={ false }
                         >
                             <BaseControl className="awb-ghostkit-control-spacing">
                                 <div className="awb-ghostkit-control-spacing-margin">
-                                    <span>{__('Margin')}</span>
+                                    <span>{ __( 'Margin' ) }</span>
                                     <div className="awb-ghostkit-control-spacing-margin-left">
                                         <TextControl
-                                            value={this.getCurrentSpacing('marginLeft')}
+                                            value={ this.getCurrentSpacing( 'marginLeft' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('marginLeft', val)}
+                                            onChange={ val => this.updateSpacings( 'marginLeft', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-margin-top">
                                         <TextControl
-                                            value={this.getCurrentSpacing('marginTop')}
+                                            value={ this.getCurrentSpacing( 'marginTop' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('marginTop', val)}
+                                            onChange={ val => this.updateSpacings( 'marginTop', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-margin-right">
                                         <TextControl
-                                            value={this.getCurrentSpacing('marginRight')}
+                                            value={ this.getCurrentSpacing( 'marginRight' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('marginRight', val)}
+                                            onChange={ val => this.updateSpacings( 'marginRight', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-margin-bottom">
                                         <TextControl
-                                            value={this.getCurrentSpacing('marginBottom')}
+                                            value={ this.getCurrentSpacing( 'marginBottom' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('marginBottom', val)}
+                                            onChange={ val => this.updateSpacings( 'marginBottom', val ) }
                                         />
                                     </div>
                                 </div>
                                 <div className="awb-ghostkit-control-spacing-padding">
-                                    <span>{__('Padding')}</span>
+                                    <span>{ __( 'Padding' ) }</span>
                                     <div className="awb-ghostkit-control-spacing-padding-left">
                                         <TextControl
-                                            value={this.getCurrentSpacing('paddingLeft')}
+                                            value={ this.getCurrentSpacing( 'paddingLeft' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('paddingLeft', val)}
+                                            onChange={ val => this.updateSpacings( 'paddingLeft', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-padding-top">
                                         <TextControl
-                                            value={this.getCurrentSpacing('paddingTop')}
+                                            value={ this.getCurrentSpacing( 'paddingTop' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('paddingTop', val)}
+                                            onChange={ val => this.updateSpacings( 'paddingTop', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-padding-right">
                                         <TextControl
-                                            value={this.getCurrentSpacing('paddingRight')}
+                                            value={ this.getCurrentSpacing( 'paddingRight' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('paddingRight', val)}
+                                            onChange={ val => this.updateSpacings( 'paddingRight', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-padding-bottom">
                                         <TextControl
-                                            value={this.getCurrentSpacing('paddingBottom')}
+                                            value={ this.getCurrentSpacing( 'paddingBottom' ) }
                                             placeholder="-"
-                                            onChange={val => this.updateSpacings('paddingBottom', val)}
+                                            onChange={ val => this.updateSpacings( 'paddingBottom', val ) }
                                         />
                                     </div>
                                 </div>
                             </BaseControl>
-                            <p><em>{__('More spacing options available in GhostKit plugin ')}<a href="https://wordpress.org/plugins/ghostkit/" target="_blank" rel="noopener noreferrer">https://wordpress.org/plugins/ghostkit/</a></em></p>
+                            <p><em>{ __( 'More spacing options available in GhostKit plugin ' ) }<a href="https://wordpress.org/plugins/ghostkit/" target="_blank" rel="noopener noreferrer">https://wordpress.org/plugins/ghostkit/</a></em></p>
                         </PanelBody>
                     </InspectorControls>
                 </Fragment>
@@ -407,7 +409,7 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b
     }
 
     return GhostkitSpacingsFallback;
-}, 'withInspectorControl');
+}, 'withInspectorControl' );
 
 /**
  * Override props assigned to save component to inject custom styles.
@@ -420,25 +422,28 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent, a, b
  *
  * @return {Object} Filtered props applied to save element.
  */
-function addSaveProps(extraProps, blockType, attributes) {
-    if (!isFallbackEnabled(blockType.name)) {
+function addSaveProps( extraProps, blockType, attributes ) {
+    if ( ! isFallbackEnabled( blockType.name ) ) {
         return extraProps;
     }
 
-    const customStyles = attributes.ghostkitStyles ? Object.assign({}, attributes.ghostkitStyles) : false;
+    const customStyles = attributes.ghostkitStyles ? Object.assign( {}, attributes.ghostkitStyles ) : false;
 
-    if (customStyles && Object.keys(customStyles).length !== 0) {
-        extraProps = Object.assign(extraProps || {}, getCustomStylesAttr(customStyles));
+    if ( customStyles && Object.keys( customStyles ).length !== 0 ) {
+        extraProps = Object.assign( extraProps || {}, getCustomStylesAttr( customStyles ) );
 
-        if (attributes.ghostkitClassname) {
-            extraProps.className = classnames(extraProps.className, attributes.ghostkitClassname);
+        if ( attributes.ghostkitClassname ) {
+            extraProps.className = classnames( extraProps.className, attributes.ghostkitClassname );
         }
     }
 
     return extraProps;
 }
 
-// Init filters.
-addFilter('blocks.registerBlockType', 'awb/ghostkit/spacings/additional-attributes', addAttribute);
-addFilter('editor.BlockEdit', 'awb/ghostkit/spacings/additional-attributes', withInspectorControl);
-addFilter('blocks.getSaveContent.extraProps', 'awb/ghostkit/styles/save-props', addSaveProps);
+// enable only if GhostKit is not installed.
+if ( ! AWBData.is_ghostkit_active ) {
+    // Init filters.
+    addFilter( 'blocks.registerBlockType', 'awb/ghostkit/spacings/additional-attributes', addAttribute );
+    addFilter( 'editor.BlockEdit', 'awb/ghostkit/spacings/additional-attributes', withInspectorControl );
+    addFilter( 'blocks.getSaveContent.extraProps', 'awb/ghostkit/styles/save-props', addSaveProps );
+}
