@@ -1,5 +1,7 @@
 import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
+import ColorPicker from './_components/color-picker.jsx';
+
 import iconAWB from './icons/awb.svg';
 import iconFullHeight from './icons/fullheight.svg';
 import iconVerticalCenter from './icons/vertical-center.svg';
@@ -14,16 +16,11 @@ if ( ! global._babelPolyfill ) {
     require( 'babel-polyfill' );
 }
 
-const WPColorPicker = wp.components.ColorPicker;
-
 /**
  * Gutenberg block
  */
 const { __ } = wp.i18n;
 const { Component, Fragment } = wp.element;
-const {
-    registerBlockType,
-} = wp.blocks;
 
 const AWBData = window.AWBGutenbergData;
 
@@ -172,7 +169,7 @@ function getVideoPoster( url, cb ) {
     }, 500 );
 }
 
-class BlockSave extends Component {
+export class BlockSave extends Component {
     constructor() {
         super( ...arguments );
 
@@ -190,6 +187,7 @@ class BlockSave extends Component {
     render() {
         const {
             attributes,
+            backgroundHTMLOnly,
         } = this.props;
         let {
             className,
@@ -282,10 +280,17 @@ class BlockSave extends Component {
         if ( resultImg || resultAtts.video ) {
             wrapHTML += `<div class="nk-awb-inner">${ resultImg || '' }</div>`;
         }
+        wrapHTML = wrapHTML ? <div className="nk-awb-wrap" { ...getDataAttributes( resultAtts ) } dangerouslySetInnerHTML={ { __html: wrapHTML } } /> : '';
+
+        // return background block only
+        // used in GhostKit extension
+        if ( backgroundHTMLOnly ) {
+            return wrapHTML;
+        }
 
         return (
             <div className={ className }>
-                { wrapHTML ? <div className="nk-awb-wrap" { ...getDataAttributes( resultAtts ) } dangerouslySetInnerHTML={ { __html: wrapHTML } } /> : '' }
+                { wrapHTML }
                 <InnerBlocks.Content />
             </div>
         );
@@ -346,10 +351,570 @@ registerStore( 'nk/awb', {
     },
 } );
 
-// eslint-disable-next-line react/no-multi-comp
-class BlockEdit extends Component {
+export function renderInspectorControls( props ) {
+    const {
+        attributes,
+        setAttributes,
+    } = props;
+
+    const {
+        type,
+
+        image,
+        imageTag,
+        imageSizes,
+        imageSize,
+        imageBackgroundSize,
+        imageBackgroundPosition,
+
+        video,
+        videoPosterPreview,
+        videoMp4,
+        videoOgv,
+        videoWebm,
+        videoStartTime,
+        videoEndTime,
+        videoAlwaysPlay,
+        videoMobile,
+
+        color,
+
+        parallax,
+        parallaxSpeed,
+        parallaxMobile,
+
+        mouseParallax,
+        mouseParallaxSize,
+        mouseParallaxSpeed,
+    } = attributes;
+
+    // load YouTube / Vimeo poster
+    if ( type === 'yt_vm_video' && video && ! image ) {
+        getVideoPoster( video, ( url ) => {
+            if ( url !== videoPosterPreview ) {
+                setAttributes( { videoPosterPreview: url } );
+            }
+        } );
+    }
+
+    return (
+        <Fragment>
+            <ButtonGroup aria-label={ __( 'Background type' ) } style={ { marginTop: 15, marginBottom: 10 } }>
+                {
+                    [
+                        {
+                            label: __( 'Color' ),
+                            value: 'color',
+                        },
+                        {
+                            label: __( 'Image' ),
+                            value: 'image',
+                        },
+                        {
+                            label: __( 'Video' ),
+                            value: 'yt_vm_video',
+                        },
+                    ].map( ( val ) => {
+                        let selected = type === val.value;
+
+                        // select video
+                        if ( val.value === 'yt_vm_video' ) {
+                            if ( type === 'video' || type === 'yt_vm_video' ) {
+                                selected = true;
+                            }
+                        }
+
+                        return (
+                            <Button
+                                isLarge
+                                isPrimary={ selected }
+                                aria-pressed={ selected }
+                                onClick={ () => setAttributes( { type: val.value } ) }
+                                key={ `type_${ val.label }` }
+                            >
+                                { val.label }
+                            </Button>
+                        );
+                    } )
+                }
+            </ButtonGroup>
+
+            { ( type === 'video' || type === 'yt_vm_video' ) ? (
+                <ButtonGroup aria-label={ __( 'Background video type' ) } style={ { marginBottom: 10 } }>
+                    {
+                        [
+                            {
+                                label: __( 'YouTube / Vimeo' ),
+                                value: 'yt_vm_video',
+                            },
+                            {
+                                label: __( 'Self Hosted' ),
+                                value: 'video',
+                            },
+                        ].map( val => (
+                            <Button
+                                isLarge
+                                isPrimary={ type === val.value }
+                                aria-pressed={ type === val.value }
+                                onClick={ () => setAttributes( { type: val.value } ) }
+                                key={ `type_${ val.label }` }
+                            >
+                                { val.label }
+                            </Button>
+                        ) )
+                    }
+                </ButtonGroup>
+            ) : '' }
+
+            { type ? (
+                <Fragment>
+                    { ( type === 'yt_vm_video' || type === 'video' ) ? (
+                        <PanelBody title={ __( 'Video' ) } initialOpen={ type === 'yt_vm_video' || type === 'video' }>
+                            { type === 'yt_vm_video' ? (
+                                <TextControl
+                                    label={ __( 'Video URL' ) }
+                                    type="url"
+                                    value={ video }
+                                    onChange={ v => setAttributes( { video: v } ) }
+                                    help={ __( 'Supported YouTube and Vimeo URLs' ) }
+                                />
+                            ) : '' }
+
+                            { /* Preview Video */ }
+                            { type === 'video' && ( videoMp4 || videoOgv || videoWebm ) ? (
+                                <video controls>
+                                    { videoMp4 ? (
+                                        <source src={ videoMp4 } type="video/mp4" />
+                                    ) : '' }
+                                    { videoOgv ? (
+                                        <source src={ videoOgv } type="video/ogg" />
+                                    ) : '' }
+                                    { videoWebm ? (
+                                        <source src={ videoWebm } type="video/webm" />
+                                    ) : '' }
+                                </video>
+                            ) : '' }
+
+                            { /* Select Videos */ }
+                            { type === 'video' && ! videoMp4 ? (
+                                <MediaUpload
+                                    onSelect={ ( media ) => {
+                                        setAttributes( {
+                                            videoMp4: '',
+                                        } );
+                                        wp.media.attachment( media.id ).fetch().then( ( data ) => {
+                                            setAttributes( {
+                                                videoMp4: data.url,
+                                            } );
+                                        } );
+                                    } }
+                                    allowedTypes={ [ 'video/mp4', 'video/m4v' ] }
+                                    value={ videoMp4 }
+                                    render={ ( { open } ) => (
+                                        <div style={ { marginBottom: 13 } }>
+                                            <Button onClick={ open } isPrimary>
+                                                { __( 'Select MP4' ) }
+                                            </Button>
+                                        </div>
+                                    ) }
+                                />
+                            ) : '' }
+                            { type === 'video' && videoMp4 ? (
+                                <div>
+                                    <span>{ videoMp4.substring( videoMp4.lastIndexOf( '/' ) + 1 ) } </span>
+                                    <a
+                                        href="#"
+                                        onClick={ ( e ) => {
+                                            setAttributes( {
+                                                videoMp4: '',
+                                            } );
+                                            e.preventDefault();
+                                        } }
+                                    >
+                                        { __( '(Remove)' ) }
+                                    </a>
+                                    <div style={ { marginBottom: 13 } } />
+                                </div>
+                            ) : '' }
+                            { type === 'video' && ! videoOgv ? (
+                                <MediaUpload
+                                    onSelect={ ( media ) => {
+                                        setAttributes( {
+                                            videoOgv: '',
+                                        } );
+                                        wp.media.attachment( media.id ).fetch().then( ( data ) => {
+                                            setAttributes( {
+                                                videoOgv: data.url,
+                                            } );
+                                        } );
+                                    } }
+                                    allowedTypes={ [ 'video/ogv', 'video/ogg' ] }
+                                    value={ videoOgv }
+                                    render={ ( { open } ) => (
+                                        <div style={ { marginBottom: 13 } }>
+                                            <Button onClick={ open } isPrimary>
+                                                { __( 'Select OGV' ) }
+                                            </Button>
+                                        </div>
+                                    ) }
+                                />
+                            ) : '' }
+                            { type === 'video' && videoOgv ? (
+                                <div>
+                                    <span>{ videoOgv.substring( videoOgv.lastIndexOf( '/' ) + 1 ) } </span>
+                                    <a
+                                        href="#"
+                                        onClick={ ( e ) => {
+                                            setAttributes( {
+                                                videoOgv: '',
+                                            } );
+                                            e.preventDefault();
+                                        } }
+                                    >
+                                        { __( '(Remove)' ) }
+                                    </a>
+                                    <div style={ { marginBottom: 13 } } />
+                                </div>
+                            ) : '' }
+                            { type === 'video' && ! videoWebm ? (
+                                <MediaUpload
+                                    onSelect={ ( media ) => {
+                                        setAttributes( {
+                                            videoWebm: '',
+                                        } );
+                                        wp.media.attachment( media.id ).fetch().then( ( data ) => {
+                                            setAttributes( {
+                                                videoWebm: data.url,
+                                            } );
+                                        } );
+                                    } }
+                                    allowedTypes={ [ 'video/webm' ] }
+                                    value={ videoWebm }
+                                    render={ ( { open } ) => (
+                                        <div style={ { marginBottom: 13 } }>
+                                            <Button onClick={ open } isPrimary>
+                                                { __( 'Select WEBM' ) }
+                                            </Button>
+                                        </div>
+                                    ) }
+                                />
+                            ) : '' }
+                            { type === 'video' && videoWebm ? (
+                                <div>
+                                    <span>{ videoWebm.substring( videoWebm.lastIndexOf( '/' ) + 1 ) } </span>
+                                    <a
+                                        href="#"
+                                        onClick={ ( e ) => {
+                                            setAttributes( {
+                                                videoWebm: '',
+                                            } );
+                                            e.preventDefault();
+                                        } }
+                                    >
+                                        { __( '(Remove)' ) }
+                                    </a>
+                                    <div style={ { marginBottom: 13 } } />
+                                </div>
+                            ) : '' }
+                            <ToggleControl
+                                label={ __( 'Enable on mobile devices' ) }
+                                checked={ !! videoMobile }
+                                onChange={ v => setAttributes( { videoMobile: v } ) }
+                            />
+
+                            <TextControl
+                                label={ __( 'Start time' ) }
+                                type="number"
+                                value={ videoStartTime }
+                                onChange={ v => setAttributes( { videoStartTime: parseFloat( v ) } ) }
+                                help={ __( 'Start time in seconds when video will be started (this value will be applied also after loop)' ) }
+                            />
+                            <TextControl
+                                label={ __( 'End time' ) }
+                                type="number"
+                                value={ videoEndTime }
+                                onChange={ v => setAttributes( { videoEndTime: parseFloat( v ) } ) }
+                                help={ __( 'End time in seconds when video will be ended' ) }
+                            />
+                            <ToggleControl
+                                label={ __( 'Always play' ) }
+                                help={ __( 'Play video also when not in viewport' ) }
+                                checked={ !! videoAlwaysPlay }
+                                onChange={ v => setAttributes( { videoAlwaysPlay: v } ) }
+                            />
+                        </PanelBody>
+                    ) : '' }
+
+                    { ( type === 'image' || type === 'yt_vm_video' || type === 'video' ) ? (
+                        <PanelBody title={ type === 'image' ? __( 'Image' ) : __( 'Poster Image' ) } initialOpen={ type === 'image' }>
+                            { /* Select Image */ }
+                            { ! image || ! imageTag ? (
+                                <MediaUpload
+                                    onSelect={ ( media ) => {
+                                        onImageSelect( media, setAttributes );
+                                    } }
+                                    allowedTypes={ [ 'image' ] }
+                                    value={ image }
+                                    render={ ( { open } ) => (
+                                        <Button onClick={ open } isPrimary>
+                                            { __( 'Select image' ) }
+                                        </Button>
+                                    ) }
+                                />
+                            ) : '' }
+
+                            { image && imageTag ? (
+                                <Fragment>
+                                    <MediaUpload
+                                        onSelect={ ( media ) => {
+                                            onImageSelect( media, setAttributes );
+                                        } }
+                                        allowedTypes={ [ 'image' ] }
+                                        value={ image }
+                                        render={ ( { open } ) => (
+                                            <BaseControl help={ __( 'Click the image to edit or update' ) }>
+                                                <a
+                                                    href="#"
+                                                    onClick={ open }
+                                                    className="awb-gutenberg-media-upload"
+                                                    style={ { display: 'block' } }
+                                                    dangerouslySetInnerHTML={ { __html: imageTag } }
+                                                />
+                                            </BaseControl>
+                                        ) }
+                                    />
+                                    <a
+                                        href="#"
+                                        onClick={ ( e ) => {
+                                            setAttributes( {
+                                                image: '',
+                                                imageTag: '',
+                                                imageSizes: '',
+                                            } );
+                                            e.preventDefault();
+                                        } }
+                                    >
+                                        { __( 'Remove image' ) }
+                                    </a>
+                                    <div style={ { marginBottom: 13 } } />
+                                    { imageSizes ? (
+                                        <SelectControl
+                                            label={ __( 'Size' ) }
+                                            value={ imageSize }
+                                            options={ ( () => {
+                                                const result = [];
+                                                Object.keys( imageSizes ).forEach( ( k ) => {
+                                                    result.push( {
+                                                        value: k,
+                                                        label: toTitleCase( k ),
+                                                    } );
+                                                } );
+                                                return result;
+                                            } )() }
+                                            onChange={ v => setAttributes( { imageSize: v } ) }
+                                        />
+                                    ) : '' }
+                                    <SelectControl
+                                        label={ __( 'Background size' ) }
+                                        value={ imageBackgroundSize }
+                                        options={ [
+                                            {
+                                                label: __( 'Cover' ),
+                                                value: 'cover',
+                                            },
+                                            {
+                                                label: __( 'Contain' ),
+                                                value: 'contain',
+                                            },
+                                            {
+                                                label: __( 'Pattern' ),
+                                                value: 'pattern',
+                                            },
+                                        ] }
+                                        onChange={ v => setAttributes( { imageBackgroundSize: v } ) }
+                                    />
+                                    <TextControl
+                                        label={ __( 'Background position' ) }
+                                        type="text"
+                                        value={ imageBackgroundPosition }
+                                        onChange={ v => setAttributes( { imageBackgroundPosition: v } ) }
+                                        help={ __( 'Image position. Example: 50% 50%' ) }
+                                    />
+                                </Fragment>
+                            ) : '' }
+                        </PanelBody>
+                    ) : '' }
+
+                    { type === 'color' ? (
+                        <ColorPicker
+                            label={ __( 'Background Color' ) }
+                            value={ color }
+                            onChange={ ( val ) => setAttributes( { color: val } ) }
+                            alpha={ true }
+                        />
+                    ) : (
+                        <PanelBody
+                            title={ (
+                                <Fragment>
+                                    { __( 'Overlay' ) }
+                                    <ColorIndicator colorValue={ color } />
+                                </Fragment>
+                            ) }
+                            initialOpen={ type === 'color' }
+                        >
+                            <ColorPicker
+                                label={ __( 'Background Color' ) }
+                                value={ color }
+                                onChange={ ( val ) => setAttributes( { color: val } ) }
+                                alpha={ true }
+                            />
+                        </PanelBody>
+                    ) }
+
+                    { ( type === 'image' || type === 'yt_vm_video' || type === 'video' ) ? (
+                        <Fragment>
+                            <PanelBody title={ __( 'Parallax' ) + ( parallax && parallaxSpeed !== '' ? ` (${ parallax } ${ parallaxSpeed })` : '' ) } initialOpen={ false }>
+                                <SelectControl
+                                    value={ parallax }
+                                    options={ [
+                                        {
+                                            label: __( 'Disabled' ),
+                                            value: '',
+                                        },
+                                        {
+                                            label: __( 'Scroll' ),
+                                            value: 'scroll',
+                                        },
+                                        {
+                                            label: __( 'Scale' ),
+                                            value: 'scale',
+                                        },
+                                        {
+                                            label: __( 'Opacity' ),
+                                            value: 'opacity',
+                                        },
+                                        {
+                                            label: __( 'Opacity + Scroll' ),
+                                            value: 'scroll-opacity',
+                                        },
+                                        {
+                                            label: __( 'Opacity + Scale' ),
+                                            value: 'scale-opacity',
+                                        },
+                                    ] }
+                                    onChange={ v => setAttributes( { parallax: v } ) }
+                                />
+                                { parallax ? (
+                                    <Fragment>
+                                        <TextControl
+                                            label={ __( 'Speed' ) }
+                                            type="number"
+                                            value={ parallaxSpeed }
+                                            step="0.1"
+                                            min="-1"
+                                            max="2"
+                                            onChange={ v => setAttributes( { parallaxSpeed: parseFloat( v ) } ) }
+                                            help={ __( 'Provide number from -1.0 to 2.0' ) }
+                                        />
+                                        <ToggleControl
+                                            label={ __( 'Enable on mobile devices' ) }
+                                            checked={ !! parallaxMobile }
+                                            onChange={ v => setAttributes( { parallaxMobile: v } ) }
+                                        />
+                                    </Fragment>
+                                ) : '' }
+                            </PanelBody>
+                            <PanelBody title={ __( 'Mouse parallax' ) } initialOpen={ false }>
+                                <ToggleControl
+                                    label={ __( 'Enable' ) }
+                                    checked={ !! mouseParallax }
+                                    onChange={ v => setAttributes( { mouseParallax: v } ) }
+                                />
+                                { mouseParallax ? (
+                                    <Fragment>
+                                        <RangeControl
+                                            label={ __( 'Size' ) }
+                                            value={ mouseParallaxSize }
+                                            min="0"
+                                            max="200"
+                                            help={ ` ${ __( 'px' ) }` }
+                                            onChange={ v => setAttributes( { mouseParallaxSize: v } ) }
+                                        />
+                                        <RangeControl
+                                            label={ __( 'Speed' ) }
+                                            value={ mouseParallaxSpeed }
+                                            min="0"
+                                            max="20000"
+                                            help={ ` ${ __( 'ms' ) }` }
+                                            onChange={ v => setAttributes( { mouseParallaxSpeed: v } ) }
+                                        />
+                                    </Fragment>
+                                ) : '' }
+                            </PanelBody>
+                        </Fragment>
+                    ) : '' }
+                </Fragment>
+            ) : '' }
+        </Fragment>
+    );
+}
+
+export function renderEditorPreview( props ) {
+    const {
+        attributes,
+        setAttributes,
+    } = props;
+
+    const {
+        type,
+
+        image,
+        imageTag,
+
+        video,
+        videoPosterPreview,
+
+        color,
+    } = attributes;
+
+    let colorOverlay = false;
+    if ( color ) {
+        colorOverlay = `<div class="nk-awb-overlay" style="background-color: ${ color };"></div>`;
+    }
+
+    // load YouTube / Vimeo poster
+    if ( type === 'yt_vm_video' && video && ! image ) {
+        getVideoPoster( video, ( url ) => {
+            if ( url !== videoPosterPreview ) {
+                setAttributes( { videoPosterPreview: url } );
+            }
+        } );
+    }
+
+    let previewHTML = '';
+    if ( type === 'image' || type === 'video' || type === 'yt_vm_video' ) {
+        if ( imageTag ) {
+            previewHTML = imageTag;
+        } else if ( type === 'yt_vm_video' && videoPosterPreview ) {
+            previewHTML = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
+        }
+    }
+    previewHTML += colorOverlay || '';
+
+    return (
+        <div
+            className="awb-gutenberg-preview-block"
+            dangerouslySetInnerHTML={ {
+                __html: previewHTML,
+            } }
+        />
+    );
+}
+
+export class BlockEdit extends Component {
     constructor() {
         super( ...arguments );
+
         this.onUpdate = this.onUpdate.bind( this );
     }
 
@@ -376,6 +941,7 @@ class BlockEdit extends Component {
         const {
             attributes,
             setAttributes,
+            inspectorControlsOnly,
         } = this.props;
         let {
             className,
@@ -388,39 +954,12 @@ class BlockEdit extends Component {
             fullHeightAlign,
 
             image,
-            imageTag,
-            imageSizes,
-            imageSize,
-            imageBackgroundSize,
-            imageBackgroundPosition,
 
             video,
             videoPosterPreview,
-            videoMp4,
-            videoOgv,
-            videoWebm,
-            videoStartTime,
-            videoEndTime,
-            videoAlwaysPlay,
-            videoMobile,
-
-            color,
-
-            parallax,
-            parallaxSpeed,
-            parallaxMobile,
-
-            mouseParallax,
-            mouseParallaxSize,
-            mouseParallaxSpeed,
 
             ghostkitClassname,
         } = attributes;
-
-        let colorOverlay = false;
-        if ( color ) {
-            colorOverlay = `<div class="nk-awb-overlay" style="background-color: ${ color };"></div>`;
-        }
 
         // load YouTube / Vimeo poster
         if ( type === 'yt_vm_video' && video && ! image ) {
@@ -447,6 +986,12 @@ class BlockEdit extends Component {
         }
         if ( type === 'yt_vm_video' || type === 'video' ) {
             currentTypeIcon = 'format-video';
+        }
+
+        // return controls only
+        // used in GhostKit extension
+        if ( inspectorControlsOnly ) {
+            return renderInspectorControls( this.props );
         }
 
         return (
@@ -560,501 +1105,11 @@ class BlockEdit extends Component {
                     ) : '' }
                 </BlockControls>
                 <InspectorControls>
-                    <ButtonGroup aria-label={ __( 'Background type' ) } style={ { marginTop: 15, marginBottom: 10 } }>
-                        {
-                            [
-                                {
-                                    label: __( 'Color' ),
-                                    value: 'color',
-                                },
-                                {
-                                    label: __( 'Image' ),
-                                    value: 'image',
-                                },
-                                {
-                                    label: __( 'Video' ),
-                                    value: 'yt_vm_video',
-                                },
-                            ].map( ( val ) => {
-                                let selected = type === val.value;
-
-                                // select video
-                                if ( val.value === 'yt_vm_video' ) {
-                                    if ( type === 'video' || type === 'yt_vm_video' ) {
-                                        selected = true;
-                                    }
-                                }
-
-                                return (
-                                    <Button
-                                        isLarge
-                                        isPrimary={ selected }
-                                        aria-pressed={ selected }
-                                        onClick={ () => setAttributes( { type: val.value } ) }
-                                        key={ `type_${ val.label }` }
-                                    >
-                                        { val.label }
-                                    </Button>
-                                );
-                            } )
-                        }
-                    </ButtonGroup>
-
-                    { ( type === 'video' || type === 'yt_vm_video' ) ? (
-                        <ButtonGroup aria-label={ __( 'Background video type' ) } style={ { marginBottom: 10 } }>
-                            {
-                                [
-                                    {
-                                        label: __( 'YouTube / Vimeo' ),
-                                        value: 'yt_vm_video',
-                                    },
-                                    {
-                                        label: __( 'Self Hosted' ),
-                                        value: 'video',
-                                    },
-                                ].map( val => (
-                                    <Button
-                                        isLarge
-                                        isPrimary={ type === val.value }
-                                        aria-pressed={ type === val.value }
-                                        onClick={ () => setAttributes( { type: val.value } ) }
-                                        key={ `type_${ val.label }` }
-                                    >
-                                        { val.label }
-                                    </Button>
-                                ) )
-                            }
-                        </ButtonGroup>
-                    ) : '' }
-
-                    { type ? (
-                        <Fragment>
-                            { ( type === 'yt_vm_video' || type === 'video' ) ? (
-                                <PanelBody title={ __( 'Video' ) } initialOpen={ type === 'yt_vm_video' || type === 'video' }>
-                                    { type === 'yt_vm_video' ? (
-                                        <TextControl
-                                            label={ __( 'Video URL' ) }
-                                            type="url"
-                                            value={ video }
-                                            onChange={ v => setAttributes( { video: v } ) }
-                                            help={ __( 'Supported YouTube and Vimeo URLs' ) }
-                                        />
-                                    ) : '' }
-
-                                    { /* Preview Video */ }
-                                    { type === 'video' && ( videoMp4 || videoOgv || videoWebm ) ? (
-                                        <video controls>
-                                            { videoMp4 ? (
-                                                <source src={ videoMp4 } type="video/mp4" />
-                                            ) : '' }
-                                            { videoOgv ? (
-                                                <source src={ videoOgv } type="video/ogg" />
-                                            ) : '' }
-                                            { videoWebm ? (
-                                                <source src={ videoWebm } type="video/webm" />
-                                            ) : '' }
-                                        </video>
-                                    ) : '' }
-
-                                    { /* Select Videos */ }
-                                    { type === 'video' && ! videoMp4 ? (
-                                        <MediaUpload
-                                            onSelect={ ( media ) => {
-                                                setAttributes( {
-                                                    videoMp4: '',
-                                                } );
-                                                wp.media.attachment( media.id ).fetch().then( ( data ) => {
-                                                    setAttributes( {
-                                                        videoMp4: data.url,
-                                                    } );
-                                                } );
-                                            } }
-                                            allowedTypes={ [ 'video/mp4', 'video/m4v' ] }
-                                            value={ videoMp4 }
-                                            render={ ( { open } ) => (
-                                                <div style={ { marginBottom: 13 } }>
-                                                    <Button onClick={ open } isPrimary>
-                                                        { __( 'Select MP4' ) }
-                                                    </Button>
-                                                </div>
-                                            ) }
-                                        />
-                                    ) : '' }
-                                    { type === 'video' && videoMp4 ? (
-                                        <div>
-                                            <span>{ videoMp4.substring( videoMp4.lastIndexOf( '/' ) + 1 ) } </span>
-                                            <a
-                                                href="#"
-                                                onClick={ ( e ) => {
-                                                    setAttributes( {
-                                                        videoMp4: '',
-                                                    } );
-                                                    e.preventDefault();
-                                                } }
-                                            >
-                                                { __( '(Remove)' ) }
-                                            </a>
-                                            <div style={ { marginBottom: 13 } } />
-                                        </div>
-                                    ) : '' }
-                                    { type === 'video' && ! videoOgv ? (
-                                        <MediaUpload
-                                            onSelect={ ( media ) => {
-                                                setAttributes( {
-                                                    videoOgv: '',
-                                                } );
-                                                wp.media.attachment( media.id ).fetch().then( ( data ) => {
-                                                    setAttributes( {
-                                                        videoOgv: data.url,
-                                                    } );
-                                                } );
-                                            } }
-                                            allowedTypes={ [ 'video/ogv', 'video/ogg' ] }
-                                            value={ videoOgv }
-                                            render={ ( { open } ) => (
-                                                <div style={ { marginBottom: 13 } }>
-                                                    <Button onClick={ open } isPrimary>
-                                                        { __( 'Select OGV' ) }
-                                                    </Button>
-                                                </div>
-                                            ) }
-                                        />
-                                    ) : '' }
-                                    { type === 'video' && videoOgv ? (
-                                        <div>
-                                            <span>{ videoOgv.substring( videoOgv.lastIndexOf( '/' ) + 1 ) } </span>
-                                            <a
-                                                href="#"
-                                                onClick={ ( e ) => {
-                                                    setAttributes( {
-                                                        videoOgv: '',
-                                                    } );
-                                                    e.preventDefault();
-                                                } }
-                                            >
-                                                { __( '(Remove)' ) }
-                                            </a>
-                                            <div style={ { marginBottom: 13 } } />
-                                        </div>
-                                    ) : '' }
-                                    { type === 'video' && ! videoWebm ? (
-                                        <MediaUpload
-                                            onSelect={ ( media ) => {
-                                                setAttributes( {
-                                                    videoWebm: '',
-                                                } );
-                                                wp.media.attachment( media.id ).fetch().then( ( data ) => {
-                                                    setAttributes( {
-                                                        videoWebm: data.url,
-                                                    } );
-                                                } );
-                                            } }
-                                            allowedTypes={ [ 'video/webm' ] }
-                                            value={ videoWebm }
-                                            render={ ( { open } ) => (
-                                                <div style={ { marginBottom: 13 } }>
-                                                    <Button onClick={ open } isPrimary>
-                                                        { __( 'Select WEBM' ) }
-                                                    </Button>
-                                                </div>
-                                            ) }
-                                        />
-                                    ) : '' }
-                                    { type === 'video' && videoWebm ? (
-                                        <div>
-                                            <span>{ videoWebm.substring( videoWebm.lastIndexOf( '/' ) + 1 ) } </span>
-                                            <a
-                                                href="#"
-                                                onClick={ ( e ) => {
-                                                    setAttributes( {
-                                                        videoWebm: '',
-                                                    } );
-                                                    e.preventDefault();
-                                                } }
-                                            >
-                                                { __( '(Remove)' ) }
-                                            </a>
-                                            <div style={ { marginBottom: 13 } } />
-                                        </div>
-                                    ) : '' }
-                                    <ToggleControl
-                                        label={ __( 'Enable on mobile devices' ) }
-                                        checked={ !! videoMobile }
-                                        onChange={ v => setAttributes( { videoMobile: v } ) }
-                                    />
-
-                                    <TextControl
-                                        label={ __( 'Start time' ) }
-                                        type="number"
-                                        value={ videoStartTime }
-                                        onChange={ v => setAttributes( { videoStartTime: parseFloat( v ) } ) }
-                                        help={ __( 'Start time in seconds when video will be started (this value will be applied also after loop)' ) }
-                                    />
-                                    <TextControl
-                                        label={ __( 'End time' ) }
-                                        type="number"
-                                        value={ videoEndTime }
-                                        onChange={ v => setAttributes( { videoEndTime: parseFloat( v ) } ) }
-                                        help={ __( 'End time in seconds when video will be ended' ) }
-                                    />
-                                    <ToggleControl
-                                        label={ __( 'Always play' ) }
-                                        help={ __( 'Play video also when not in viewport' ) }
-                                        checked={ !! videoAlwaysPlay }
-                                        onChange={ v => setAttributes( { videoAlwaysPlay: v } ) }
-                                    />
-                                </PanelBody>
-                            ) : '' }
-
-                            { ( type === 'image' || type === 'yt_vm_video' || type === 'video' ) ? (
-                                <PanelBody title={ type === 'image' ? __( 'Image' ) : __( 'Poster Image' ) } initialOpen={ type === 'image' }>
-                                    { /* Select Image */ }
-                                    { ! image ? (
-                                        <MediaUpload
-                                            onSelect={ ( media ) => {
-                                                onImageSelect( media, setAttributes );
-                                            } }
-                                            allowedTypes={ [ 'image' ] }
-                                            value={ image }
-                                            render={ ( { open } ) => (
-                                                <Button onClick={ open } isPrimary>
-                                                    { __( 'Select image' ) }
-                                                </Button>
-                                            ) }
-                                        />
-                                    ) : '' }
-
-                                    { image && imageTag ? (
-                                        <Fragment>
-                                            <MediaUpload
-                                                onSelect={ ( media ) => {
-                                                    onImageSelect( media, setAttributes );
-                                                } }
-                                                allowedTypes={ [ 'image' ] }
-                                                value={ image }
-                                                render={ ( { open } ) => (
-                                                    <BaseControl help={ __( 'Click the image to edit or update' ) }>
-                                                        <a
-                                                            href="#"
-                                                            onClick={ open }
-                                                            className="awb-gutenberg-media-upload"
-                                                            style={ { display: 'block' } }
-                                                            dangerouslySetInnerHTML={ { __html: imageTag } }
-                                                        />
-                                                    </BaseControl>
-                                                ) }
-                                            />
-                                            <a
-                                                href="#"
-                                                onClick={ ( e ) => {
-                                                    setAttributes( {
-                                                        image: '',
-                                                        imageTag: '',
-                                                        imageSizes: '',
-                                                    } );
-                                                    e.preventDefault();
-                                                } }
-                                            >
-                                                { __( 'Remove image' ) }
-                                            </a>
-                                            <div style={ { marginBottom: 13 } } />
-                                            { imageSizes ? (
-                                                <SelectControl
-                                                    label={ __( 'Size' ) }
-                                                    value={ imageSize }
-                                                    options={ ( () => {
-                                                        const result = [];
-                                                        Object.keys( imageSizes ).forEach( ( k ) => {
-                                                            result.push( {
-                                                                value: k,
-                                                                label: toTitleCase( k ),
-                                                            } );
-                                                        } );
-                                                        return result;
-                                                    } )() }
-                                                    onChange={ v => setAttributes( { imageSize: v } ) }
-                                                />
-                                            ) : '' }
-                                            <SelectControl
-                                                label={ __( 'Background size' ) }
-                                                value={ imageBackgroundSize }
-                                                options={ [
-                                                    {
-                                                        label: __( 'Cover' ),
-                                                        value: 'cover',
-                                                    },
-                                                    {
-                                                        label: __( 'Contain' ),
-                                                        value: 'contain',
-                                                    },
-                                                    {
-                                                        label: __( 'Pattern' ),
-                                                        value: 'pattern',
-                                                    },
-                                                ] }
-                                                onChange={ v => setAttributes( { imageBackgroundSize: v } ) }
-                                            />
-                                            <TextControl
-                                                label={ __( 'Background position' ) }
-                                                type="text"
-                                                value={ imageBackgroundPosition }
-                                                onChange={ v => setAttributes( { imageBackgroundPosition: v } ) }
-                                                help={ __( 'Image position. Example: 50% 50%' ) }
-                                            />
-                                        </Fragment>
-                                    ) : '' }
-                                </PanelBody>
-                            ) : '' }
-
-                            <PanelBody
-                                title={ (
-                                    <Fragment>
-                                        { type === 'color' ? __( 'Color' ) : __( 'Overlay Color' ) }
-                                        <ColorIndicator colorValue={ color } />
-                                    </Fragment>
-                                ) }
-                                initialOpen={ type === 'color' }
-                            >
-                                <WPColorPicker
-                                    color={ color }
-                                    onChangeComplete={ ( colorData ) => {
-                                        let colorString;
-
-                                        if ( typeof colorData.rgb === 'undefined' || colorData.rgb.a === 1 ) {
-                                            colorString = colorData.hex;
-                                        } else {
-                                            const {
-                                                r, g, b, a,
-                                            } = colorData.rgb;
-                                            colorString = `rgba(${ r }, ${ g }, ${ b }, ${ a })`;
-                                        }
-
-                                        setAttributes( { color: colorString } );
-                                    } }
-                                    disableAlpha={ false }
-                                    className="nk-awb-color-picker"
-                                />
-                                { color ? (
-                                    <div style={ {
-                                        marginTop: 10,
-                                        textAlign: 'right',
-                                    } } >
-                                        <Button
-                                            onClick={ () => setAttributes( { color: '' } ) }
-                                            isDefault
-                                        >
-                                            { __( 'Reset' ) }
-                                        </Button>
-                                    </div>
-                                ) : '' }
-                            </PanelBody>
-
-                            { ( type === 'image' || type === 'yt_vm_video' || type === 'video' ) ? (
-                                <Fragment>
-                                    <PanelBody title={ __( 'Parallax' ) + ( parallax && parallaxSpeed !== '' ? ` (${ parallax } ${ parallaxSpeed })` : '' ) } initialOpen={ false }>
-                                        <SelectControl
-                                            value={ parallax }
-                                            options={ [
-                                                {
-                                                    label: __( 'Disabled' ),
-                                                    value: '',
-                                                },
-                                                {
-                                                    label: __( 'Scroll' ),
-                                                    value: 'scroll',
-                                                },
-                                                {
-                                                    label: __( 'Scale' ),
-                                                    value: 'scale',
-                                                },
-                                                {
-                                                    label: __( 'Opacity' ),
-                                                    value: 'opacity',
-                                                },
-                                                {
-                                                    label: __( 'Opacity + Scroll' ),
-                                                    value: 'scroll-opacity',
-                                                },
-                                                {
-                                                    label: __( 'Opacity + Scale' ),
-                                                    value: 'scale-opacity',
-                                                },
-                                            ] }
-                                            onChange={ v => setAttributes( { parallax: v } ) }
-                                        />
-                                        { parallax ? (
-                                            <Fragment>
-                                                <TextControl
-                                                    label={ __( 'Speed' ) }
-                                                    type="number"
-                                                    value={ parallaxSpeed }
-                                                    step="0.1"
-                                                    min="-1"
-                                                    max="2"
-                                                    onChange={ v => setAttributes( { parallaxSpeed: parseFloat( v ) } ) }
-                                                    help={ __( 'Provide number from -1.0 to 2.0' ) }
-                                                />
-                                                <ToggleControl
-                                                    label={ __( 'Enable on mobile devices' ) }
-                                                    checked={ !! parallaxMobile }
-                                                    onChange={ v => setAttributes( { parallaxMobile: v } ) }
-                                                />
-                                            </Fragment>
-                                        ) : '' }
-                                    </PanelBody>
-                                    <PanelBody title={ __( 'Mouse parallax' ) } initialOpen={ false }>
-                                        <ToggleControl
-                                            label={ __( 'Enable' ) }
-                                            checked={ !! mouseParallax }
-                                            onChange={ v => setAttributes( { mouseParallax: v } ) }
-                                        />
-                                        { mouseParallax ? (
-                                            <Fragment>
-                                                <RangeControl
-                                                    label={ __( 'Size' ) }
-                                                    value={ mouseParallaxSize }
-                                                    min="0"
-                                                    max="200"
-                                                    help={ ` ${ __( 'px' ) }` }
-                                                    onChange={ v => setAttributes( { mouseParallaxSize: v } ) }
-                                                />
-                                                <RangeControl
-                                                    label={ __( 'Speed' ) }
-                                                    value={ mouseParallaxSpeed }
-                                                    min="0"
-                                                    max="20000"
-                                                    help={ ` ${ __( 'ms' ) }` }
-                                                    onChange={ v => setAttributes( { mouseParallaxSpeed: v } ) }
-                                                />
-                                            </Fragment>
-                                        ) : '' }
-                                    </PanelBody>
-                                </Fragment>
-                            ) : '' }
-                        </Fragment>
-                    ) : '' }
+                    { renderInspectorControls( this.props ) }
                 </InspectorControls>
+
                 <div className={ className }>
-                    <div
-                        className="awb-gutenberg-preview-block"
-                        dangerouslySetInnerHTML={ {
-                            __html: ( function() {
-                                let html = '';
-
-                                if ( type === 'image' || type === 'video' || type === 'yt_vm_video' ) {
-                                    if ( imageTag ) {
-                                        html = imageTag;
-                                    } else if ( type === 'yt_vm_video' && videoPosterPreview ) {
-                                        html = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
-                                    }
-                                }
-
-                                html += colorOverlay || '';
-
-                                return html;
-                            }() ),
-                        } }
-                    />
+                    { renderEditorPreview( this.props ) }
                     <InnerBlocks />
                 </div>
             </Fragment>
@@ -1062,7 +1117,55 @@ class BlockEdit extends Component {
     }
 }
 
-registerBlockType( 'nk/awb', {
+export const BlockEditWithSelect = withSelect( ( select, props ) => {
+    const { attributes } = props;
+    const { image } = attributes;
+
+    if ( ! image ) {
+        return false;
+    }
+
+    let query = `size=${ encodeURIComponent( attributes.imageSize ) }&attr[class]=jarallax-img`;
+    let style = '';
+
+    // <img> tag with object-fit style
+    if ( attributes.imageBackgroundSize !== 'pattern' ) {
+        if ( attributes.imageBackgroundSize ) {
+            style += `object-fit: ${ attributes.imageBackgroundSize };`;
+        }
+        if ( attributes.imageBackgroundPosition ) {
+            style += `object-position: ${ attributes.imageBackgroundPosition };`;
+        }
+
+        // ofi polyfill
+        if ( style ) {
+            style += `font-family: "${ style }";`;
+        }
+
+    // background image with pattern size
+    } else {
+        if ( attributes.imageBackgroundSize ) {
+            style += 'background-repeat: repeat;';
+        }
+        if ( attributes.imageBackgroundPosition ) {
+            style += `background-position: ${ attributes.imageBackgroundPosition };`;
+        }
+        query += '&div_tag=1';
+    }
+
+    // add styles to query
+    if ( style ) {
+        query += `&attr[style]=${ encodeURIComponent( style ) }`;
+    }
+
+    return {
+        fetchImageTag: select( 'nk/awb' ).getImageTagData( `/awb/v1/get_attachment_image/${ image }?${ query }` ),
+    };
+} )( BlockEdit );
+
+export const name = 'nk/awb';
+
+export const settings = {
     title: 'Background (AWB)',
 
     description: __( 'Create sections with color, image and video backgrounds.' ),
@@ -1095,7 +1198,8 @@ registerBlockType( 'nk/awb', {
             default: false,
         },
         fullHeightAlign: {
-            type: 'center',
+            type: 'string',
+            default: 'center',
         },
 
         image: {
@@ -1204,51 +1308,7 @@ registerBlockType( 'nk/awb', {
         return {};
     },
 
-    edit: withSelect( ( select, props ) => {
-        const { attributes } = props;
-        const { image } = attributes;
-
-        if ( ! image ) {
-            return false;
-        }
-
-        let query = `size=${ encodeURIComponent( attributes.imageSize ) }&attr[class]=jarallax-img`;
-        let style = '';
-
-        // <img> tag with object-fit style
-        if ( attributes.imageBackgroundSize !== 'pattern' ) {
-            if ( attributes.imageBackgroundSize ) {
-                style += `object-fit: ${ attributes.imageBackgroundSize };`;
-            }
-            if ( attributes.imageBackgroundPosition ) {
-                style += `object-position: ${ attributes.imageBackgroundPosition };`;
-            }
-
-            // ofi polyfill
-            if ( style ) {
-                style += `font-family: "${ style }";`;
-            }
-
-        // background image with pattern size
-        } else {
-            if ( attributes.imageBackgroundSize ) {
-                style += 'background-repeat: repeat;';
-            }
-            if ( attributes.imageBackgroundPosition ) {
-                style += `background-position: ${ attributes.imageBackgroundPosition };`;
-            }
-            query += '&div_tag=1';
-        }
-
-        // add styles to query
-        if ( style ) {
-            query += `&attr[style]=${ encodeURIComponent( style ) }`;
-        }
-
-        return {
-            fetchImageTag: select( 'nk/awb' ).getImageTagData( `/awb/v1/get_attachment_image/${ image }?${ query }` ),
-        };
-    } )( BlockEdit ),
+    edit: BlockEditWithSelect,
 
     save: BlockSave,
-} );
+};

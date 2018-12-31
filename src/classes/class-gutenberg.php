@@ -36,7 +36,7 @@ class NK_AWB_Gutenberg {
      * @param object $page - page data.
      */
     public function register_block( $page ) {
-        $deps = array( 'wp-editor', 'wp-i18n', 'wp-element', 'underscore' );
+        $deps = array( 'wp-editor', 'wp-i18n', 'wp-element', 'underscore', 'jquery' );
 
         if ( ! class_exists( 'GhostKit' ) ) {
             // enqueue block spacings fallback from GhostKit.
