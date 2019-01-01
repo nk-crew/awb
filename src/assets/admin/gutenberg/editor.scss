@@ -72,7 +72,7 @@ img.awb-gutenberg-icon {
 }
 
 @media (min-width: 600px) {
-    [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb {
+    [data-align="full"] > .editor-block-list__block-edit > div > .wp-block-nk-awb {
         > .awb-gutenberg-preview-block {
             right: 0;
             left: 0;
