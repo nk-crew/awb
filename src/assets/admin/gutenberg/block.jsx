@@ -1177,12 +1177,17 @@ export const settings = {
 
     keywords: [ 'awb', 'background', 'parallax' ],
 
+    ghostkit: {
+        supports: {
+            spacings: true,
+            display: true,
+        },
+    },
+
     supports: {
         anchor: true,
         className: true,
         html: false,
-        ghostkitIndents: true,
-        ghostkitDisplay: true,
     },
 
     attributes: {
