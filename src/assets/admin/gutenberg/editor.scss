@@ -41,8 +41,8 @@ img.awb-gutenberg-icon {
 
     // inside nested block
     .editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit .editor-block-list__block-edit & {
-        right: -14px;
-        left: -14px;
+        right: -15px;
+        left: -15px;
     }
 
     &:empty {
@@ -102,10 +102,10 @@ img.awb-gutenberg-icon {
 }
 .ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit::before,
 .ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] .awb-gutenberg-preview-block {
-    top: -14px;
-    right: -14px;
-    bottom: -14px;
-    left: -14px;
+    top: -15px;
+    right: -15px;
+    bottom: -15px;
+    left: -15px;
 }
 // stylelint-disable-next-line
 [data-type="ghostkit/grid"] [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > .editor-inner-blocks > .editor-block-list__layout,

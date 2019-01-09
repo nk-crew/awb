@@ -5,6 +5,7 @@ import {
     renderEditorPreview,
     settings,
 } from './block.jsx';
+import GhostKitGridWidePreview from './ghostkit-grid-wide-preview.jsx';
 
 const AWBData = window.AWBGutenbergData;
 
@@ -96,7 +97,12 @@ function prepareAWBprops( props ) {
 function addEditorBackground( background, props ) {
     if ( hasBlockSupport( props.name, 'awb', false ) ) {
         const awbProps = prepareAWBprops( props );
-        return renderEditorPreview( awbProps );
+
+        return (
+            <GhostKitGridWidePreview { ...props }>
+                { renderEditorPreview( awbProps ) }
+            </GhostKitGridWidePreview>
+        );
     }
 
     return background;
