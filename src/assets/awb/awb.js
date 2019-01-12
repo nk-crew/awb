@@ -509,9 +509,9 @@ window.nkAwbInit = function() {
         let videoVolume = 0;
         let videoAlwaysPlay = true;
         let videoMobile = false;
-        const parallax = $this.attr( 'data-awb-parallax' );
-        const parallaxSpeed = $this.attr( 'data-awb-parallax-speed' );
-        const parallaxMobile = $this.attr( 'data-awb-parallax-mobile' ) === 'true' || $this.attr( 'data-awb-parallax-mobile' ) === '1';
+        let parallax = $this.attr( 'data-awb-parallax' );
+        let parallaxSpeed = $this.attr( 'data-awb-parallax-speed' );
+        let parallaxMobile = $this.attr( 'data-awb-parallax-mobile' ) === 'true' || $this.attr( 'data-awb-parallax-mobile' ) === '1';
 
         // video type
         if ( type === 'yt_vm_video' || type === 'video' ) {
@@ -521,6 +521,14 @@ window.nkAwbInit = function() {
             videoVolume = parseFloat( $this.attr( 'data-awb-video-volume' ) ) || 0;
             videoAlwaysPlay = $this.attr( 'data-awb-video-always-play' ) === 'true';
             videoMobile = $this.attr( 'data-awb-video-mobile' ) === '1' || $this.attr( 'data-awb-video-mobile' ) === 'true';
+
+            // we need to enable parallax options to play videos
+            // https://github.com/nk-o/awb/issues/17
+            if ( video && ! parallax && ! parallaxSpeed ) {
+                parallax = 'scroll';
+                parallaxSpeed = 1;
+                parallaxMobile = videoMobile;
+            }
         }
 
         // prevent if no parallax and no video
