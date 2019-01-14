@@ -507,6 +507,7 @@ window.nkAwbInit = function() {
         let videoStartTime = 0;
         let videoEndTime = 0;
         let videoVolume = 0;
+        let videoLoop = true;
         let videoAlwaysPlay = true;
         let videoMobile = false;
         let parallax = $this.attr( 'data-awb-parallax' );
@@ -519,6 +520,7 @@ window.nkAwbInit = function() {
             videoStartTime = parseFloat( $this.attr( 'data-awb-video-start-time' ) ) || 0;
             videoEndTime = parseFloat( $this.attr( 'data-awb-video-end-time' ) ) || 0;
             videoVolume = parseFloat( $this.attr( 'data-awb-video-volume' ) ) || 0;
+            videoLoop = $this.attr( 'data-awb-video-loop' ) !== 'false';
             videoAlwaysPlay = $this.attr( 'data-awb-video-always-play' ) === 'true';
             videoMobile = $this.attr( 'data-awb-video-mobile' ) === '1' || $this.attr( 'data-awb-video-mobile' ) === 'true';
 
@@ -561,6 +563,7 @@ window.nkAwbInit = function() {
             jarallaxParams.videoStartTime = videoStartTime;
             jarallaxParams.videoEndTime = videoEndTime;
             jarallaxParams.videoVolume = videoVolume;
+            jarallaxParams.videoLoop = videoLoop;
             jarallaxParams.videoPlayOnlyVisible = ! videoAlwaysPlay;
         }
 

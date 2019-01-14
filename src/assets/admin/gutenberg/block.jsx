@@ -233,6 +233,9 @@ export class BlockSave extends Component {
                 if ( attributes.videoVolume ) {
                     resultAtts.videoVolume = attributes.videoVolume;
                 }
+                if ( ! attributes.videoLoop ) {
+                    resultAtts.videoLoop = attributes.videoLoop;
+                }
                 if ( attributes.videoAlwaysPlay ) {
                     resultAtts.videoAlwaysPlay = attributes.videoAlwaysPlay;
                 }
@@ -374,6 +377,7 @@ export function renderInspectorControls( props ) {
         videoWebm,
         videoStartTime,
         videoEndTime,
+        videoLoop,
         videoAlwaysPlay,
         videoMobile,
 
@@ -635,6 +639,11 @@ export function renderInspectorControls( props ) {
                                 value={ videoEndTime }
                                 onChange={ v => setAttributes( { videoEndTime: parseFloat( v ) } ) }
                                 help={ __( 'End time in seconds when video will be ended' ) }
+                            />
+                            <ToggleControl
+                                label={ __( 'Loop' ) }
+                                checked={ !! videoLoop }
+                                onChange={ v => setAttributes( { videoLoop: v } ) }
                             />
                             <ToggleControl
                                 label={ __( 'Always play' ) }
@@ -1263,6 +1272,10 @@ export const settings = {
         videoVolume: {
             type: 'number',
             default: 0,
+        },
+        videoLoop: {
+            type: 'boolean',
+            default: true,
         },
         videoAlwaysPlay: {
             type: 'boolean',
