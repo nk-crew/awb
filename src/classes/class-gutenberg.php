@@ -38,17 +38,6 @@ class NK_AWB_Gutenberg {
     public function register_block( $page ) {
         $deps = array( 'wp-editor', 'wp-i18n', 'wp-element', 'underscore', 'jquery' );
 
-        if ( ! class_exists( 'GhostKit' ) ) {
-            // enqueue block spacings fallback from GhostKit.
-            wp_register_script(
-                'awb-spacings-gutenberg',
-                nk_awb()->plugin_url . 'assets/admin/gutenberg/block-spacings.min.js',
-                array(),
-                filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/block-spacings.min.js' )
-            );
-            $deps[] = 'awb-spacings-gutenberg';
-        }
-
         // enqueue block js.
         wp_register_script(
             'awb-gutenberg',
