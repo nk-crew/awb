@@ -118,6 +118,11 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.5.7 =
+
+* fixed JS error if Ghost Kit plugin is not installed
+* fixed Gutenberg background preview
+
 = 1.5.6 =
 
 * added support for Ghost Kit Grid and Column blocks. [See live](https://ghostkit.io/blocks/grid/)
