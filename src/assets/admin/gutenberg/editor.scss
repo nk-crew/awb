@@ -59,7 +59,7 @@ img.awb-gutenberg-icon {
 
     // fixed for some default themes styles
     .editor-styles-wrapper & > img,
-    .editor-styles-wrapper * > div {
+    .editor-styles-wrapper & > div {
         width: 100%;
         height: 100%;
         object-fit: cover;
