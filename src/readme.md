@@ -118,6 +118,15 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.5.6 =
+
+* added support for Ghost Kit Grid and Column blocks. [See live](https://ghostkit.io/blocks/grid/)
+* added support for Ghost Kit 2.0 update
+* added Loop option in Gutenberg block for videos
+* fixed editor background preview styles in alignfull block
+* fixed AWB video play without parallax on mobile devices
+* minor changes
+
 = 1.5.5 =
 
 * added file types limitations in image and self hosted videos selection
