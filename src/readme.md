@@ -16,7 +16,7 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. 
 
 #### Links ####
 
-* [Live Demo](https://demo.nkdev.info/#awb)
+* [Live Demo](https://wpbackgrounds.com)
 * [GitHub](https://github.com/nk-o/awb)
 
 = Features =
