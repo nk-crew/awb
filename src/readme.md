@@ -45,8 +45,9 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. 
 * Custom CSS offsets (paddings + margins)
 
 
-= Real Examples =
+= Real Usage Examples =
 
+* [Skylith - Multipurpose Gutenberg Theme](https://demo.nkdev.info/#skylith)
 * [Youplay - Gaming Theme](https://demo.nkdev.info/#youplay)
 * [Godlike - Gaming Theme](https://demo.nkdev.info/#godlike)
 * [Khaki - Multipurpose Theme](https://demo.nkdev.info/#khaki.corporate)
