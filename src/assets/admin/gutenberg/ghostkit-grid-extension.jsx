@@ -66,6 +66,15 @@ function prepareAWBprops( props ) {
     const awbAttributes = {};
     Object.keys( settings.attributes ).forEach( ( name ) => {
         awbAttributes[ name ] = props.attributes[ 'awb_' + name ];
+
+        // inside exported xml file almost all symbols are escaped.
+        if ( 'imageTag' === name && awbAttributes[ name ] && /^u003c/g.test( awbAttributes[ name ] ) ) {
+            awbAttributes[ name ] = awbAttributes[ name ]
+                .replace( /u003c/g, '<' )
+                .replace( /u003e/g, '>' )
+                .replace( /u0022/g, '"' )
+                .replace( /u0026/g, '&' );
+        }
     } );
     awbAttributes.align = props.attributes[ 'awb_align' ];
 
