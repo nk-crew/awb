@@ -119,6 +119,11 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.5.8 =
+
+* fixed Gutenberg editor background preview for Pattern images
+* fixed Ghost Kit Grid columns background image after WP demo import
+
 = 1.5.7 =
 
 * fixed JS error if Ghost Kit plugin is not installed
