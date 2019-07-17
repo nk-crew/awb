@@ -241,9 +241,9 @@ function addSaveBackground( background, props ) {
     return background;
 }
 
-addFilter( 'blocks.registerBlockType', 'ghostkit-pro/grid/additional-attributes', addAttribute );
-addFilter( 'ghostkit.editor.controls', 'ghostkit-pro/grid/addBackgroundControls', addBackgroundControls );
-addFilter( 'ghostkit.editor.grid.background', 'ghostkit-pro/grid/addEditorBackground', addEditorBackground );
-addFilter( 'ghostkit.editor.grid-column.background', 'ghostkit-pro/grid-column/addEditorBackground', addEditorBackground );
-addFilter( 'ghostkit.blocks.grid.background', 'ghostkit-pro/grid/addSaveBackground', addSaveBackground );
-addFilter( 'ghostkit.blocks.grid-column.background', 'ghostkit-pro/grid-column/addSaveBackground', addSaveBackground );
+addFilter( 'blocks.registerBlockType', 'ghostkit/grid/awb/additional-attributes', addAttribute );
+addFilter( 'ghostkit.editor.controls', 'ghostkit/grid/awb/addBackgroundControls', addBackgroundControls );
+addFilter( 'ghostkit.editor.grid.background', 'ghostkit/grid/awb/addEditorBackground', addEditorBackground );
+addFilter( 'ghostkit.editor.grid-column.background', 'ghostkit/grid-column/awb/addEditorBackground', addEditorBackground );
+addFilter( 'ghostkit.blocks.grid.background', 'ghostkit/grid/awb/addSaveBackground', addSaveBackground );
+addFilter( 'ghostkit.blocks.grid-column.background', 'ghostkit/grid-column/awb/addSaveBackground', addSaveBackground );
