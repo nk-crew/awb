@@ -23,7 +23,7 @@
 }
 
 // fix for VC row.
-.vc_row.nk-awb > .nk-awb-wrap {
+.vc_row.nk-awb:not([data-vc-full-width="true"]) > .nk-awb-wrap {
     right: 15px;
     left: 15px;
 }
