@@ -22,6 +22,12 @@
     transform: translateX(0);
 }
 
+// fix for VC row.
+.vc_row.nk-awb > .nk-awb-wrap {
+    right: 15px;
+    left: 15px;
+}
+
 /* Fullheight */
 .nk-awb-fullheight {
     min-height: 100vh;
