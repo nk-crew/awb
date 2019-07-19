@@ -119,6 +119,10 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.5.9 =
+
+* fixed WPBakery Page Builder Row background position
+
 = 1.5.8 =
 
 * fixed Gutenberg editor background preview for Pattern images
