@@ -938,10 +938,15 @@ export class BlockEdit extends Component {
         const {
             fetchImageTag,
             setAttributes,
+            attributes,
         } = this.props;
 
+        const {
+            imageTag,
+        } = attributes;
+
         // set image tag to attribute
-        if ( fetchImageTag ) {
+        if ( fetchImageTag && fetchImageTag !== imageTag ) {
             setAttributes( { imageTag: fetchImageTag } );
         }
     }
