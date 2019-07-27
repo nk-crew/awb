@@ -275,6 +275,12 @@ export class BlockSave extends Component {
             }
         }
 
+        // Fix style tag background.
+        if ( resultImg ) {
+            resultImg = resultImg.replace( 'url(&quot;', 'url(\'' );
+            resultImg = resultImg.replace( '&quot;);', '\');' );
+        }
+
         // awb wrap inner html
         let wrapHTML = '';
         if ( attributes.color ) {
