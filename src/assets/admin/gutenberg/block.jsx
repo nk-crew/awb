@@ -1140,36 +1140,10 @@ export const BlockEditWithSelect = withSelect( ( select, props ) => {
     }
 
     let query = `size=${ encodeURIComponent( attributes.imageSize ) }&attr[class]=jarallax-img`;
-    let style = '';
-
-    // <img> tag with object-fit style
-    if ( attributes.imageBackgroundSize !== 'pattern' ) {
-        if ( attributes.imageBackgroundSize ) {
-            style += `object-fit: ${ attributes.imageBackgroundSize };`;
-        }
-        if ( attributes.imageBackgroundPosition ) {
-            style += `object-position: ${ attributes.imageBackgroundPosition };`;
-        }
-
-        // ofi polyfill
-        if ( style ) {
-            style += `font-family: "${ style }";`;
-        }
 
     // background image with pattern size
-    } else {
-        if ( attributes.imageBackgroundSize ) {
-            style += 'background-repeat: repeat;';
-        }
-        if ( attributes.imageBackgroundPosition ) {
-            style += `background-position: ${ attributes.imageBackgroundPosition };`;
-        }
+    if ( attributes.imageBackgroundSize === 'pattern' ) {
         query += '&div_tag=1';
-    }
-
-    // add styles to query
-    if ( style ) {
-        query += `&attr[style]=${ encodeURIComponent( style ) }`;
     }
 
     return {

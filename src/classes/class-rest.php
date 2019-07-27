@@ -80,9 +80,10 @@ class NK_AWB_Rest extends WP_REST_Controller {
         $attr = $request->get_param( 'attr' );
         $div_tag = $request->get_param( 'div_tag' );
 
+        $attr = isset( $attr ) && $attr && is_array( $attr ) ? $attr : array();
+
         if ( $div_tag ) {
             $image_url = wp_get_attachment_image_url( $id, $size, $icon );
-            $attr = isset( $attr ) && $attr && is_array( $attr ) ? $attr : array();
 
             if ( ! isset( $attr['style'] ) ) {
                 $attr['style'] = '';
@@ -97,7 +98,35 @@ class NK_AWB_Rest extends WP_REST_Controller {
             }
             $image .= '></div>';
         } else {
-            $image = wp_get_attachment_image( $id, $size, $icon, $attr );
+            $image_src = wp_get_attachment_image_src( $id, $size, $icon );
+
+            if ( $image_src ) {
+                list( $src, $width, $height ) = $image_src;
+                $alt = trim( strip_tags( get_post_meta( $id, '_wp_attachment_image_alt', true ) ) );
+
+                if ( $alt ) {
+                    $attr['alt'] = $alt;
+                }
+
+                if ( ! isset( $attr['class'] ) ) {
+                    $attr['class'] = 'wp-image-' . $id;
+                } else {
+                    $attr['class'] = 'wp-image-' . $id . ' ' . $attr['class'];
+                }
+
+                $attr['width'] = $width;
+                $attr['height'] = $height;
+
+                $attrs_str = '';
+
+                if ( isset( $attr ) && is_array( $attr ) ) {
+                    foreach ( $attr as $name => $val ) {
+                        $attrs_str .= ' ' . $name . '="' . esc_attr( $val ) . '"';
+                    }
+                }
+
+                $image = '<img src="' . esc_url( $src ) . '"' . $attrs_str . ' />';
+            }
         }
 
         if ( $image ) {
