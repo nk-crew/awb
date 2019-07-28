@@ -1,6 +1,7 @@
 import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
 import ColorPicker from './_components/color-picker.jsx';
+import FocalPointPicker from './_components/focal-point-picker.jsx';
 
 import iconAWB from './icons/awb.svg';
 import iconFullHeight from './icons/fullheight.svg';
@@ -33,7 +34,6 @@ const {
 } = wp.editor;
 
 const {
-    BaseControl,
     Button,
     ButtonGroup,
     PanelBody,
@@ -680,38 +680,11 @@ export function renderInspectorControls( props ) {
 
                             { image && imageTag ? (
                                 <Fragment>
-                                    <MediaUpload
-                                        onSelect={ ( media ) => {
-                                            onImageSelect( media, setAttributes );
-                                        } }
-                                        allowedTypes={ [ 'image' ] }
-                                        value={ image }
-                                        render={ ( { open } ) => (
-                                            <BaseControl help={ __( 'Click the image to edit or update' ) }>
-                                                <a
-                                                    href="#"
-                                                    onClick={ open }
-                                                    className="awb-gutenberg-media-upload"
-                                                    style={ { display: 'block' } }
-                                                    dangerouslySetInnerHTML={ { __html: imageTag } }
-                                                />
-                                            </BaseControl>
-                                        ) }
+                                    <FocalPointPicker
+                                        value={ imageBackgroundPosition }
+                                        image={ imageTag }
+                                        onChange={ v => setAttributes( { imageBackgroundPosition: v } ) }
                                     />
-                                    <a
-                                        href="#"
-                                        onClick={ ( e ) => {
-                                            setAttributes( {
-                                                image: '',
-                                                imageTag: '',
-                                                imageSizes: '',
-                                            } );
-                                            e.preventDefault();
-                                        } }
-                                    >
-                                        { __( 'Remove image' ) }
-                                    </a>
-                                    <div style={ { marginBottom: 13 } } />
                                     { imageSizes ? (
                                         <SelectControl
                                             label={ __( 'Size' ) }
@@ -748,13 +721,19 @@ export function renderInspectorControls( props ) {
                                         ] }
                                         onChange={ v => setAttributes( { imageBackgroundSize: v } ) }
                                     />
-                                    <TextControl
-                                        label={ __( 'Background position' ) }
-                                        type="text"
-                                        value={ imageBackgroundPosition }
-                                        onChange={ v => setAttributes( { imageBackgroundPosition: v } ) }
-                                        help={ __( 'Image position. Example: 50% 50%' ) }
-                                    />
+                                    <a
+                                        href="#"
+                                        onClick={ ( e ) => {
+                                            setAttributes( {
+                                                image: '',
+                                                imageTag: '',
+                                                imageSizes: '',
+                                            } );
+                                            e.preventDefault();
+                                        } }
+                                    >
+                                        { __( 'Remove image' ) }
+                                    </a>
                                 </Fragment>
                             ) : '' }
                         </PanelBody>
