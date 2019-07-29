@@ -119,6 +119,14 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 ## Changelog ##
 
+= 1.6.0 =
+
+* added Focal Point picker in block background settings
+* added Lazy Loading for background videos
+* changed block background img tag output (fixes bug, when user with Editor permission save background image and block crashed)
+* fixed background image jumping on mobile devices when scroll
+* fixed reusable block error
+
 = 1.5.10 =
 
 * fixed WPBakery Page Builder FullWidth Row background position
