@@ -432,6 +432,18 @@ function maybeFallbackGhostkitStyles() {
 }
 
 /**
+ * Fix Jetpack Lazy Loading conflict.
+ * Jetpack make image clone and our Jarallax stop working.
+ */
+$doc.on( 'jetpack-lazy-loaded-image', '.jarallax-img', ( e ) => {
+    const $parent = $( e.target ).parent().parent();
+
+    if ( $parent[ 0 ].jarallax && $parent[ 0 ].jarallax.image && $parent[ 0 ].jarallax.image.$item ) {
+        $parent[ 0 ].jarallax.image.$item = e.target;
+    }
+} );
+
+/**
  * Main AWB Init
  */
 window.nkAwbInit = function() {
