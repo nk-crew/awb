@@ -384,29 +384,6 @@ function stretchAwb() {
 }
 
 /**
- * Fix for VC stretch.
- */
-$doc.on( 'vc-full-width-row', function() {
-    const args = Array.prototype.slice.call( arguments, 1 );
-
-    if ( args.length ) {
-        args.forEach( ( item ) => {
-            $( item ).find( '.nk-awb-rendered > .nk-awb-inner' ).each( function() {
-                if ( this.jarallax ) {
-                    // Check if container exists
-                    // On mobile with WPBakery Page Builder this container is undefined
-                    // and onResize showed console error
-                    if ( this.jarallax.image && this.jarallax.image.$container ) {
-                        this.jarallax.onResize();
-                    }
-                    this.jarallax.onScroll();
-                }
-            } );
-        } );
-    }
-} );
-
-/**
  * Custom styles fallback if GhostKit plugin is not installed.
  */
 let customStyles = '';
@@ -551,7 +528,6 @@ window.nkAwbInit = function() {
         }
 
         const jarallaxParams = {
-            automaticResize: true,
             type: parallax,
             speed: parallaxSpeed,
             disableParallax() {
