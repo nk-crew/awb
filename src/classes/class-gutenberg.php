@@ -36,7 +36,7 @@ class NK_AWB_Gutenberg {
      * @param object $page - page data.
      */
     public function register_block( $page ) {
-        $deps = array( 'wp-editor', 'wp-i18n', 'wp-element', 'underscore', 'jquery' );
+        $deps = array( 'wp-editor', 'wp-i18n', 'wp-element', 'underscore', 'jquery', 'jarallax', 'jarallax-video' );
 
         // enqueue block js.
         wp_register_script(

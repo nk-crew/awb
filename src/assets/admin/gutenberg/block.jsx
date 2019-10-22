@@ -2,6 +2,7 @@ import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
 import ColorPicker from './_components/color-picker.jsx';
 import FocalPointPicker from './_components/focal-point-picker.jsx';
+import Jarallax from './_components/jarallax.jsx';
 
 import iconAWB from './icons/awb.svg';
 import iconFullHeight from './icons/fullheight.svg';
@@ -864,17 +865,22 @@ export function renderEditorPreview( props ) {
 
         image,
         imageTag,
+        imageBackgroundSize,
+        imageBackgroundPosition,
 
         video,
         videoPosterPreview,
+        videoStartTime,
+        videoEndTime,
+        videoVolume,
+        videoLoop,
+        videoAlwaysPlay,
+
+        parallax,
+        parallaxSpeed,
 
         color,
     } = attributes;
-
-    let colorOverlay = false;
-    if ( color ) {
-        colorOverlay = `<div class="nk-awb-overlay" style="background-color: ${ color };"></div>`;
-    }
 
     // load YouTube / Vimeo poster
     if ( type === 'yt_vm_video' && video && ! image ) {
@@ -893,15 +899,51 @@ export function renderEditorPreview( props ) {
             previewHTML = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
         }
     }
-    previewHTML += colorOverlay || '';
+
+    const useJarallax = ( parallax && type === 'image' ) || ( type === 'video' || type === 'yt_vm_video' );
+    const jarallaxParams = {
+        type: parallax,
+        speed: parallaxSpeed,
+        imgSize: imageBackgroundSize || 'cover',
+        imgPosition: imageBackgroundPosition || '50% 50%',
+    };
+
+    if ( imageBackgroundSize === 'pattern' ) {
+        jarallaxParams.imgSize = 'auto';
+        jarallaxParams.imgRepeat = 'repeat';
+    }
+
+    if ( video && ( type === 'video' || type === 'yt_vm_video' ) ) {
+        jarallaxParams.speed = parallax ? parallaxSpeed : 1;
+        jarallaxParams.videoSrc = video;
+        jarallaxParams.videoStartTime = videoStartTime;
+        jarallaxParams.videoEndTime = videoEndTime;
+        jarallaxParams.videoVolume = videoVolume;
+        jarallaxParams.videoLoop = videoLoop;
+        jarallaxParams.videoPlayOnlyVisible = ! videoAlwaysPlay;
+    }
 
     return (
-        <div
-            className="awb-gutenberg-preview-block"
-            dangerouslySetInnerHTML={ {
-                __html: previewHTML,
-            } }
-        />
+        <Fragment>
+            <div className="awb-gutenberg-preview-block">
+                { useJarallax && previewHTML ? (
+                    <Jarallax
+                        options={ jarallaxParams }
+                        previewHTML={ previewHTML }
+                    />
+                ) : (
+                    <div className="awb-gutenberg-preview-block-inner" dangerouslySetInnerHTML={ {
+                        __html: previewHTML,
+                    } } />
+                ) }
+                { color ? (
+                    <div
+                        className="nk-awb-overlay"
+                        style={ { backgroundColor: color } }
+                    />
+                ) : '' }
+            </div>
+        </Fragment>
     );
 }
 
