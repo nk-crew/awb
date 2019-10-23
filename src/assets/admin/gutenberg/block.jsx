@@ -1189,6 +1189,7 @@ export const settings = {
         supports: {
             spacings: true,
             display: true,
+            customCSS: true,
         },
     },
 
