@@ -410,72 +410,74 @@ export function renderInspectorControls( props ) {
 
     return (
         <Fragment>
-            <ButtonGroup aria-label={ __( 'Background type' ) } style={ { marginTop: 15, marginBottom: 10 } }>
-                {
-                    [
-                        {
-                            label: __( 'Color' ),
-                            value: 'color',
-                        },
-                        {
-                            label: __( 'Image' ),
-                            value: 'image',
-                        },
-                        {
-                            label: __( 'Video' ),
-                            value: 'yt_vm_video',
-                        },
-                    ].map( ( val ) => {
-                        let selected = type === val.value;
-
-                        // select video
-                        if ( val.value === 'yt_vm_video' ) {
-                            if ( type === 'video' || type === 'yt_vm_video' ) {
-                                selected = true;
-                            }
-                        }
-
-                        return (
-                            <Button
-                                isLarge
-                                isPrimary={ selected }
-                                aria-pressed={ selected }
-                                onClick={ () => setAttributes( { type: val.value } ) }
-                                key={ `type_${ val.label }` }
-                            >
-                                { val.label }
-                            </Button>
-                        );
-                    } )
-                }
-            </ButtonGroup>
-
-            { ( type === 'video' || type === 'yt_vm_video' ) ? (
-                <ButtonGroup aria-label={ __( 'Background video type' ) } style={ { marginBottom: 10 } }>
+            <PanelBody>
+                <ButtonGroup aria-label={ __( 'Background type' ) } style={ { marginTop: 15, marginBottom: 10 } }>
                     {
                         [
                             {
-                                label: __( 'YouTube / Vimeo' ),
-                                value: 'yt_vm_video',
+                                label: __( 'Color' ),
+                                value: 'color',
                             },
                             {
-                                label: __( 'Self Hosted' ),
-                                value: 'video',
+                                label: __( 'Image' ),
+                                value: 'image',
                             },
-                        ].map( val => (
-                            <Button
-                                isLarge
-                                isPrimary={ type === val.value }
-                                aria-pressed={ type === val.value }
-                                onClick={ () => setAttributes( { type: val.value } ) }
-                                key={ `type_${ val.label }` }
-                            >
-                                { val.label }
-                            </Button>
-                        ) )
+                            {
+                                label: __( 'Video' ),
+                                value: 'yt_vm_video',
+                            },
+                        ].map( ( val ) => {
+                            let selected = type === val.value;
+
+                            // select video
+                            if ( val.value === 'yt_vm_video' ) {
+                                if ( type === 'video' || type === 'yt_vm_video' ) {
+                                    selected = true;
+                                }
+                            }
+
+                            return (
+                                <Button
+                                    isLarge
+                                    isPrimary={ selected }
+                                    aria-pressed={ selected }
+                                    onClick={ () => setAttributes( { type: val.value } ) }
+                                    key={ `type_${ val.label }` }
+                                >
+                                    { val.label }
+                                </Button>
+                            );
+                        } )
                     }
                 </ButtonGroup>
-            ) : '' }
+
+                { ( type === 'video' || type === 'yt_vm_video' ) ? (
+                    <ButtonGroup aria-label={ __( 'Background video type' ) } style={ { marginBottom: 10 } }>
+                        {
+                            [
+                                {
+                                    label: __( 'YouTube / Vimeo' ),
+                                    value: 'yt_vm_video',
+                                },
+                                {
+                                    label: __( 'Self Hosted' ),
+                                    value: 'video',
+                                },
+                            ].map( val => (
+                                <Button
+                                    isLarge
+                                    isPrimary={ type === val.value }
+                                    aria-pressed={ type === val.value }
+                                    onClick={ () => setAttributes( { type: val.value } ) }
+                                    key={ `type_${ val.label }` }
+                                >
+                                    { val.label }
+                                </Button>
+                            ) )
+                        }
+                    </ButtonGroup>
+                ) : '' }
+            </PanelBody>
 
             { type ? (
                 <Fragment>
@@ -740,31 +742,22 @@ export function renderInspectorControls( props ) {
                         </PanelBody>
                     ) : '' }
 
-                    { type === 'color' ? (
+                    <PanelBody
+                        title={ (
+                            <Fragment>
+                                { type === 'color' ? __( 'Color' ) : __( 'Overlay' ) }
+                                <ColorIndicator colorValue={ color } />
+                            </Fragment>
+                        ) }
+                        initialOpen={ type === 'color' }
+                    >
                         <ColorPicker
                             label={ __( 'Background Color' ) }
                             value={ color }
                             onChange={ ( val ) => setAttributes( { color: val } ) }
                             alpha={ true }
                         />
-                    ) : (
-                        <PanelBody
-                            title={ (
-                                <Fragment>
-                                    { __( 'Overlay' ) }
-                                    <ColorIndicator colorValue={ color } />
-                                </Fragment>
-                            ) }
-                            initialOpen={ type === 'color' }
-                        >
-                            <ColorPicker
-                                label={ __( 'Background Color' ) }
-                                value={ color }
-                                onChange={ ( val ) => setAttributes( { color: val } ) }
-                                alpha={ true }
-                            />
-                        </PanelBody>
-                    ) }
+                    </PanelBody>
 
                     { ( type === 'image' || type === 'yt_vm_video' || type === 'video' ) ? (
                         <Fragment>
