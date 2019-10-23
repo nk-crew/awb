@@ -858,6 +858,8 @@ export function renderEditorPreview( props ) {
 
         image,
         imageTag,
+        imageSize = 'full',
+        imageSizes,
         imageBackgroundSize,
         imageBackgroundPosition,
 
@@ -885,10 +887,16 @@ export function renderEditorPreview( props ) {
     }
 
     let previewHTML = '';
+    let jarallaxSrc = '';
     if ( type === 'image' || type === 'video' || type === 'yt_vm_video' ) {
+        if ( imageSizes && imageSize && imageSizes[ imageSize ] && imageSizes[ imageSize ].url ) {
+            jarallaxSrc = imageSizes[ imageSize ].url;
+        }
+
         if ( imageTag ) {
             previewHTML = imageTag;
         } else if ( type === 'yt_vm_video' && videoPosterPreview ) {
+            jarallaxSrc = videoPosterPreview;
             previewHTML = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
         }
     }
@@ -916,13 +924,17 @@ export function renderEditorPreview( props ) {
         jarallaxParams.videoPlayOnlyVisible = ! videoAlwaysPlay;
     }
 
+    if ( jarallaxSrc ) {
+        jarallaxParams.imgSrc = jarallaxSrc;
+    }
+
     return (
         <Fragment>
             <div className="awb-gutenberg-preview-block">
-                { useJarallax && previewHTML ? (
+                { useJarallax ? (
                     <Jarallax
+                        key={ `${ jarallaxParams.videoSrc || '' } ${ jarallaxParams.imgSrc || '' } ${ jarallaxParams.imgSize || '' } ${ jarallaxParams.imgRepeat || '' }` }
                         options={ jarallaxParams }
-                        previewHTML={ previewHTML }
                     />
                 ) : (
                     <div className="awb-gutenberg-preview-block-inner" dangerouslySetInnerHTML={ {

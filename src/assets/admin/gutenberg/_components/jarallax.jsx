@@ -5,6 +5,7 @@ import classnames from 'classnames/dedupe';
  */
 const {
     Component,
+    Fragment,
     createRef,
 } = wp.element;
 
@@ -48,7 +49,7 @@ class Jarallax extends Component {
 
     render() {
         const {
-            previewHTML,
+            options,
             className = '',
         } = this.props;
 
@@ -56,10 +57,19 @@ class Jarallax extends Component {
             <div
                 className={ classnames( 'jarallax', className ) }
                 ref={ this.$el }
-                dangerouslySetInnerHTML={ {
-                    __html: previewHTML,
-                } }
-            />
+            >
+                { options.imgSrc ? (
+                    <Fragment>
+                        { options.imgSize === 'auto' && options.imgRepeat === 'repeat' ? (
+                            <div className="jarallax-img" style={ {
+                                backgroundImage: `url(${ options.imgSrc })`,
+                            } } />
+                        ) : (
+                            <img className="jarallax-img" src={ options.imgSrc } alt="" />
+                        ) }
+                    </Fragment>
+                ) : '' }
+            </div>
         );
     }
 }
