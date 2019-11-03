@@ -1,39 +1,40 @@
-# Advanced WordPress Backgrounds #
+# Advanced WordPress Backgrounds
+
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
 * Requires at least: 4.0.0
 * Tested up to: 5.3
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
-* License URI: http://www.gnu.org/licenses/gpl-2.0.html
+* License URI: <http://www.gnu.org/licenses/gpl-2.0.html>
 
 Image backgrounds, YouTube / Vimeo / Local hosted video backgrounds with parallax support.
 
-
-## Description ##
+## Description
 
 AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. [Gutenberg](https://wordpress.org/gutenberg/) and WPBakery Page Builder support.
 
-#### Links ####
+### Links
 
 * [Live Demo](https://wpbackgrounds.com)
 * [GitHub](https://github.com/nk-o/awb)
 
 = Features =
+
 * Background __Types__:
-    * Color
-    * Image
-    * Pattern images
-    * Local Hosted Video
-    * Youtube / Vimeo Video
+  * Color
+  * Image
+  * Pattern images
+  * Local Hosted Video
+  * Youtube / Vimeo Video
 * __Parallax__ options powered by high performance JavaScript plugin [Jarallax](https://github.com/nk-o/jarallax)
-    * Custom speed option
-    * Enable / Disable for mobile devices option
-    * Scroll effect
-    * Opacity effect
-    * Scale effect
-    * Scroll + Opacity effect
-    * Scroll + Scale effect
+  * Custom speed option
+  * Enable / Disable for mobile devices option
+  * Scroll effect
+  * Opacity effect
+  * Scale effect
+  * Scroll + Opacity effect
+  * Scroll + Scale effect
 * __Mouse Parallax__
 * Custom __video__ start & end time
 * srcset supported (i.e. Google love it)
@@ -44,7 +45,6 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. 
 * __WPBakery Page Builder__ supported (extended row and col options + separate shortcode)
 * Custom CSS offsets (paddings + margins)
 
-
 = Real Usage Examples =
 
 * [Skylith - Multipurpose Gutenberg Theme](https://demo.nkdev.info/#skylith)
@@ -53,61 +53,59 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. 
 * [Khaki - Multipurpose Theme](https://demo.nkdev.info/#khaki.corporate)
 * [Snow - Portfolio Theme](https://demo.nkdev.info/#snow)
 
+## Installation
 
-
-## Installation ##
-
-#### Automatic installation ####
+### Automatic installation
 
 Automatic installation is the easiest option as WordPress handles the file transfers itself and you don’t need to leave your web browser. To do an automatic install of AWB, log in to your WordPress dashboard, navigate to the Plugins menu and click Add New.
 
 In the search field type AWB and click Search Plugins. Once you’ve found our plugin you can view details about it such as the point release, rating and description. Most importantly of course, you can install it by simply clicking “Install Now”.
 
-#### Manual installation ####
+### Manual installation
 
 The manual installation method involves downloading our AWB plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
+## Frequently Asked Questions
 
+### How to enable `Stretch` with Gutenberg
 
-## Frequently Asked Questions ##
-
-#### How to enable `Stretch` with Gutenberg ####
 Since the Gutenberg support `Wide` blocks, you can make stretch for AWB in theme code:
 
 1. Enable support for `Wide` blocks in theme. [Read here how](https://wordpress.org/gutenberg/handbook/extensibility/theme-support/#wide-alignment)
 2. Add this JS code to your theme or in 3rd-party plugin:
-    ```javascript
-    (function ($) {
-        var $body = $('body');
 
-        // fullwidth gutenberg feature.
-        function stretchAWB() {
-            var wndW = $body.width();
+  ```javascript
+  (function ($) {
+      var $body = $('body');
 
-            $('.nk-awb.alignfull > .nk-awb-wrap').each(function () {
-                var $this = $(this);
+      // fullwidth gutenberg feature.
+      function stretchAWB() {
+          var wndW = $body.width();
 
-                var rect = this.getBoundingClientRect();
-                var left = rect.left;
-                var right = wndW - rect.right;
+          $('.nk-awb.alignfull > .nk-awb-wrap').each(function () {
+              var $this = $(this);
 
-                var ml = parseFloat($this.css('margin-left') || 0);
-                var mr = parseFloat($this.css('margin-right') || 0);
+              var rect = this.getBoundingClientRect();
+              var left = rect.left;
+              var right = wndW - rect.right;
 
-                $this.css({
-                    'margin-left': ml - left,
-                    'margin-right': mr - right,
-                });
-            });
-        }
-        stretchAWB();
-        $(window).on('resize orientationchange load', stretchAWB);
-    }(jQuery));
-    ```
+              var ml = parseFloat($this.css('margin-left') || 0);
+              var mr = parseFloat($this.css('margin-right') || 0);
+
+              $this.css({
+                  'margin-left': ml - left,
+                  'margin-right': mr - right,
+              });
+          });
+      }
+      stretchAWB();
+      $(window).on('resize orientationchange load', stretchAWB);
+  }(jQuery));
+  ```
+
 Note: this code for example only, your theme may not work with it properly (it may not work correctly with theme sidebars). So, you will need to change this code manually depending on your theme styles.
 
-
-## Screenshots ##
+## Screenshots
 
 1. Background color
 2. Background image
@@ -115,9 +113,16 @@ Note: this code for example only, your theme may not work with it properly (it m
 4. Background parallax and Mouse parallax
 5. Extended WPBakery Page Builder ROW options
 
+## Changelog
 
+= 1.6.1 =
 
-## Changelog ##
+* added parallax and video preview in Gutenberg editor
+* added support for Ghost Kit Custom CSS extension
+* updated Jarallax library to 1.12.0
+* fixed Jetpack conflict with parallax images
+* fixed color picker in the latest Gutenberg
+* fixed deprecation warnings in the latest Gutenberg
 
 = 1.6.0 =
 
@@ -251,7 +256,7 @@ Note: this code for example only, your theme may not work with it properly (it m
 
 * added support for [Gutenberg](https://wordpress.org/gutenberg/) blocks builder
 * added option to disable video on mobile devices
-* fixed WPBakery Page Builder and Stretch row JS error on mobile devices 
+* fixed WPBakery Page Builder and Stretch row JS error on mobile devices
 * fixed WPBakery Page Builder icon position
 * updated Jarallax to 1.10.1
 
@@ -269,7 +274,7 @@ Note: this code for example only, your theme may not work with it properly (it m
 * added video always play option
 * added background image size option (support for pattern backgrounds)
 * added background image position option
-* changed background image to <img> tag with srcset support
+* changed background image to &lt;img&gt; tag with srcset support
 * changed scripts enqueue to registration first (prevent some themes to override scripts)
 * updated jarallax plugin
 * updated wp-color-picker-alpha plugin to support WordPress 4.9
