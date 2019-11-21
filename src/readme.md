@@ -69,41 +69,7 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ### How to enable `Stretch` with Gutenberg
 
-Since the Gutenberg support `Wide` blocks, you can make stretch for AWB in theme code:
-
-1. Enable support for `Wide` blocks in theme. [Read here how](https://wordpress.org/gutenberg/handbook/extensibility/theme-support/#wide-alignment)
-2. Add this JS code to your theme or in 3rd-party plugin:
-
-  ```javascript
-  (function ($) {
-      var $body = $('body');
-
-      // fullwidth gutenberg feature.
-      function stretchAWB() {
-          var wndW = $body.width();
-
-          $('.nk-awb.alignfull > .nk-awb-wrap').each(function () {
-              var $this = $(this);
-
-              var rect = this.getBoundingClientRect();
-              var left = rect.left;
-              var right = wndW - rect.right;
-
-              var ml = parseFloat($this.css('margin-left') || 0);
-              var mr = parseFloat($this.css('margin-right') || 0);
-
-              $this.css({
-                  'margin-left': ml - left,
-                  'margin-right': mr - right,
-              });
-          });
-      }
-      stretchAWB();
-      $(window).on('resize orientationchange load', stretchAWB);
-  }(jQuery));
-  ```
-
-Note: this code for example only, your theme may not work with it properly (it may not work correctly with theme sidebars). So, you will need to change this code manually depending on your theme styles.
+[Read in documentation](https://wpbackgrounds.com/documentation/enable-stretch-option-with-gutenberg/)
 
 ## Screenshots
 
