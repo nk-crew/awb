@@ -48,11 +48,12 @@ AWB let you to use parallax backgrounds with images, videos, youtube and vimeo. 
 
 = Real Usage Examples =
 
-* [Skylith - Multipurpose Gutenberg Theme](https://demo.nkdev.info/#skylith)
-* [Youplay - Gaming Theme](https://demo.nkdev.info/#youplay)
-* [Godlike - Gaming Theme](https://demo.nkdev.info/#godlike)
-* [Khaki - Multipurpose Theme](https://demo.nkdev.info/#khaki.corporate)
-* [Snow - Portfolio Theme](https://demo.nkdev.info/#snow)
+* [SquadForce - eSports Gaming WordPress Theme](https://wp.nkdev.info/squadforce/)
+* [Skylith - Multipurpose Gutenberg Theme](https://wp.nkdev.info/skylith/)
+* [Youplay - Gaming Theme](https://wp.nkdev.info/youplay/)
+* [Godlike - Gaming Theme](https://wp.nkdev.info/godlike/)
+* [Khaki - Multipurpose Theme](https://wp.nkdev.info/khaki/)
+* [Snow - Portfolio Theme](https://wp.nkdev.info/snow/)
 
 ## Installation
 
