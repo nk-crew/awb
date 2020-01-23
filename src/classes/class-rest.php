@@ -25,7 +25,7 @@ class NK_AWB_Rest extends WP_REST_Controller {
      *
      * @var string
      */
-    protected $version   = '1';
+    protected $version = '1';
 
     /**
      * NK_AWB_Rest constructor.
@@ -42,10 +42,12 @@ class NK_AWB_Rest extends WP_REST_Controller {
 
         // Get attachment image <img> tag.
         register_rest_route(
-            $namespace, '/get_attachment_image/(?P<id>[\d]+)', array(
-                'methods'         => WP_REST_Server::READABLE,
-                'callback'        => array( $this, 'get_attachment_image' ),
-                'permission_callback'   => array( $this, 'get_attachment_image_permission' ),
+            $namespace,
+            '/get_attachment_image/(?P<id>[\d]+)',
+            array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'get_attachment_image' ),
+                'permission_callback' => array( $this, 'get_attachment_image_permission' ),
             )
         );
     }
@@ -74,10 +76,10 @@ class NK_AWB_Rest extends WP_REST_Controller {
      * @return mixed
      */
     public function get_attachment_image( WP_REST_Request $request ) {
-        $id = $request->get_param( 'id' );
-        $size = $request->get_param( 'size' );
-        $icon = $request->get_param( 'icon' );
-        $attr = $request->get_param( 'attr' );
+        $id      = $request->get_param( 'id' );
+        $size    = $request->get_param( 'size' );
+        $icon    = $request->get_param( 'icon' );
+        $attr    = $request->get_param( 'attr' );
         $div_tag = $request->get_param( 'div_tag' );
 
         $attr = isset( $attr ) && $attr && is_array( $attr ) ? $attr : array();
@@ -91,7 +93,7 @@ class NK_AWB_Rest extends WP_REST_Controller {
 
             $attr['style'] .= 'background-image: url("' . esc_url( $image_url ) . '");';
 
-            $attr = array_map( 'esc_attr', $attr );
+            $attr  = array_map( 'esc_attr', $attr );
             $image = '<div';
             foreach ( $attr as $name => $value ) {
                 $image .= " $name=" . '"' . $value . '"';
@@ -102,7 +104,8 @@ class NK_AWB_Rest extends WP_REST_Controller {
 
             if ( $image_src ) {
                 list( $src, $width, $height ) = $image_src;
-                $alt = trim( strip_tags( get_post_meta( $id, '_wp_attachment_image_alt', true ) ) );
+
+                $alt = trim( wp_strip_all_tags( get_post_meta( $id, '_wp_attachment_image_alt', true ) ) );
 
                 if ( $alt ) {
                     $attr['alt'] = $alt;
@@ -114,7 +117,7 @@ class NK_AWB_Rest extends WP_REST_Controller {
                     $attr['class'] = 'wp-image-' . $id . ' ' . $attr['class'];
                 }
 
-                $attr['width'] = $width;
+                $attr['width']  = $width;
                 $attr['height'] = $height;
 
                 $attrs_str = '';
@@ -145,9 +148,10 @@ class NK_AWB_Rest extends WP_REST_Controller {
     public function success( $response ) {
         return new WP_REST_Response(
             array(
-                'success' => true,
+                'success'  => true,
                 'response' => $response,
-            ), 200
+            ),
+            200
         );
     }
 
@@ -161,11 +165,12 @@ class NK_AWB_Rest extends WP_REST_Controller {
     public function error( $code, $response ) {
         return new WP_REST_Response(
             array(
-                'error' => true,
-                'success' => false,
+                'error'      => true,
+                'success'    => false,
                 'error_code' => $code,
-                'response' => $response,
-            ), 401
+                'response'   => $response,
+            ),
+            401
         );
     }
 }

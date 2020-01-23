@@ -1,9 +1,8 @@
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const md5 = require('md5');
+const md5 = require( 'md5' );
 
 module.exports = {
     module: {
-        loaders: [
+        rules: [
             {
                 test: /(\.jsx|\.js)$/,
                 loader: 'babel-loader',
@@ -22,8 +21,20 @@ module.exports = {
                     },
                 ],
             }, {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'style-loader', // creates style nodes from JS strings
+                    }, {
+                        loader: 'css-loader', // translates CSS into CommonJS
+                        options: {
+                            url: false,
+                        },
+                    },
+                ],
+            }, {
                 test: /\.svg$/,
-                use: ({ resource }) => ({
+                use: ( { resource } ) => ( {
                     loader: '@svgr/webpack',
                     options: {
                         svgoConfig: {
@@ -33,27 +44,24 @@ module.exports = {
                                 },
                                 {
                                     cleanupIDs: {
-                                        prefix: `awb-${md5(resource)}-`,
+                                        prefix: `awb-${ md5( resource ) }-`,
                                     },
                                 },
                             ],
                         },
                     },
-                }),
+                } ),
+            }, {
+                test: /\.(gif|png|jpe?g)$/i,
+                loader: 'base64-inline-loader',
             },
         ],
+    },
+    resolve: {
+        extensions: [ '.js', '.jsx', '.json' ],
     },
     externals: {
         react: 'React',
         'react-dom': 'ReactDOM',
     },
-    plugins: [
-        new UglifyJsPlugin({
-            uglifyOptions: {
-                output: {
-                    comments: /^!/,
-                },
-            },
-        }),
-    ],
 };

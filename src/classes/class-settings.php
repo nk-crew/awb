@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-require_once( nk_awb()->plugin_path . 'vendors/class-settings-api.php' );
+require_once nk_awb()->plugin_path . 'vendors/class-settings-api.php';
 
 /**
  * Class AWB_Settings
@@ -129,7 +129,7 @@ class AWB_Settings {
                         'chrome'     => 'Chrome',
                         'opera'      => 'Opera',
                     ),
-                    'default' => array(),
+                    'default'  => array(),
                 ),
                 array(
                     'name'     => 'disable_videos',
@@ -145,7 +145,7 @@ class AWB_Settings {
                         'chrome'     => 'Chrome',
                         'opera'      => 'Opera',
                     ),
-                    'default' => array(),
+                    'default'  => array(),
                 ),
             ),
             'awb_pro' => array(
@@ -185,7 +185,7 @@ class AWB_Settings {
         echo '</div>';
 
         wp_enqueue_style( 'nk-awb-settings', nk_awb()->plugin_url . 'assets/admin/settings/style.min.css', '', '@@plugin_version' );
-        wp_enqueue_script( 'nk-awb-settings', nk_awb()->plugin_url . 'assets/admin/settings/script.min.js', array( 'jquery' ), '@@plugin_version' );
+        wp_enqueue_script( 'nk-awb-settings', nk_awb()->plugin_url . 'assets/admin/settings/script.min.js', array( 'jquery' ), '@@plugin_version', true );
     }
 }
 new AWB_Settings();

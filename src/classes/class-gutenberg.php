@@ -32,10 +32,8 @@ class NK_AWB_Gutenberg {
 
     /**
      * Enqueue admin scripts hook
-     *
-     * @param object $page - page data.
      */
-    public function register_block( $page ) {
+    public function register_block() {
         $deps = array( 'wp-editor', 'wp-i18n', 'wp-element', 'underscore', 'jquery', 'jarallax', 'jarallax-video' );
 
         // enqueue block js.
@@ -43,20 +41,24 @@ class NK_AWB_Gutenberg {
             'awb-gutenberg',
             nk_awb()->plugin_url . 'assets/admin/gutenberg/index.min.js',
             $deps,
-            filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/index.min.js' )
+            filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/index.min.js' ),
+            true
         );
 
         // register block.
-        register_block_type( 'nk/awb', array(
-            'editor_script' => 'awb-gutenberg',
-            'script' => 'nk-awb',
-            'style'  => 'nk-awb',
-        ) );
+        register_block_type(
+            'nk/awb',
+            array(
+                'editor_script' => 'awb-gutenberg',
+                'script'        => 'nk-awb',
+                'style'         => 'nk-awb',
+            )
+        );
 
         // add variables to script.
         $data = array(
             'full_width_fallback' => ! get_theme_support( 'align-wide' ),
-            'is_ghostkit_active' => class_exists( 'GhostKit' ),
+            'is_ghostkit_active'  => class_exists( 'GhostKit' ),
         );
         wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );
     }

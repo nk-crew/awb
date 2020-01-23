@@ -198,7 +198,7 @@ function parallaxMouseRun( x, y, deviceOrientation ) {
             } );
         } else {
             $this.css( {
-                transition: `transform ${ deviceOrientation ? 2 : data.speed }s  cubic-bezier(0.22, 0.63, 0.6, 0.88)`,
+                transition: `transform ${ deviceOrientation ? 2 : data.speed }s  cubic-bezier(.22, .63, .6, .88)`,
                 transform: `translateX(${ itemX }px) translateY(${ itemY }px) translateZ(0)`,
             } );
         }

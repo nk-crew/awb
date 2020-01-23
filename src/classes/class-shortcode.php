@@ -33,7 +33,7 @@ class NK_AWB_Shortcode {
      *
      * @var bool
      */
-    static private $scripts_enqueued = false;
+    private static $scripts_enqueued = false;
 
     /**
      * Enqueue styles and scripts
@@ -59,42 +59,43 @@ class NK_AWB_Shortcode {
     public static function get_shortcode_out( $atts = array(), $content = null ) {
         $atts = shortcode_atts(
             array(
-                'awb_type'              => '', // color, image, yt_vm_video, video.
+                'awb_type'                      => '', // color, image, yt_vm_video, video.
 
-                'awb_stretch'           => 'false',
+                'awb_stretch'                   => 'false',
 
-                'awb_color'             => '',
-                'awb_image'             => '',
-                'awb_video'             => '',
+                'awb_color'                     => '',
+                'awb_image'                     => '',
+                'awb_video'                     => '',
 
-                'awb_image_size'        => 'full',
-                'awb_image_background_size' => 'cover',
+                'awb_image_size'                => 'full',
+                'awb_image_background_size'     => 'cover',
                 'awb_image_background_position' => '50% 50%',
 
-                'awb_video_mp4'         => '',
-                'awb_video_webm'        => '',
-                'awb_video_ogv'         => '',
-                'awb_video_start_time'  => 0,
-                'awb_video_end_time'    => 0,
-                'awb_video_volume'      => 0,
-                'awb_video_always_play' => 'false',
-                'awb_video_mobile'      => 'false',
+                'awb_video_mp4'                 => '',
+                'awb_video_webm'                => '',
+                'awb_video_ogv'                 => '',
+                'awb_video_start_time'          => 0,
+                'awb_video_end_time'            => 0,
+                'awb_video_volume'              => 0,
+                'awb_video_always_play'         => 'false',
+                'awb_video_mobile'              => 'false',
 
-                'awb_parallax'          => 'false', // scroll, scale, opacity, scroll-opacity, scale-opacity.
-                'awb_parallax_speed'    => 0.5,
-                'awb_parallax_mobile'   => 'false',
+                'awb_parallax'                  => 'false', // scroll, scale, opacity, scroll-opacity, scale-opacity.
+                'awb_parallax_speed'            => 0.5,
+                'awb_parallax_mobile'           => 'false',
 
-                'awb_mouse_parallax'    => 'false',
-                'awb_mouse_parallax_size' => 30, // pixels.
-                'awb_mouse_parallax_speed' => 10000, // ms.
+                'awb_mouse_parallax'            => 'false',
+                'awb_mouse_parallax_size'       => 30, // pixels.
+                'awb_mouse_parallax_speed'      => 10000, // ms.
 
-                'awb_after_vc_row'      => 'false',
-                'awb_after_vc_column'   => 'false',
+                'awb_after_vc_row'              => 'false',
+                'awb_after_vc_column'           => 'false',
 
-                'awb_class'             => '',
-                'awb_styles'            => '',
-                'vc_css'                => '',
-            ), $atts
+                'awb_class'                     => '',
+                'awb_styles'                    => '',
+                'vc_css'                        => '',
+            ),
+            $atts
         );
 
         // prevent if no valid type.
@@ -106,10 +107,10 @@ class NK_AWB_Shortcode {
         self::enqueue_front_assets();
 
         // prepare attributes and styles.
-        $atts['awb_class'] = 'nk-awb ' . $atts['awb_class'];
-        $awb_attributes = '';
-        $awb_wrap_attributes = 'data-awb-type="' . esc_attr( $atts['awb_type'] ) . '"';
-        $awb_inner_styles = '';
+        $atts['awb_class']    = 'nk-awb ' . $atts['awb_class'];
+        $awb_attributes       = '';
+        $awb_wrap_attributes  = 'data-awb-type="' . esc_attr( $atts['awb_type'] ) . '"';
+        $awb_inner_styles     = '';
         $awb_inner_attributes = '';
 
         // stretch.
@@ -143,7 +144,10 @@ class NK_AWB_Shortcode {
         if ( isset( $atts['awb_image'] ) && $atts['awb_image'] && ( 'image' === $atts['awb_type'] || 'yt_vm_video' === $atts['awb_type'] || 'video' === $atts['awb_type'] ) ) {
             if ( is_numeric( $atts['awb_image'] ) && 'pattern' !== $atts['awb_image_background_size'] ) {
                 $awb_inner_html .= wp_get_attachment_image(
-                    $atts['awb_image'], $atts['awb_image_size'], false, array(
+                    $atts['awb_image'],
+                    $atts['awb_image_size'],
+                    false,
+                    array(
                         'class' => 'jarallax-img',
                         'style' => 'object-position: ' . $atts['awb_image_background_position'] . ';',
                     )
