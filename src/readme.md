@@ -81,6 +81,12 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.6.2 =
+
+* added shortcode inserter in Classic block in Gutenberg
+* fixed background integration for Ghost Kit Grid and Columns
+* fixed WPB column background position
+
 = 1.6.1 =
 
 * added parallax and video preview in Gutenberg editor
