@@ -25,17 +25,8 @@ class NK_AWB_TinyMCE {
      */
     public function init_hooks() {
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-        add_action( 'admin_head', array( $this, 'admin_head' ) );
-    }
-
-    /**
-     * Admin head action
-     */
-    public function admin_head() {
-        if ( current_user_can( 'edit_posts' ) && current_user_can( 'edit_pages' ) ) {
-            add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ) );
-            add_filter( 'mce_buttons', array( $this, 'mce_buttons' ) );
-        }
+        add_filter( 'mce_external_plugins', array( $this, 'mce_external_plugins' ) );
+        add_filter( 'mce_buttons', array( $this, 'mce_buttons' ) );
     }
 
     /**
@@ -75,7 +66,10 @@ class NK_AWB_TinyMCE {
      * @return array
      */
     public function mce_external_plugins( $plugin_array ) {
-        $plugin_array['awb'] = nk_awb()->plugin_url . 'assets/admin/tinymce/mce-button.min.js';
+        if ( current_user_can( 'edit_posts' ) ) {
+            $plugin_array['awb'] = nk_awb()->plugin_url . 'assets/admin/tinymce/mce-button.min.js';
+        }
+
         return $plugin_array;
     }
 
@@ -87,7 +81,10 @@ class NK_AWB_TinyMCE {
      * @return array
      */
     public function mce_buttons( $buttons ) {
-        array_push( $buttons, 'awb' );
+        if ( current_user_can( 'edit_posts' ) ) {
+            array_push( $buttons, 'awb' );
+        }
+
         return $buttons;
     }
 
