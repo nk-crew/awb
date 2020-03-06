@@ -83,6 +83,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.6.3 =
+
+* fixed stretch script calculation with the latest Ghost Kit Grid
+
 = 1.6.2 =
 
 * added shortcode inserter in Classic block in Gutenberg
