@@ -43,7 +43,6 @@ const {
     TextControl,
     RangeControl,
     Toolbar,
-    IconButton,
     DropdownMenu,
     ColorIndicator,
 } = wp.components;
@@ -438,7 +437,8 @@ export function renderInspectorControls( props ) {
 
                             return (
                                 <Button
-                                    isLarge
+                                    isSmall
+                                    isSecondary
                                     isPrimary={ selected }
                                     aria-pressed={ selected }
                                     onClick={ () => setAttributes( { type: val.value } ) }
@@ -465,7 +465,8 @@ export function renderInspectorControls( props ) {
                                 },
                             ].map( val => (
                                 <Button
-                                    isLarge
+                                    isSmall
+                                    isSecondary
                                     isPrimary={ type === val.value }
                                     aria-pressed={ type === val.value }
                                     onClick={ () => setAttributes( { type: val.value } ) }
@@ -1128,7 +1129,7 @@ export class BlockEdit extends Component {
                                 allowedTypes={ [ 'image' ] }
                                 value={ image }
                                 render={ ( { open } ) => (
-                                    <IconButton
+                                    <Button
                                         className="components-toolbar__control"
                                         label={ __( 'Edit image' ) }
                                         icon="edit"
