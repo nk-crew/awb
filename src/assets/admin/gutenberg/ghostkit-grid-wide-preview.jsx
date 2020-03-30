@@ -48,8 +48,8 @@ export default class GhostKitGridWidePreview extends Component {
         };
 
         if ( 'full' === attributes.awb_align ) {
-            const $layout = document.querySelector( '.editor-block-list__layout' );
-            const $parentBlock = document.querySelector( '.editor-block-list__layout .wp-block:not([data-align])' );
+            const $layout = document.querySelector( '.block-editor-block-list__layout' );
+            const $parentBlock = document.querySelector( '.block-editor-block-list__layout .wp-block:not([data-align])' );
             const $preview = document.querySelector( previewSelector );
 
             if ( $layout && $parentBlock && $preview ) {

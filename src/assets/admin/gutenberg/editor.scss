@@ -8,7 +8,7 @@ img.awb-gutenberg-icon {
 .wp-block-nk-awb {
     padding: 1px 20px;
 
-    .editor-block-list__layout {
+    .block-editor-block-list__layout {
         margin-right: 0;
         margin-left: 0;
     }
@@ -40,7 +40,7 @@ img.awb-gutenberg-icon {
     transition: .15s border ease-in-out;
 
     // inside nested block
-    .editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit .editor-block-list__block-edit & {
+    .block-editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit .editor-block-list__block-edit & {
         right: -15px;
         left: -15px;
     }
@@ -83,7 +83,7 @@ img.awb-gutenberg-icon {
             left: 0;
         }
 
-        > .editor-inner-blocks > .editor-block-list__layout {
+        > .editor-inner-blocks > .block-editor-block-list__layout {
             padding-right: 46px;
             padding-left: 46px;
         }
@@ -91,7 +91,7 @@ img.awb-gutenberg-icon {
 }
 
 // fix wide inside nested block
-.editor-block-list__layout .editor-block-list__block-edit .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
+.block-editor-block-list__layout .editor-block-list__block-edit .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
     margin-right: 0;
     margin-left: 0;
 }
@@ -113,8 +113,8 @@ img.awb-gutenberg-icon {
     left: -15px;
 }
 // stylelint-disable-next-line
-[data-type="ghostkit/grid"] [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > .editor-inner-blocks > .editor-block-list__layout,
-[data-type="ghostkit/grid"][data-align="full"] [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > .editor-inner-blocks > .editor-block-list__layout {
+[data-type="ghostkit/grid"] [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > .editor-inner-blocks > .block-editor-block-list__layout,
+[data-type="ghostkit/grid"][data-align="full"] [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > .editor-inner-blocks > .block-editor-block-list__layout {
     padding-right: 0;
     padding-left: 0;
     margin-right: 0;
