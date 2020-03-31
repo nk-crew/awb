@@ -2,8 +2,8 @@
 
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
-* Requires at least: 4.0.0
-* Tested up to: 5.3
+* Requires at least: 5.4.0
+* Tested up to: 5.4
 * Requires PHP: 5.5.9
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -82,6 +82,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 5. Extended WPBakery Page Builder ROW options
 
 ## Changelog
+
+= 1.6.4 =
+
+* fixed GhostKit 2.10.0 and WordPress 5.4 compatibility issues
 
 = 1.6.3 =
 
