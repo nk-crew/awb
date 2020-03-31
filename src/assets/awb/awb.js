@@ -350,7 +350,7 @@ function stretchAwb() {
 
             // Ghostkit column support
             if ( $this.closest( '.ghostkit-col' ).length ) {
-                const $row = $this.closest( '.ghostkit-grid-inner' );
+                const $row = $this.closest( '.ghostkit-grid' );
                 const $col = $this.closest( '.ghostkit-col' );
                 const rectRow = $row[ 0 ].getBoundingClientRect();
                 const rectCol = $col[ 0 ].getBoundingClientRect();
