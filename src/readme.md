@@ -83,6 +83,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.6.5 =
+
+* added Gutenberg block inner blocks inserter (better UI)
+
 = 1.6.4 =
 
 * fixed GhostKit 2.10.0 and WordPress 5.4 compatibility issues
