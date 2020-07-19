@@ -989,7 +989,9 @@ export class BlockEdit extends Component {
             attributes,
             setAttributes,
             inspectorControlsOnly,
+            hasChildBlocks,
         } = this.props;
+
         let {
             className,
         } = this.props;
@@ -1157,7 +1159,12 @@ export class BlockEdit extends Component {
 
                 <div className={ className }>
                     { renderEditorPreview( this.props ) }
-                    <InnerBlocks />
+                    <InnerBlocks
+                        templateLock={ false }
+                        renderAppender={ (
+                            hasChildBlocks ? undefined : () => <InnerBlocks.ButtonBlockAppender />
+                        ) }
+                    />
                 </div>
             </Fragment>
         );
@@ -1165,22 +1172,29 @@ export class BlockEdit extends Component {
 }
 
 export const BlockEditWithSelect = withSelect( ( select, props ) => {
-    const { attributes } = props;
+    const {
+        clientId,
+        attributes,
+    } = props;
+
     const { image } = attributes;
 
-    if ( ! image ) {
-        return false;
-    }
+    const blockEditor = select( 'core/block-editor' );
 
-    let query = `size=${ encodeURIComponent( attributes.imageSize ) }&attr[class]=jarallax-img`;
+    let imageQuery = '';
 
-    // background image with pattern size
-    if ( attributes.imageBackgroundSize === 'pattern' ) {
-        query += '&div_tag=1';
+    if ( image ) {
+        imageQuery = `size=${ encodeURIComponent( attributes.imageSize ) }&attr[class]=jarallax-img`;
+
+        // background image with pattern size
+        if ( attributes.imageBackgroundSize === 'pattern' ) {
+            imageQuery += '&div_tag=1';
+        }
     }
 
     return {
-        fetchImageTag: select( 'nk/awb' ).getImageTagData( `/awb/v1/get_attachment_image/${ image }?${ query }` ),
+        hasChildBlocks: blockEditor ? 0 < blockEditor.getBlockOrder( clientId ).length : false,
+        fetchImageTag: imageQuery ? select( 'nk/awb' ).getImageTagData( `/awb/v1/get_attachment_image/${ image }?${ imageQuery }` ) : false,
     };
 } )( BlockEdit );
 
