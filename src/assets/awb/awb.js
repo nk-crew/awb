@@ -36,7 +36,7 @@ getWndSize();
 $wnd.on( 'resize load orientationchange', getWndSize );
 
 // enable object-fit
-if ( typeof objectFitImages !== 'undefined' ) {
+if ( 'undefined' !== typeof objectFitImages ) {
     objectFitImages( '.jarallax-img' );
 }
 
@@ -128,9 +128,9 @@ function isInViewport( $item, returnRect ) {
     const rect = $item[ 0 ].getBoundingClientRect();
     let result = 1;
 
-    if ( rect.right <= 0 || rect.left >= wndW ) {
+    if ( 0 >= rect.right || rect.left >= wndW ) {
         result = 0;
-    } else if ( rect.bottom < 0 && rect.top <= wndH ) {
+    } else if ( 0 > rect.bottom && rect.top <= wndH ) {
         result = 0;
     } else {
         const beforeTopEnd = Math.max( 0, rect.height + rect.top );
@@ -145,7 +145,7 @@ function isInViewport( $item, returnRect ) {
         } else if ( beforeBottomEnd <= wndH ) {
             result = beforeBottomEnd / wndH;
         }
-        result = result < 0 ? 0 : result;
+        result = 0 > result ? 0 : result;
     }
     if ( returnRect ) {
         return [ result, rect ];
@@ -170,7 +170,7 @@ function parallaxMouseRun( x, y, deviceOrientation ) {
         data = $this.data( 'awb-mouse-data' );
 
         // don't animate if block isn't in viewport
-        if ( typeof data !== 'object' || ( ! data.is_in_viewport && ! ( deviceOrientation && parallaxMouseFirstRun ) ) ) {
+        if ( 'object' !== typeof data || ( ! data.is_in_viewport && ! ( deviceOrientation && parallaxMouseFirstRun ) ) ) {
             return;
         }
 
@@ -183,7 +183,7 @@ function parallaxMouseRun( x, y, deviceOrientation ) {
         } else {
             itemX = ( data.rect.width - ( x - data.rect.left ) ) / data.rect.width;
             itemY = ( data.rect.height - ( y - data.rect.top ) ) / data.rect.height;
-            if ( itemX > 1 || itemX < 0 || itemY > 1 || itemY < 0 ) {
+            if ( 1 < itemX || 0 > itemX || 1 < itemY || 0 > itemY ) {
                 itemX = 0.5;
                 itemY = 0.5;
             }
@@ -279,7 +279,7 @@ function stretchAwb() {
     $( '.nk-awb:not(.wpb_column)' ).children( '.nk-awb-wrap[data-awb-stretch="true"]' ).each( function() {
         const $this = $( this );
         const rect = this.getBoundingClientRect();
-        const left = rect.left;
+        const { left } = rect;
         const right = wndW - rect.right;
 
         const ml = parseFloat( $this.css( 'margin-left' ) || 0 );
@@ -336,9 +336,9 @@ function stretchAwb() {
             }
 
             const rect = $this[ 0 ].getBoundingClientRect();
-            const left = rect.left;
+            const { left } = rect;
             const right = wndW - rect.right;
-            const bottom = rect.bottom;
+            const { bottom } = rect;
 
             const ml = parseFloat( $this.css( 'margin-left' ) || 0 );
             const mr = parseFloat( $this.css( 'margin-right' ) || 0 );
@@ -483,7 +483,7 @@ window.nkAwbInit = function() {
     stretchAwb();
 
     // init jarallax
-    if ( typeof $.fn.jarallax === 'undefined' ) {
+    if ( 'undefined' === typeof $.fn.jarallax ) {
         return;
     }
 
@@ -501,17 +501,17 @@ window.nkAwbInit = function() {
         let videoMobile = false;
         let parallax = $this.attr( 'data-awb-parallax' );
         let parallaxSpeed = $this.attr( 'data-awb-parallax-speed' );
-        let parallaxMobile = $this.attr( 'data-awb-parallax-mobile' ) === 'true' || $this.attr( 'data-awb-parallax-mobile' ) === '1';
+        let parallaxMobile = 'true' === $this.attr( 'data-awb-parallax-mobile' ) || '1' === $this.attr( 'data-awb-parallax-mobile' );
 
         // video type
-        if ( type === 'yt_vm_video' || type === 'video' ) {
+        if ( 'yt_vm_video' === type || 'video' === type ) {
             video = $this.attr( 'data-awb-video' );
             videoStartTime = parseFloat( $this.attr( 'data-awb-video-start-time' ) ) || 0;
             videoEndTime = parseFloat( $this.attr( 'data-awb-video-end-time' ) ) || 0;
             videoVolume = parseFloat( $this.attr( 'data-awb-video-volume' ) ) || 0;
-            videoLoop = $this.attr( 'data-awb-video-loop' ) !== 'false';
-            videoAlwaysPlay = $this.attr( 'data-awb-video-always-play' ) === 'true';
-            videoMobile = $this.attr( 'data-awb-video-mobile' ) === '1' || $this.attr( 'data-awb-video-mobile' ) === 'true';
+            videoLoop = 'false' !== $this.attr( 'data-awb-video-loop' );
+            videoAlwaysPlay = 'true' === $this.attr( 'data-awb-video-always-play' );
+            videoMobile = '1' === $this.attr( 'data-awb-video-mobile' ) || 'true' === $this.attr( 'data-awb-video-mobile' );
 
             // we need to enable parallax options to play videos
             // https://github.com/nk-o/awb/issues/17
@@ -540,7 +540,7 @@ window.nkAwbInit = function() {
             imgPosition: imageBgPosition || '50% 50%',
         };
 
-        if ( imageBgSize === 'pattern' ) {
+        if ( 'pattern' === imageBgSize ) {
             jarallaxParams.imgSize = 'auto';
             jarallaxParams.imgRepeat = 'repeat';
         }

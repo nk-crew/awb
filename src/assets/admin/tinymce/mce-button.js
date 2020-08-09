@@ -1,9 +1,12 @@
 /**
  * MCE button
  */
+const {
+    jQuery: $,
+} = window;
 
-( function( $ ) {
-    if ( typeof window.AWBTinyMCEOptions === 'undefined' ) {
+( () => {
+    if ( 'undefined' === typeof window.AWBTinyMCEOptions ) {
         return;
     }
     const options = window.AWBTinyMCEOptions;
@@ -56,7 +59,7 @@
 
         // is checked
         function isChecked( val ) {
-            return ( val === 1 || val === '1' || val === true || val === 'true' || val === 'on' ) ? 'checked="checked"' : '';
+            return ( 1 === val || '1' === val || true === val || 'true' === val || 'on' === val ) ? 'checked="checked"' : '';
         }
 
         // attach video/image control
@@ -334,7 +337,7 @@
 
                 onSubmit() {
                     const windows = editor.windowManager.getWindows()[ 0 ];
-                    const $panel = jQuery( windows.$el[ 0 ] );
+                    const $panel = $( windows.$el[ 0 ] );
 
                     // fix color picker visibility
                     $panel.find( '.wp-picker-container:visible' ).each( function() {
@@ -353,7 +356,7 @@
                         } else if ( ! $this.is( ':visible' ) ) {
                             return;
                         }
-                        newAtts[ this.name ] = this.type === 'checkbox' ? this.checked : this.value;
+                        newAtts[ this.name ] = 'checkbox' === this.type ? this.checked : this.value;
                     } );
 
                     // build shortcode
@@ -361,7 +364,7 @@
 
                     // insert available attributes
                     Object.keys( defaultAtts ).forEach( ( k ) => {
-                        if ( typeof newAtts[ k ] !== 'undefined' && newAtts[ k ] ) {
+                        if ( 'undefined' !== typeof newAtts[ k ] && newAtts[ k ] ) {
                             shortcodeStr += ` ${ k }="${ newAtts[ k ] }"`;
                         }
                     } );
@@ -393,10 +396,10 @@
                 },
                 onOpen() {
                     const windows = editor.windowManager.getWindows()[ 0 ];
-                    const $panel = jQuery( windows.$el[ 0 ] );
+                    const $panel = $( windows.$el[ 0 ] );
 
                     /* check if wpColorPicker available */
-                    if ( typeof $.wp === 'object' && typeof $.wp.wpColorPicker === 'function' ) {
+                    if ( 'object' === typeof $.wp && 'function' === typeof $.wp.wpColorPicker ) {
                         $panel.find( '.awb-colorpicker' ).wpColorPicker( {
                             alpha: true,
                         } );
@@ -435,4 +438,4 @@
             },
         } );
     } );
-}( jQuery ) );
+} )();

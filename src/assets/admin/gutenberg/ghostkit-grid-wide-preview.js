@@ -3,15 +3,15 @@ import { throttle } from 'throttle-debounce';
 const { Component, Fragment } = wp.element;
 
 export default class GhostKitGridWidePreview extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.state = {
             previewLeft: 0,
             previewRight: 0,
             previewAlign: false,
             previewSelector: (
-                this.props.name === 'ghostkit/grid' ? (
+                'ghostkit/grid' === this.props.name ? (
                     `[data-block="${ this.props.clientId }"] > .ghostkit-grid > .awb-gutenberg-preview-block`
                 ) : (
                     `[data-block="${ this.props.clientId }"] > .awb-gutenberg-preview-block`
@@ -26,6 +26,7 @@ export default class GhostKitGridWidePreview extends Component {
         window.addEventListener( 'resize', this.updatePosition );
         this.updatePosition();
     }
+
     componentWillUnmount() {
         window.removeEventListener( 'resize', this.updatePosition );
     }

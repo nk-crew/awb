@@ -53,11 +53,11 @@ const cssPropsWithPixels = [ 'margin-left', 'margin-right', 'margin-top', 'margi
  * @return {string} - new dashed string.
  */
 function camelCaseToDash( str ) {
-    if ( typeof str !== 'string' ) {
+    if ( 'string' !== typeof str ) {
         return str;
     }
 
-    str = str.replace( /[a-z]([A-Z])+/g, m => `${ m[ 0 ] }-${ m.substring( 1 ) }` );
+    str = str.replace( /[a-z]([A-Z])+/g, ( m ) => `${ m[ 0 ] }-${ m.substring( 1 ) }` );
 
     return str && str.toLowerCase ? str.toLowerCase() : str;
 }
@@ -76,7 +76,7 @@ function getStyles( data = {}, selector = '' ) {
     // add styles.
     Object.keys( data ).forEach( ( key ) => {
         // object values.
-        if ( data[ key ] !== null && typeof data[ key ] === 'object' ) {
+        if ( null !== data[ key ] && 'object' === typeof data[ key ] ) {
             let nestedSelector = selector;
             if ( nestedSelector ) {
                 nestedSelector = `${ nestedSelector } ${ key }`;
@@ -86,7 +86,7 @@ function getStyles( data = {}, selector = '' ) {
             resultCSS += ( resultCSS ? ' ' : '' ) + getStyles( data[ key ], nestedSelector );
 
         // style properties and values.
-        } else if ( typeof data[ key ] !== 'undefined' && data[ key ] !== false ) {
+        } else if ( 'undefined' !== typeof data[ key ] && false !== data[ key ] ) {
             if ( ! result[ selector ] ) {
                 result[ selector ] = '';
             }
@@ -95,8 +95,8 @@ function getStyles( data = {}, selector = '' ) {
 
             // add pixels.
             if (
-                ( typeof propValue === 'number' && propValue !== 0 && cssPropsWithPixels.includes( propName ) ) ||
-                (typeof propValue === 'string' && /^[0-9.\-]*$/.test(propValue)) // eslint-disable-line
+                ( 'number' === typeof propValue && 0 !== propValue && cssPropsWithPixels.includes( propName ) )
+                || (typeof propValue === 'string' && /^[0-9.\-]*$/.test(propValue)) // eslint-disable-line
             ) {
                 propValue += 'px';
             }
@@ -182,8 +182,8 @@ const usedIds = {};
  */
 const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) => {
     class GhostkitSpacingsFallback extends Component {
-        constructor() {
-            super( ...arguments );
+        constructor( ...args ) {
+            super( ...args );
 
             this.onUpdate = this.onUpdate.bind( this );
             this.updateSpacings = this.updateSpacings.bind( this );
@@ -194,17 +194,17 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
             }
 
             // add new ghostkit props.
-            if ( this.props.clientId && typeof this.props.attributes.ghostkitId !== 'undefined' ) {
+            if ( this.props.clientId && 'undefined' !== typeof this.props.attributes.ghostkitId ) {
                 let ID = this.props.attributes.ghostkitId || '';
 
                 // check if ID already exist.
                 let tryCount = 10;
-                while ( ! ID || ( typeof usedIds[ ID ] !== 'undefined' && usedIds[ ID ] !== this.props.clientId && tryCount > 0 ) ) {
+                while ( ! ID || ( 'undefined' !== typeof usedIds[ ID ] && usedIds[ ID ] !== this.props.clientId && 0 < tryCount ) ) {
                     ID = shorthash.unique( this.props.clientId );
-                    tryCount--;
+                    tryCount -= 1;
                 }
 
-                if ( ID && typeof usedIds[ ID ] === 'undefined' ) {
+                if ( ID && 'undefined' === typeof usedIds[ ID ] ) {
                     usedIds[ ID ] = this.props.clientId;
                 }
 
@@ -214,7 +214,7 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
                 }
 
                 // force update when new ID.
-                if ( tryCount < 10 ) {
+                if ( 10 > tryCount ) {
                     this.onUpdate( false );
                 }
             }
@@ -223,6 +223,7 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
         componentDidMount() {
             this.onUpdate();
         }
+
         componentDidUpdate() {
             this.onUpdate();
         }
@@ -297,7 +298,7 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
             Object.keys( ghostkitSpacings ).forEach( ( key ) => {
                 if ( ghostkitSpacings[ key ] ) {
                     // device object supported bu GhostKit plugin only.
-                    if ( typeof ghostkitSpacings[ key ] !== 'object' ) {
+                    if ( 'object' !== typeof ghostkitSpacings[ key ] ) {
                         result[ key ] = ghostkitSpacings[ key ];
                     }
                 }
@@ -309,7 +310,7 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
         }
 
         render() {
-            const props = this.props;
+            const { props } = this;
             const {
                 attributes,
             } = this.props;
@@ -343,28 +344,28 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'marginLeft' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'marginLeft', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'marginLeft', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-margin-top">
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'marginTop' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'marginTop', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'marginTop', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-margin-right">
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'marginRight' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'marginRight', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'marginRight', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-margin-bottom">
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'marginBottom' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'marginBottom', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'marginBottom', val ) }
                                         />
                                     </div>
                                 </div>
@@ -374,33 +375,38 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'paddingLeft' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'paddingLeft', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'paddingLeft', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-padding-top">
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'paddingTop' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'paddingTop', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'paddingTop', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-padding-right">
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'paddingRight' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'paddingRight', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'paddingRight', val ) }
                                         />
                                     </div>
                                     <div className="awb-ghostkit-control-spacing-padding-bottom">
                                         <TextControl
                                             value={ this.getCurrentSpacing( 'paddingBottom' ) }
                                             placeholder="-"
-                                            onChange={ val => this.updateSpacings( 'paddingBottom', val ) }
+                                            onChange={ ( val ) => this.updateSpacings( 'paddingBottom', val ) }
                                         />
                                     </div>
                                 </div>
                             </BaseControl>
-                            <p><em>{ __( 'More spacing options available in GhostKit plugin ' ) }<a href="https://wordpress.org/plugins/ghostkit/" target="_blank" rel="noopener noreferrer">https://wordpress.org/plugins/ghostkit/</a></em></p>
+                            <p>
+                                <em>
+                                    { __( 'More spacing options available in GhostKit plugin ' ) }
+                                    <a href="https://wordpress.org/plugins/ghostkit/" target="_blank" rel="noopener noreferrer">https://wordpress.org/plugins/ghostkit/</a>
+                                </em>
+                            </p>
                         </PanelBody>
                     </InspectorControls>
                 </Fragment>
@@ -427,9 +433,9 @@ function addSaveProps( extraProps, blockType, attributes ) {
         return extraProps;
     }
 
-    const customStyles = attributes.ghostkitStyles ? Object.assign( {}, attributes.ghostkitStyles ) : false;
+    const customStyles = attributes.ghostkitStyles ? ( { ...attributes.ghostkitStyles } ) : false;
 
-    if ( customStyles && Object.keys( customStyles ).length !== 0 ) {
+    if ( customStyles && 0 !== Object.keys( customStyles ).length ) {
         extraProps = Object.assign( extraProps || {}, getCustomStylesAttr( customStyles ) );
 
         if ( attributes.ghostkitClassname ) {

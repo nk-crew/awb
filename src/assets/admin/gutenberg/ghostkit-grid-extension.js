@@ -1,11 +1,12 @@
 import classnames from 'classnames/dedupe';
+
 import {
     BlockEditWithSelect,
     BlockSave,
     renderEditorPreview,
     settings,
-} from './block.jsx';
-import GhostKitGridWidePreview from './ghostkit-grid-wide-preview.jsx';
+} from './block';
+import GhostKitGridWidePreview from './ghostkit-grid-wide-preview';
 
 const AWBData = window.AWBGutenbergData;
 
@@ -37,8 +38,8 @@ const { __ } = wp.i18n;
  */
 export function addAttribute( blockSettings ) {
     if (
-        blockSettings.name === 'ghostkit/grid' ||
-        blockSettings.name === 'ghostkit/grid-column'
+        'ghostkit/grid' === blockSettings.name
+        || 'ghostkit/grid-column' === blockSettings.name
     ) {
         blockSettings.supports.awb = true;
     }
@@ -51,7 +52,7 @@ export function addAttribute( blockSettings ) {
 
     if ( allow ) {
         Object.keys( settings.attributes ).forEach( ( name ) => {
-            blockSettings.attributes[ 'awb_' + name ] = settings.attributes[ name ];
+            blockSettings.attributes[ `awb_${ name }` ] = settings.attributes[ name ];
         } );
         blockSettings.attributes.awb_align = {
             type: 'string',
@@ -65,7 +66,7 @@ export function addAttribute( blockSettings ) {
 function prepareAWBprops( props ) {
     const awbAttributes = {};
     Object.keys( settings.attributes ).forEach( ( name ) => {
-        awbAttributes[ name ] = props.attributes[ 'awb_' + name ];
+        awbAttributes[ name ] = props.attributes[ `awb_${ name }` ];
 
         // inside exported xml file almost all symbols are escaped.
         if ( 'imageTag' === name && awbAttributes[ name ] && /^u003c/g.test( awbAttributes[ name ] ) ) {
@@ -76,7 +77,7 @@ function prepareAWBprops( props ) {
                 .replace( /u0026/g, '&' );
         }
     } );
-    awbAttributes.align = props.attributes[ 'awb_align' ];
+    awbAttributes.align = props.attributes.awb_align;
 
     return {
         name: 'nk/awb',
@@ -84,7 +85,7 @@ function prepareAWBprops( props ) {
             const newData = {};
 
             Object.keys( data ).forEach( ( name ) => {
-                newData[ 'awb_' + name ] = data[ name ];
+                newData[ `awb_${ name }` ] = data[ name ];
             } );
 
             props.setAttributes( newData );
@@ -136,7 +137,7 @@ function addBackgroundControls( Control, props ) {
             >
                 <BlockEditWithSelect
                     { ...awbProps }
-                    inspectorControlsOnly={ true }
+                    inspectorControlsOnly
                 />
                 <PanelBody>
                     <BaseControl
@@ -148,8 +149,8 @@ function addBackgroundControls( Control, props ) {
                                 {
                                     icon: 'align-full-width',
                                     title: __( 'Full Width' ),
-                                    onClick: () => awbProps.setAttributes( { align: awbProps.attributes.align === 'full' ? '' : 'full' } ),
-                                    isActive: awbProps.attributes.align === 'full',
+                                    onClick: () => awbProps.setAttributes( { align: 'full' === awbProps.attributes.align ? '' : 'full' } ),
+                                    isActive: 'full' === awbProps.attributes.align,
                                 },
                             ] }
                             />
@@ -157,7 +158,7 @@ function addBackgroundControls( Control, props ) {
                             <BlockAlignmentToolbar
                                 controls={ validAlignments }
                                 value={ awbProps.attributes.align }
-                                onChange={ v => awbProps.setAttributes( { align: v } ) }
+                                onChange={ ( v ) => awbProps.setAttributes( { align: v } ) }
                             />
                         ) }
                     </BaseControl>
@@ -185,39 +186,39 @@ function addSaveBackground( background, props ) {
         } );
         let addBackground = false;
 
-        if ( awbProps.attributes.type === 'color' && awbProps.attributes.color ) {
+        if ( 'color' === awbProps.attributes.type && awbProps.attributes.color ) {
             addBackground = true;
         }
 
         if (
-            awbProps.attributes.type === 'image' &&
-            (
-                awbProps.attributes.color ||
-                awbProps.attributes.imageTag
+            'image' === awbProps.attributes.type
+            && (
+                awbProps.attributes.color
+                || awbProps.attributes.imageTag
             )
         ) {
             addBackground = true;
         }
 
         if (
-            awbProps.attributes.type === 'video' &&
-            (
-                awbProps.attributes.color ||
-                awbProps.attributes.videoMp4 ||
-                awbProps.attributes.videoOgv ||
-                awbProps.attributes.videoWebm ||
-                awbProps.attributes.imageTag
+            'video' === awbProps.attributes.type
+            && (
+                awbProps.attributes.color
+                || awbProps.attributes.videoMp4
+                || awbProps.attributes.videoOgv
+                || awbProps.attributes.videoWebm
+                || awbProps.attributes.imageTag
             )
         ) {
             addBackground = true;
         }
 
         if (
-            awbProps.attributes.type === 'yt_vm_video' &&
-            (
-                awbProps.attributes.color ||
-                awbProps.attributes.video ||
-                awbProps.attributes.imageTag
+            'yt_vm_video' === awbProps.attributes.type
+            && (
+                awbProps.attributes.color
+                || awbProps.attributes.video
+                || awbProps.attributes.imageTag
             )
         ) {
             addBackground = true;
@@ -229,7 +230,7 @@ function addSaveBackground( background, props ) {
                 <div className={ className }>
                     <BlockSave
                         { ...awbProps }
-                        backgroundHTMLOnly={ true }
+                        backgroundHTMLOnly
                     />
                 </div>
             );

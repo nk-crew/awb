@@ -1,9 +1,9 @@
 import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
-import ColorPicker from './_components/color-picker.jsx';
-import FocalPointPicker from './_components/focal-point-picker.jsx';
-import Jarallax from './_components/jarallax.jsx';
 
+import ColorPicker from './_components/color-picker';
+import FocalPointPicker from './_components/focal-point-picker';
+import Jarallax from './_components/jarallax';
 import iconAWB from './icons/awb.svg';
 import iconFullHeight from './icons/fullheight.svg';
 import iconVerticalCenter from './icons/vertical-center.svg';
@@ -14,7 +14,9 @@ import iconVerticalCenterWhite from './icons/vertical-center-white.svg';
 import iconVerticalTopWhite from './icons/vertical-top-white.svg';
 import iconVerticalBottomWhite from './icons/vertical-bottom-white.svg';
 
+// eslint-disable-next-line no-underscore-dangle
 if ( ! global._babelPolyfill ) {
+    // eslint-disable-next-line global-require
     require( 'babel-polyfill' );
 }
 
@@ -76,11 +78,11 @@ function getToolbarIcon( Svg ) {
  * @return {String} - dash string.
  */
 function camelCaseToDash( str ) {
-    if ( typeof str !== 'string' ) {
+    if ( 'string' !== typeof str ) {
         return str;
     }
 
-    str = str.replace( /[a-z]([A-Z])+/g, m => `${ m[ 0 ] }-${ m.substring( 1 ) }` );
+    str = str.replace( /[a-z]([A-Z])+/g, ( m ) => `${ m[ 0 ] }-${ m.substring( 1 ) }` );
 
     return str.toLowerCase();
 }
@@ -93,7 +95,7 @@ function camelCaseToDash( str ) {
  * @return {String} - title case string.
  */
 function toTitleCase( str ) {
-    return str.split( /[.,/ \-_]/ ).map( word => (
+    return str.split( /[.,/ \-_]/ ).map( ( word ) => (
         word && word.length ? word.replace( word[ 0 ], word[ 0 ].toUpperCase() ) : word
     ) ).join( ' ' );
 }
@@ -128,7 +130,7 @@ function onImageSelect( media, setAttributes ) {
 
     wp.media.attachment( media.id ).fetch().then( ( data ) => {
         if ( data && data.sizes ) {
-            const url = ( data.sizes[ 'post-thumbnail' ] || data.sizes.medium || data.sizes.medium_large || data.sizes.full ).url;
+            const { url } = data.sizes[ 'post-thumbnail' ] || data.sizes.medium || data.sizes.medium_large || data.sizes.full;
             if ( url ) {
                 setAttributes( {
                     image: media.id,
@@ -170,11 +172,11 @@ function getVideoPoster( url, cb ) {
 }
 
 export class BlockSave extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         // inside exported xml file almost all symbols are escaped.
-        const imageTag = this.props.attributes.imageTag;
+        const { imageTag } = this.props.attributes;
         if ( imageTag && /^u003c/g.test( imageTag ) ) {
             this.props.attributes.imageTag = imageTag
                 .replace( /u003c/g, '<' )
@@ -197,7 +199,7 @@ export class BlockSave extends Component {
             type: attributes.type,
         };
         let resultImg = false;
-        let video = attributes.video;
+        let { video } = attributes;
 
         className = classnames( 'nk-awb', className, attributes.align ? ` align${ attributes.align }` : '' );
 
@@ -289,6 +291,7 @@ export class BlockSave extends Component {
         if ( resultImg || resultAtts.video ) {
             wrapHTML += `<div class="nk-awb-inner">${ resultImg || '' }</div>`;
         }
+        // eslint-disable-next-line react/no-danger
         wrapHTML = wrapHTML ? <div className="nk-awb-wrap" { ...getDataAttributes( resultAtts ) } dangerouslySetInnerHTML={ { __html: wrapHTML } } /> : '';
 
         // return background block only
@@ -399,7 +402,7 @@ export function renderInspectorControls( props ) {
     } = attributes;
 
     // load YouTube / Vimeo poster
-    if ( type === 'yt_vm_video' && video && ! image ) {
+    if ( 'yt_vm_video' === type && video && ! image ) {
         getVideoPoster( video, ( url ) => {
             if ( url !== videoPosterPreview ) {
                 setAttributes( { videoPosterPreview: url } );
@@ -429,8 +432,8 @@ export function renderInspectorControls( props ) {
                             let selected = type === val.value;
 
                             // select video
-                            if ( val.value === 'yt_vm_video' ) {
-                                if ( type === 'video' || type === 'yt_vm_video' ) {
+                            if ( 'yt_vm_video' === val.value ) {
+                                if ( 'video' === type || 'yt_vm_video' === type ) {
                                     selected = true;
                                 }
                             }
@@ -450,7 +453,7 @@ export function renderInspectorControls( props ) {
                     }
                 </ButtonGroup>
 
-                { ( type === 'video' || type === 'yt_vm_video' ) ? (
+                { ( 'video' === type || 'yt_vm_video' === type ) ? (
                     <ButtonGroup aria-label={ __( 'Background video type' ) } style={ { marginBottom: 10 } }>
                         {
                             [
@@ -462,7 +465,7 @@ export function renderInspectorControls( props ) {
                                     label: __( 'Self Hosted' ),
                                     value: 'video',
                                 },
-                            ].map( val => (
+                            ].map( ( val ) => (
                                 <Button
                                     isSmall
                                     isPrimary={ type === val.value }
@@ -480,20 +483,21 @@ export function renderInspectorControls( props ) {
 
             { type ? (
                 <Fragment>
-                    { ( type === 'yt_vm_video' || type === 'video' ) ? (
-                        <PanelBody title={ __( 'Video' ) } initialOpen={ type === 'yt_vm_video' || type === 'video' }>
-                            { type === 'yt_vm_video' ? (
+                    { ( 'yt_vm_video' === type || 'video' === type ) ? (
+                        <PanelBody title={ __( 'Video' ) } initialOpen={ 'yt_vm_video' === type || 'video' === type }>
+                            { 'yt_vm_video' === type ? (
                                 <TextControl
                                     label={ __( 'Video URL' ) }
                                     type="url"
                                     value={ video }
-                                    onChange={ v => setAttributes( { video: v } ) }
+                                    onChange={ ( v ) => setAttributes( { video: v } ) }
                                     help={ __( 'Supported YouTube and Vimeo URLs' ) }
                                 />
                             ) : '' }
 
                             { /* Preview Video */ }
-                            { type === 'video' && ( videoMp4 || videoOgv || videoWebm ) ? (
+                            { 'video' === type && ( videoMp4 || videoOgv || videoWebm ) ? (
+                                // eslint-disable-next-line jsx-a11y/media-has-caption
                                 <video controls>
                                     { videoMp4 ? (
                                         <source src={ videoMp4 } type="video/mp4" />
@@ -508,7 +512,7 @@ export function renderInspectorControls( props ) {
                             ) : '' }
 
                             { /* Select Videos */ }
-                            { type === 'video' && ! videoMp4 ? (
+                            { 'video' === type && ! videoMp4 ? (
                                 <MediaUpload
                                     onSelect={ ( media ) => {
                                         setAttributes( {
@@ -531,24 +535,26 @@ export function renderInspectorControls( props ) {
                                     ) }
                                 />
                             ) : '' }
-                            { type === 'video' && videoMp4 ? (
+                            { 'video' === type && videoMp4 ? (
                                 <div>
-                                    <span>{ videoMp4.substring( videoMp4.lastIndexOf( '/' ) + 1 ) } </span>
-                                    <a
-                                        href="#"
-                                        onClick={ ( e ) => {
+                                    <span>
+                                        { videoMp4.substring( videoMp4.lastIndexOf( '/' ) + 1 ) }
+                                        { ' ' }
+                                    </span>
+                                    <Button
+                                        isLink
+                                        onClick={ ( ) => {
                                             setAttributes( {
                                                 videoMp4: '',
                                             } );
-                                            e.preventDefault();
                                         } }
                                     >
                                         { __( '(Remove)' ) }
-                                    </a>
+                                    </Button>
                                     <div style={ { marginBottom: 13 } } />
                                 </div>
                             ) : '' }
-                            { type === 'video' && ! videoOgv ? (
+                            { 'video' === type && ! videoOgv ? (
                                 <MediaUpload
                                     onSelect={ ( media ) => {
                                         setAttributes( {
@@ -571,24 +577,26 @@ export function renderInspectorControls( props ) {
                                     ) }
                                 />
                             ) : '' }
-                            { type === 'video' && videoOgv ? (
+                            { 'video' === type && videoOgv ? (
                                 <div>
-                                    <span>{ videoOgv.substring( videoOgv.lastIndexOf( '/' ) + 1 ) } </span>
-                                    <a
-                                        href="#"
-                                        onClick={ ( e ) => {
+                                    <span>
+                                        { videoOgv.substring( videoOgv.lastIndexOf( '/' ) + 1 ) }
+                                        { ' ' }
+                                    </span>
+                                    <Button
+                                        isLink
+                                        onClick={ () => {
                                             setAttributes( {
                                                 videoOgv: '',
                                             } );
-                                            e.preventDefault();
                                         } }
                                     >
                                         { __( '(Remove)' ) }
-                                    </a>
+                                    </Button>
                                     <div style={ { marginBottom: 13 } } />
                                 </div>
                             ) : '' }
-                            { type === 'video' && ! videoWebm ? (
+                            { 'video' === type && ! videoWebm ? (
                                 <MediaUpload
                                     onSelect={ ( media ) => {
                                         setAttributes( {
@@ -611,59 +619,61 @@ export function renderInspectorControls( props ) {
                                     ) }
                                 />
                             ) : '' }
-                            { type === 'video' && videoWebm ? (
+                            { 'video' === type && videoWebm ? (
                                 <div>
-                                    <span>{ videoWebm.substring( videoWebm.lastIndexOf( '/' ) + 1 ) } </span>
-                                    <a
-                                        href="#"
-                                        onClick={ ( e ) => {
+                                    <span>
+                                        { videoWebm.substring( videoWebm.lastIndexOf( '/' ) + 1 ) }
+                                        { ' ' }
+                                    </span>
+                                    <Button
+                                        isLink
+                                        onClick={ () => {
                                             setAttributes( {
                                                 videoWebm: '',
                                             } );
-                                            e.preventDefault();
                                         } }
                                     >
                                         { __( '(Remove)' ) }
-                                    </a>
+                                    </Button>
                                     <div style={ { marginBottom: 13 } } />
                                 </div>
                             ) : '' }
                             <ToggleControl
                                 label={ __( 'Enable on mobile devices' ) }
                                 checked={ !! videoMobile }
-                                onChange={ v => setAttributes( { videoMobile: v } ) }
+                                onChange={ ( v ) => setAttributes( { videoMobile: v } ) }
                             />
 
                             <TextControl
                                 label={ __( 'Start time' ) }
                                 type="number"
                                 value={ videoStartTime }
-                                onChange={ v => setAttributes( { videoStartTime: parseFloat( v ) } ) }
+                                onChange={ ( v ) => setAttributes( { videoStartTime: parseFloat( v ) } ) }
                                 help={ __( 'Start time in seconds when video will be started (this value will be applied also after loop)' ) }
                             />
                             <TextControl
                                 label={ __( 'End time' ) }
                                 type="number"
                                 value={ videoEndTime }
-                                onChange={ v => setAttributes( { videoEndTime: parseFloat( v ) } ) }
+                                onChange={ ( v ) => setAttributes( { videoEndTime: parseFloat( v ) } ) }
                                 help={ __( 'End time in seconds when video will be ended' ) }
                             />
                             <ToggleControl
                                 label={ __( 'Loop' ) }
                                 checked={ !! videoLoop }
-                                onChange={ v => setAttributes( { videoLoop: v } ) }
+                                onChange={ ( v ) => setAttributes( { videoLoop: v } ) }
                             />
                             <ToggleControl
                                 label={ __( 'Always play' ) }
                                 help={ __( 'Play video also when not in viewport' ) }
                                 checked={ !! videoAlwaysPlay }
-                                onChange={ v => setAttributes( { videoAlwaysPlay: v } ) }
+                                onChange={ ( v ) => setAttributes( { videoAlwaysPlay: v } ) }
                             />
                         </PanelBody>
                     ) : '' }
 
-                    { ( type === 'image' || type === 'yt_vm_video' || type === 'video' ) ? (
-                        <PanelBody title={ type === 'image' ? __( 'Image' ) : __( 'Poster Image' ) } initialOpen={ type === 'image' }>
+                    { ( 'image' === type || 'yt_vm_video' === type || 'video' === type ) ? (
+                        <PanelBody title={ 'image' === type ? __( 'Image' ) : __( 'Poster Image' ) } initialOpen={ 'image' === type }>
                             { /* Select Image */ }
                             { ! image || ! imageTag ? (
                                 <MediaUpload
@@ -685,7 +695,7 @@ export function renderInspectorControls( props ) {
                                     <FocalPointPicker
                                         value={ imageBackgroundPosition }
                                         image={ imageTag }
-                                        onChange={ v => setAttributes( { imageBackgroundPosition: v } ) }
+                                        onChange={ ( v ) => setAttributes( { imageBackgroundPosition: v } ) }
                                     />
                                     { imageSizes ? (
                                         <SelectControl
@@ -701,7 +711,7 @@ export function renderInspectorControls( props ) {
                                                 } );
                                                 return result;
                                             } )() }
-                                            onChange={ v => setAttributes( { imageSize: v } ) }
+                                            onChange={ ( v ) => setAttributes( { imageSize: v } ) }
                                         />
                                     ) : '' }
                                     <SelectControl
@@ -721,21 +731,20 @@ export function renderInspectorControls( props ) {
                                                 value: 'pattern',
                                             },
                                         ] }
-                                        onChange={ v => setAttributes( { imageBackgroundSize: v } ) }
+                                        onChange={ ( v ) => setAttributes( { imageBackgroundSize: v } ) }
                                     />
-                                    <a
-                                        href="#"
-                                        onClick={ ( e ) => {
+                                    <Button
+                                        isLink
+                                        onClick={ () => {
                                             setAttributes( {
                                                 image: '',
                                                 imageTag: '',
                                                 imageSizes: '',
                                             } );
-                                            e.preventDefault();
                                         } }
                                     >
                                         { __( 'Remove image' ) }
-                                    </a>
+                                    </Button>
                                 </Fragment>
                             ) : '' }
                         </PanelBody>
@@ -744,23 +753,23 @@ export function renderInspectorControls( props ) {
                     <PanelBody
                         title={ (
                             <Fragment>
-                                { type === 'color' ? __( 'Color' ) : __( 'Overlay' ) }
+                                { 'color' === type ? __( 'Color' ) : __( 'Overlay' ) }
                                 <ColorIndicator colorValue={ color } />
                             </Fragment>
                         ) }
-                        initialOpen={ type === 'color' }
+                        initialOpen={ 'color' === type }
                     >
                         <ColorPicker
                             label={ __( 'Background Color' ) }
                             value={ color }
                             onChange={ ( val ) => setAttributes( { color: val } ) }
-                            alpha={ true }
+                            alpha
                         />
                     </PanelBody>
 
-                    { ( type === 'image' || type === 'yt_vm_video' || type === 'video' ) ? (
+                    { ( 'image' === type || 'yt_vm_video' === type || 'video' === type ) ? (
                         <Fragment>
-                            <PanelBody title={ __( 'Parallax' ) + ( parallax && parallaxSpeed !== '' ? ` (${ parallax } ${ parallaxSpeed })` : '' ) } initialOpen={ false }>
+                            <PanelBody title={ __( 'Parallax' ) + ( parallax && '' !== parallaxSpeed ? ` (${ parallax } ${ parallaxSpeed })` : '' ) } initialOpen={ false }>
                                 <SelectControl
                                     value={ parallax }
                                     options={ [
@@ -789,7 +798,7 @@ export function renderInspectorControls( props ) {
                                             value: 'scale-opacity',
                                         },
                                     ] }
-                                    onChange={ v => setAttributes( { parallax: v } ) }
+                                    onChange={ ( v ) => setAttributes( { parallax: v } ) }
                                 />
                                 { parallax ? (
                                     <Fragment>
@@ -800,13 +809,13 @@ export function renderInspectorControls( props ) {
                                             step="0.1"
                                             min="-1"
                                             max="2"
-                                            onChange={ v => setAttributes( { parallaxSpeed: parseFloat( v ) } ) }
+                                            onChange={ ( v ) => setAttributes( { parallaxSpeed: parseFloat( v ) } ) }
                                             help={ __( 'Provide number from -1.0 to 2.0' ) }
                                         />
                                         <ToggleControl
                                             label={ __( 'Enable on mobile devices' ) }
                                             checked={ !! parallaxMobile }
-                                            onChange={ v => setAttributes( { parallaxMobile: v } ) }
+                                            onChange={ ( v ) => setAttributes( { parallaxMobile: v } ) }
                                         />
                                     </Fragment>
                                 ) : '' }
@@ -815,7 +824,7 @@ export function renderInspectorControls( props ) {
                                 <ToggleControl
                                     label={ __( 'Enable' ) }
                                     checked={ !! mouseParallax }
-                                    onChange={ v => setAttributes( { mouseParallax: v } ) }
+                                    onChange={ ( v ) => setAttributes( { mouseParallax: v } ) }
                                 />
                                 { mouseParallax ? (
                                     <Fragment>
@@ -825,7 +834,7 @@ export function renderInspectorControls( props ) {
                                             min="0"
                                             max="200"
                                             help={ ` ${ __( 'px' ) }` }
-                                            onChange={ v => setAttributes( { mouseParallaxSize: v } ) }
+                                            onChange={ ( v ) => setAttributes( { mouseParallaxSize: v } ) }
                                         />
                                         <RangeControl
                                             label={ __( 'Speed' ) }
@@ -833,7 +842,7 @@ export function renderInspectorControls( props ) {
                                             min="0"
                                             max="20000"
                                             help={ ` ${ __( 'ms' ) }` }
-                                            onChange={ v => setAttributes( { mouseParallaxSpeed: v } ) }
+                                            onChange={ ( v ) => setAttributes( { mouseParallaxSpeed: v } ) }
                                         />
                                     </Fragment>
                                 ) : '' }
@@ -877,7 +886,7 @@ export function renderEditorPreview( props ) {
     } = attributes;
 
     // load YouTube / Vimeo poster
-    if ( type === 'yt_vm_video' && video && ! image ) {
+    if ( 'yt_vm_video' === type && video && ! image ) {
         getVideoPoster( video, ( url ) => {
             if ( url !== videoPosterPreview ) {
                 setAttributes( { videoPosterPreview: url } );
@@ -887,20 +896,20 @@ export function renderEditorPreview( props ) {
 
     let previewHTML = '';
     let jarallaxSrc = '';
-    if ( type === 'image' || type === 'video' || type === 'yt_vm_video' ) {
+    if ( 'image' === type || 'video' === type || 'yt_vm_video' === type ) {
         if ( imageSizes && imageSize && imageSizes[ imageSize ] && imageSizes[ imageSize ].url ) {
             jarallaxSrc = imageSizes[ imageSize ].url;
         }
 
         if ( imageTag ) {
             previewHTML = imageTag;
-        } else if ( type === 'yt_vm_video' && videoPosterPreview ) {
+        } else if ( 'yt_vm_video' === type && videoPosterPreview ) {
             jarallaxSrc = videoPosterPreview;
             previewHTML = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
         }
     }
 
-    const useJarallax = ( parallax && type === 'image' ) || ( type === 'video' || type === 'yt_vm_video' );
+    const useJarallax = ( parallax && 'image' === type ) || ( 'video' === type || 'yt_vm_video' === type );
     const jarallaxParams = {
         type: parallax,
         speed: parallaxSpeed,
@@ -908,12 +917,12 @@ export function renderEditorPreview( props ) {
         imgPosition: imageBackgroundPosition || '50% 50%',
     };
 
-    if ( imageBackgroundSize === 'pattern' ) {
+    if ( 'pattern' === imageBackgroundSize ) {
         jarallaxParams.imgSize = 'auto';
         jarallaxParams.imgRepeat = 'repeat';
     }
 
-    if ( video && ( type === 'video' || type === 'yt_vm_video' ) ) {
+    if ( video && ( 'video' === type || 'yt_vm_video' === type ) ) {
         jarallaxParams.speed = parallax ? parallaxSpeed : 1;
         jarallaxParams.videoSrc = video;
         jarallaxParams.videoStartTime = videoStartTime;
@@ -936,9 +945,13 @@ export function renderEditorPreview( props ) {
                         options={ jarallaxParams }
                     />
                 ) : (
-                    <div className="awb-gutenberg-preview-block-inner" dangerouslySetInnerHTML={ {
-                        __html: previewHTML,
-                    } } />
+                    <div
+                        className="awb-gutenberg-preview-block-inner"
+                        // eslint-disable-next-line react/no-danger
+                        dangerouslySetInnerHTML={ {
+                            __html: previewHTML,
+                        } }
+                    />
                 ) }
                 { color ? (
                     <div
@@ -952,8 +965,8 @@ export function renderEditorPreview( props ) {
 }
 
 export class BlockEdit extends Component {
-    constructor() {
-        super( ...arguments );
+    constructor( ...args ) {
+        super( ...args );
 
         this.onUpdate = this.onUpdate.bind( this );
     }
@@ -961,6 +974,7 @@ export class BlockEdit extends Component {
     componentDidMount() {
         this.onUpdate();
     }
+
     componentDidUpdate() {
         this.onUpdate();
     }
@@ -1009,7 +1023,7 @@ export class BlockEdit extends Component {
         } = attributes;
 
         // load YouTube / Vimeo poster
-        if ( type === 'yt_vm_video' && video && ! image ) {
+        if ( 'yt_vm_video' === type && video && ! image ) {
             getVideoPoster( video, ( url ) => {
                 if ( url !== videoPosterPreview ) {
                     setAttributes( { videoPosterPreview: url } );
@@ -1028,10 +1042,10 @@ export class BlockEdit extends Component {
         }
 
         let currentTypeIcon = 'format-image';
-        if ( type === 'color' ) {
+        if ( 'color' === type ) {
             currentTypeIcon = 'art';
         }
-        if ( type === 'yt_vm_video' || type === 'video' ) {
+        if ( 'yt_vm_video' === type || 'video' === type ) {
             currentTypeIcon = 'format-video';
         }
 
@@ -1053,19 +1067,19 @@ export class BlockEdit extends Component {
                                     title: __( 'Color' ),
                                     icon: 'art',
                                     onClick: () => setAttributes( { type: 'color' } ),
-                                    isActive: type === 'color',
+                                    isActive: 'color' === type,
                                 },
                                 {
                                     title: __( 'Image' ),
                                     icon: 'format-image',
                                     onClick: () => setAttributes( { type: 'image' } ),
-                                    isActive: type === 'image',
+                                    isActive: 'image' === type,
                                 },
                                 {
                                     title: __( 'Video' ),
                                     icon: 'format-video',
                                     onClick: () => setAttributes( { type: 'yt_vm_video' } ),
-                                    isActive: type === 'yt_vm_video',
+                                    isActive: 'yt_vm_video' === type,
                                 },
                             ] }
                         />
@@ -1076,8 +1090,8 @@ export class BlockEdit extends Component {
                             {
                                 icon: 'align-full-width',
                                 title: __( 'Full Width' ),
-                                onClick: () => setAttributes( { align: align === 'full' ? '' : 'full' } ),
-                                isActive: align === 'full',
+                                onClick: () => setAttributes( { align: 'full' === align ? '' : 'full' } ),
+                                isActive: 'full' === align,
                             },
                         ] }
                         />
@@ -1085,7 +1099,7 @@ export class BlockEdit extends Component {
                         <BlockAlignmentToolbar
                             controls={ validAlignments }
                             value={ align }
-                            onChange={ v => setAttributes( { align: v } ) }
+                            onChange={ ( v ) => setAttributes( { align: v } ) }
                         />
                     ) }
                     <Toolbar controls={ [
@@ -1100,27 +1114,27 @@ export class BlockEdit extends Component {
                     { fullHeight ? (
                         <Toolbar controls={ [
                             {
-                                icon: getToolbarIcon( fullHeightAlign === 'top' ? iconVerticalTopWhite : iconVerticalTop ),
+                                icon: getToolbarIcon( 'top' === fullHeightAlign ? iconVerticalTopWhite : iconVerticalTop ),
                                 title: __( 'Content Vertical Top' ),
                                 onClick: () => setAttributes( { fullHeightAlign: 'top' } ),
-                                isActive: fullHeightAlign === 'top',
+                                isActive: 'top' === fullHeightAlign,
                             },
                             {
-                                icon: getToolbarIcon( fullHeightAlign === 'center' ? iconVerticalCenterWhite : iconVerticalCenter ),
+                                icon: getToolbarIcon( 'center' === fullHeightAlign ? iconVerticalCenterWhite : iconVerticalCenter ),
                                 title: __( 'Content Vertical Center' ),
                                 onClick: () => setAttributes( { fullHeightAlign: 'center' } ),
-                                isActive: fullHeightAlign === 'center',
+                                isActive: 'center' === fullHeightAlign,
                             },
                             {
-                                icon: getToolbarIcon( fullHeightAlign === 'bottom' ? iconVerticalBottomWhite : iconVerticalBottom ),
+                                icon: getToolbarIcon( 'bottom' === fullHeightAlign ? iconVerticalBottomWhite : iconVerticalBottom ),
                                 title: __( 'Content Vertical Bottom' ),
                                 onClick: () => setAttributes( { fullHeightAlign: 'bottom' } ),
-                                isActive: fullHeightAlign === 'bottom',
+                                isActive: 'bottom' === fullHeightAlign,
                             },
                         ] }
                         />
                     ) : '' }
-                    { type === 'image' ? (
+                    { 'image' === type ? (
                         <Toolbar>
                             <MediaUpload
                                 onSelect={ ( media ) => {
@@ -1139,13 +1153,13 @@ export class BlockEdit extends Component {
                             />
                         </Toolbar>
                     ) : '' }
-                    { type === 'yt_vm_video' ? (
+                    { 'yt_vm_video' === type ? (
                         <Toolbar>
                             <input
                                 aria-label={ __( 'YouTube / Vimeo URL' ) }
                                 type="url"
                                 value={ video }
-                                onChange={ event => setAttributes( { video: event.target.value } ) }
+                                onChange={ ( event ) => setAttributes( { video: event.target.value } ) }
                                 placeholder={ __( 'YouTube / Vimeo URL' ) }
                             />
                         </Toolbar>
@@ -1185,7 +1199,7 @@ export const BlockEditWithSelect = withSelect( ( select, props ) => {
         imageQuery = `size=${ encodeURIComponent( attributes.imageSize ) }&attr[class]=jarallax-img`;
 
         // background image with pattern size
-        if ( attributes.imageBackgroundSize === 'pattern' ) {
+        if ( 'pattern' === attributes.imageBackgroundSize ) {
             imageQuery += '&div_tag=1';
         }
     }
@@ -1198,7 +1212,7 @@ export const BlockEditWithSelect = withSelect( ( select, props ) => {
 
 export const name = 'nk/awb';
 
-const hasLayoutCategory = wp.blocks.getCategories().some( ( category ) => category.slug === 'layout' );
+const hasLayoutCategory = wp.blocks.getCategories().some( ( category ) => 'layout' === category.slug );
 
 export const settings = {
     title: 'Background (AWB)',
@@ -1347,7 +1361,7 @@ export const settings = {
 
     getEditWrapperProps( attributes ) {
         const { align } = attributes;
-        if ( validAlignments.indexOf( align ) !== -1 ) {
+        if ( -1 !== validAlignments.indexOf( align ) ) {
             return { 'data-align': align };
         }
         return {};

@@ -60,10 +60,13 @@ class Jarallax extends Component {
             >
                 { options.imgSrc ? (
                     <Fragment>
-                        { options.imgSize === 'auto' && options.imgRepeat === 'repeat' ? (
-                            <div className="jarallax-img" style={ {
-                                backgroundImage: `url(${ options.imgSrc })`,
-                            } } />
+                        { 'auto' === options.imgSize && 'repeat' === options.imgRepeat ? (
+                            <div
+                                className="jarallax-img"
+                                style={ {
+                                    backgroundImage: `url(${ options.imgSrc })`,
+                                } }
+                            />
                         ) : (
                             <img className="jarallax-img" src={ options.imgSrc } alt="" />
                         ) }

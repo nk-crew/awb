@@ -1,17 +1,21 @@
-/*!
+/*
  * Additional js for frontend and backend VC
  */
-jQuery( ( $ ) => {
+const {
+    jQuery: $,
+} = window;
+
+$( () => {
     const { vc } = window;
 
-    if ( typeof vc === 'undefined' ) {
+    if ( 'undefined' === typeof vc ) {
         return;
     }
 
     // shortcode frontend editor
     // on shortcode add and update events
     vc.events.on( 'shortcodes:add shortcodeView:updated', ( e ) => {
-        if ( e.settings.base !== 'vc_row' && e.settings.base !== 'vc_column' ) {
+        if ( 'vc_row' !== e.settings.base && 'vc_column' !== e.settings.base ) {
             return;
         }
 
@@ -38,7 +42,7 @@ jQuery( ( $ ) => {
     // shortcode backend editor
     // on shortcode add and update events
     vc.events.on( 'shortcodes:vc_row shortcodes:vc_column shortcodes:nk_awb', ( e ) => {
-        const params = e.attributes.params;
+        const { params } = e.attributes;
 
         // prevent if no view or control buttons (available only on backend)
         if ( ! e.view || ! e.view.$controls_buttons ) {
@@ -47,7 +51,7 @@ jQuery( ( $ ) => {
 
         // find icon
         let $icon = false;
-        if ( e.attributes.shortcode === 'nk_awb' ) {
+        if ( 'nk_awb' === e.attributes.shortcode ) {
             $icon = e.view.$el.find( '.wpb_element_title .nk-awb-icon' );
         } else {
             $icon = e.view.$controls_buttons.parent().children( '.vc_control-awb' );
@@ -63,7 +67,7 @@ jQuery( ( $ ) => {
         }
 
         // add indicator to row or column
-        if ( ! $icon.length && ( e.attributes.shortcode === 'vc_row' || e.attributes.shortcode === 'vc_column' ) ) {
+        if ( ! $icon.length && ( 'vc_row' === e.attributes.shortcode || 'vc_column' === e.attributes.shortcode ) ) {
             $icon = $( '<span class="vc_control-awb">' ).appendTo( e.view.$controls_buttons.parent() );
         }
 
