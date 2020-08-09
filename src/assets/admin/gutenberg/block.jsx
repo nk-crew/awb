@@ -438,9 +438,8 @@ export function renderInspectorControls( props ) {
                             return (
                                 <Button
                                     isSmall
-                                    isSecondary
                                     isPrimary={ selected }
-                                    aria-pressed={ selected }
+                                    isPressed={ selected }
                                     onClick={ () => setAttributes( { type: val.value } ) }
                                     key={ `type_${ val.label }` }
                                 >
@@ -466,9 +465,8 @@ export function renderInspectorControls( props ) {
                             ].map( val => (
                                 <Button
                                     isSmall
-                                    isSecondary
                                     isPrimary={ type === val.value }
-                                    aria-pressed={ type === val.value }
+                                    isPressed={ type === val.value }
                                     onClick={ () => setAttributes( { type: val.value } ) }
                                     key={ `type_${ val.label }` }
                                 >
@@ -1200,6 +1198,8 @@ export const BlockEditWithSelect = withSelect( ( select, props ) => {
 
 export const name = 'nk/awb';
 
+const hasLayoutCategory = wp.blocks.getCategories().some( ( category ) => category.slug === 'layout' );
+
 export const settings = {
     title: 'Background (AWB)',
 
@@ -1208,7 +1208,7 @@ export const settings = {
     // add element with classname to support different icon sets like FontAwesome.
     icon: iconAWB,
 
-    category: 'layout',
+    category: hasLayoutCategory ? 'layout' : 'design',
 
     keywords: [ 'awb', 'background', 'parallax' ],
 

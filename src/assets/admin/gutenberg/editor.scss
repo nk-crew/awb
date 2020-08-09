@@ -32,10 +32,10 @@ img.awb-gutenberg-icon {
 // background for block
 .awb-gutenberg-preview-block {
     position: absolute;
-    top: -15px;
-    right: -15px;
-    bottom: -15px;
-    left: -15px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     pointer-events: none;
     transition: .15s border ease-in-out;
 
