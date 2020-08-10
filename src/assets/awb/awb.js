@@ -4,7 +4,6 @@
  */
 
 import { throttle } from 'throttle-debounce';
-import rafl from 'rafl';
 
 // variables
 const {
@@ -206,9 +205,7 @@ function parallaxMouseRun( x, y, deviceOrientation ) {
     parallaxMouseFirstRun = 0;
 }
 const throttledParallaxMouseRun = throttle( 200, ( x, y, deviceOrientation ) => {
-    rafl( () => {
-        parallaxMouseRun( x, y, deviceOrientation );
-    } );
+    parallaxMouseRun( x, y, deviceOrientation );
 } );
 
 function parallaxMouseInit( force ) {
@@ -264,7 +261,7 @@ function parallaxMouseInit( force ) {
     // run force without timeout
     clearTimeout( parallaxMouseTimeout );
     if ( force ) {
-        rafl( run );
+        run();
     } else {
         parallaxMouseTimeout = setTimeout( parallaxMouseTimeout, 100 );
     }
@@ -560,13 +557,9 @@ window.nkAwbInit = function() {
 };
 
 // init awb.
-rafl( () => {
-    window.nkAwbInit();
-} );
+window.nkAwbInit();
 const throttledInitAwb = throttle( 200, () => {
-    rafl( () => {
-        window.nkAwbInit();
-    } );
+    window.nkAwbInit();
 } );
 if ( window.MutationObserver ) {
     new window.MutationObserver( throttledInitAwb )
