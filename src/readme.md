@@ -83,6 +83,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.6.6 =
+
+* added support for WordPress 5.5
+
 = 1.6.5 =
 
 * added Gutenberg block inner blocks inserter (better UI)
