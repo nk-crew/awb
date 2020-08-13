@@ -83,6 +83,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.6.7 =
+
+* fixed color picker error in WordPress 5.5 and WPBakery Page Builder
+
 = 1.6.6 =
 
 * added support for WordPress 5.5
