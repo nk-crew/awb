@@ -236,7 +236,7 @@ function addSaveBackground( background, props ) {
             );
         }
 
-        return '';
+        return null;
     }
 
     return background;
