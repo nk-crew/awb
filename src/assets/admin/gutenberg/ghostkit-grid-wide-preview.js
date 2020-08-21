@@ -1,5 +1,7 @@
 import { throttle } from 'throttle-debounce';
 
+import EditorStyles from './components/editor-styles';
+
 const { Component, Fragment } = wp.element;
 
 export default class GhostKitGridWidePreview extends Component {
@@ -102,7 +104,7 @@ export default class GhostKitGridWidePreview extends Component {
         return (
             <Fragment>
                 { AWBpreviewStyles ? (
-                    <style>{ AWBpreviewStyles }</style>
+                    <EditorStyles styles={ [ { css: AWBpreviewStyles } ] } />
                 ) : '' }
                 { this.props.children }
             </Fragment>

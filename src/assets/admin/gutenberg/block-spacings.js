@@ -4,6 +4,8 @@ import shorthash from 'shorthash';
 import classnames from 'classnames/dedupe';
 import deepEqual from 'deep-equal';
 
+import EditorStyles from './components/editor-styles';
+
 const AWBData = window.AWBGutenbergData;
 
 const { __ } = wp.i18n;
@@ -330,7 +332,7 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
                         setState={ this.setState }
                     />
                     { attributes.ghostkitClassname && attributes.ghostkitStyles && Object.keys( attributes.ghostkitStyles ).length ? (
-                        <style>{ getStyles( attributes.ghostkitStyles ) }</style>
+                        <EditorStyles styles={ [ { css: getStyles( attributes.ghostkitStyles ) } ] } />
                     ) : '' }
                     <InspectorControls>
                         <PanelBody
