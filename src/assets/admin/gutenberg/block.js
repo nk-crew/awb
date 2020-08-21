@@ -1,9 +1,9 @@
 import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
 
-import ColorPicker from './_components/color-picker';
-import FocalPointPicker from './_components/focal-point-picker';
-import Jarallax from './_components/jarallax';
+import ColorPicker from './components/color-picker';
+import FocalPointPicker from './components/focal-point-picker';
+import Jarallax from './components/jarallax';
 import iconAWB from './icons/awb.svg';
 import iconFullHeight from './icons/fullheight.svg';
 import iconVerticalCenter from './icons/vertical-center.svg';
