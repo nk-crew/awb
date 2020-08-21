@@ -24,7 +24,7 @@ const { hasBlockSupport } = wp.blocks;
 
 const {
     BlockAlignmentToolbar,
-} = wp.editor;
+} = wp.blockEditor;
 
 const validAlignments = [ 'full' ];
 
