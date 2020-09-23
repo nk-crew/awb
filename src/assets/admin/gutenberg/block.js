@@ -3,6 +3,7 @@ import classnames from 'classnames/dedupe';
 
 import ColorPicker from './components/color-picker';
 import FocalPointPicker from './components/focal-point-picker';
+import EditorStyles from './components/editor-styles';
 import Jarallax from './components/jarallax';
 import iconAWB from './icons/awb.svg';
 import iconFullHeight from './icons/fullheight.svg';
@@ -859,6 +860,7 @@ export function renderEditorPreview( props ) {
     const {
         attributes,
         setAttributes,
+        clientId,
     } = props;
 
     const {
@@ -945,13 +947,25 @@ export function renderEditorPreview( props ) {
                         options={ jarallaxParams }
                     />
                 ) : (
-                    <div
-                        className="awb-gutenberg-preview-block-inner"
-                        // eslint-disable-next-line react/no-danger
-                        dangerouslySetInnerHTML={ {
-                            __html: previewHTML,
-                        } }
-                    />
+                    <Fragment>
+                        <div
+                            className="awb-gutenberg-preview-block-inner"
+                            // eslint-disable-next-line react/no-danger
+                            dangerouslySetInnerHTML={ {
+                                __html: previewHTML,
+                            } }
+                        />
+                        <EditorStyles
+                            styles={ [ {
+                                css: `
+                                    #block-${ clientId } > .wp-block > .wp-block-nk-awb > .awb-gutenberg-preview-block img {
+                                        object-fit: ${ imageBackgroundSize || 'cover' };
+                                        object-position: ${ imageBackgroundPosition || '50% 50%' };
+                                    }
+                                `,
+                            } ] }
+                        />
+                    </Fragment>
                 ) }
                 { color ? (
                     <div

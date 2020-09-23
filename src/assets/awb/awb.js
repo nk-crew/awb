@@ -521,6 +521,17 @@ window.nkAwbInit = function() {
 
         // prevent if no parallax and no video
         if ( ! parallax && ! video ) {
+            // we need to add object-fit manually, as we don't use Jarallax
+            const objectSize = $this.attr( 'data-awb-image-background-size' ) || 'cover';
+            const objectPosition = $this.attr( 'data-awb-image-background-position' ) || '50% 50%';
+
+            $this.find( '.jarallax-img' ).css( {
+                objectFit: objectSize,
+                objectPosition,
+                // support for plugin https://github.com/bfred-it/object-fit-images
+                fontFamily: `object-fit: ${ objectSize }; object-position: ${ objectPosition };`,
+            } );
+
             return;
         }
 
