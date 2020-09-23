@@ -83,6 +83,15 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.7.0 =
+
+* added support for 3rd-party plugins, that adds WebP images
+* fixed bug with clip images in Safari v14
+* fixed image position when disabled parallax effect
+* fixed video loop and image reset problem
+* fixed JS deprecated notice
+* additional styles for video elements (prevent click on video blocks)
+
 = 1.6.7 =
 
 * fixed color picker error in WordPress 5.5 and WPBakery Page Builder
