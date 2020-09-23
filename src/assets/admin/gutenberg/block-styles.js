@@ -299,7 +299,7 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
             // validate values.
             Object.keys( ghostkitSpacings ).forEach( ( key ) => {
                 if ( ghostkitSpacings[ key ] ) {
-                    // device object supported bu GhostKit plugin only.
+                    // device object supported by GhostKit plugin only.
                     if ( 'object' !== typeof ghostkitSpacings[ key ] ) {
                         result[ key ] = ghostkitSpacings[ key ];
                     }

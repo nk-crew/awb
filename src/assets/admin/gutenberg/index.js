@@ -1,7 +1,7 @@
 import './editor.scss';
 
 import * as block from './block';
-import './block-spacings';
+import './block-styles';
 import './ghostkit-grid-extension';
 
 const {
