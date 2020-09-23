@@ -552,7 +552,15 @@ window.nkAwbInit = function() {
             jarallaxParams.videoPlayOnlyVisible = ! videoAlwaysPlay;
         }
 
-        $this.children( '.nk-awb-inner' ).jarallax( jarallaxParams );
+        const $inner = $this.children( '.nk-awb-inner' );
+        const $pictureImg = $inner.find( 'picture .jarallax-img' );
+
+        if ( $pictureImg.length ) {
+            $pictureImg.removeClass( 'jarallax-img' );
+            $pictureImg.closest( 'picture' ).addClass( 'jarallax-img' );
+        }
+
+        $inner.jarallax( jarallaxParams );
     } );
 };
 
