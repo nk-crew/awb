@@ -56,7 +56,7 @@ const {
     withSelect,
 } = wp.data;
 
-const validAlignments = [ 'full' ];
+const validAlignments = [ 'full', 'wide' ];
 
 /**
  * Get icon for toolbar.

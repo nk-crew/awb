@@ -26,7 +26,7 @@ const {
     BlockAlignmentToolbar,
 } = wp.blockEditor;
 
-const validAlignments = [ 'full' ];
+const validAlignments = [ 'full', 'wide' ];
 
 const { __ } = wp.i18n;
 
