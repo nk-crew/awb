@@ -1273,7 +1273,7 @@ export const settings = {
 
         image: {
             type: 'number',
-            default: '',
+            default: 0,
         },
         imageTag: {
             type: 'string',
