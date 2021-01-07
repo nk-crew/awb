@@ -83,6 +83,14 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.7.1 =
+
+* added support for Gutenberg Wide alignment
+* added support for row gaps in WPBakery Page Builder
+* added GDPR compliance parameters to Youtube and Vimeo videos
+* fixed blur images on mobile devices
+* fixed deprecated jQuery ready event usage
+
 = 1.7.0 =
 
 * added support for 3rd-party plugins, that adds WebP images
