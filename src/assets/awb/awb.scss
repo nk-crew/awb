@@ -22,11 +22,24 @@
     transform: translateX(0);
 }
 
-// fix for VC row.
-.wpb_row.nk-awb:not([data-vc-full-width="true"]) > .nk-awb-wrap,
-.wpb_column.nk-awb > .nk-awb-wrap {
-    right: 15px;
-    left: 15px;
+// Support for VC column gaps.
+$vc_gaps: (
+    1,
+    2,
+    3,
+    4,
+    5,
+    10,
+    15,
+    20,
+    25,
+    30,
+    35,
+);
+@each $gap in $vc_gaps {
+    .vc_row.vc_column-gap-#{$gap} > .vc_column_container > .nk-awb-wrap {
+        margin: 1px * $gap / 2;
+    }
 }
 
 /* Fullheight */
