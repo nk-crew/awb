@@ -381,6 +381,40 @@ function stretchAwb() {
 }
 
 /**
+ * Srcset fix with object-fit: cover.
+ *
+ * Reasons:
+ *   https://wordpress.org/support/topic/awb-full-image-on-mobile-blurry/
+ *   https://wordpress.org/support/topic/supplement-to-awb-full-image-on-mobile-blurry/
+ */
+function fixSrcsetAwb() {
+    $( '.nk-awb .nk-awb-inner img' ).each( function() {
+        const $img = $( this );
+
+        if ( ! $img[ 0 ] ) {
+            return;
+        }
+
+        const CSS = window.getComputedStyle( this, null );
+
+        if ( CSS && CSS.objectFit && 'cover' === CSS.objectFit ) {
+            const imgHeight = parseInt( this.getAttribute( 'height' ), 10 );
+            const imgWidth = parseInt( this.getAttribute( 'width' ), 10 );
+
+            if ( imgHeight ) {
+                let calculatedWidth = this.clientWidth;
+
+                if ( imgWidth / imgHeight > this.clientWidth / this.clientHeight ) {
+                    calculatedWidth = parseInt( ( this.clientHeight * imgWidth ) / imgHeight, 10 );
+                }
+
+                this.setAttribute( 'sizes', `${ calculatedWidth }px` );
+            }
+        }
+    } );
+}
+
+/**
  * Custom styles fallback if GhostKit plugin is not installed.
  */
 let customStyles = '';
@@ -478,6 +512,9 @@ window.nkAwbInit = function() {
 
     // stretch
     stretchAwb();
+
+    // fix srcset
+    fixSrcsetAwb();
 
     // init jarallax
     if ( 'undefined' === typeof $.fn.jarallax ) {
@@ -593,3 +630,4 @@ if ( window.MutationObserver ) {
 
 // init stretch
 $wnd.on( 'resize orientationchange load', throttle( 200, stretchAwb ) );
+$wnd.on( 'resize orientationchange load', throttle( 200, fixSrcsetAwb ) );
