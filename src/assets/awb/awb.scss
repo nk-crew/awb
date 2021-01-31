@@ -127,3 +127,13 @@ $vc_gaps: (
     object-fit: inherit;
     object-position: inherit;
 }
+
+// Fix for TwentyTwenty and TwentyTwentyOne (using custom CSS) video styles conflict.
+// https://github.com/WordPress/twentytwenty/blob/master/assets/js/index.js#L294-L318
+// https://github.com/WordPress/twentytwentyone/blob/trunk/assets/js/responsive-embeds.js#L14-L30
+.intrinsic-ignore iframe {
+    // stylelint-disable-next-line
+    max-width: none !important;
+    // stylelint-disable-next-line
+    max-height: none !important;
+}

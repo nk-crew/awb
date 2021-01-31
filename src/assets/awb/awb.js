@@ -23,6 +23,7 @@ const isFirefox = typeof InstallTrigger !== 'undefined';
 const isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
 const isChrome = !!window.chrome && !!window.chrome.webstore;
 const isOpera = (!!window.opr && !!window.opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+const isTwentyTwenty = $( '#twenty-twenty-style-css, #twenty-twenty-one-style-css' ).length;
 /* eslint-enable */
 
 let wndW = 0;
@@ -606,6 +607,15 @@ window.nkAwbInit = function() {
         if ( $pictureImg.length ) {
             $pictureImg.removeClass( 'jarallax-img' );
             $pictureImg.closest( 'picture' ).addClass( 'jarallax-img' );
+        }
+
+        // Fix for TwentyTwenty and TwentyTwentyOne (using custom CSS) video styles conflict.
+        // https://github.com/WordPress/twentytwenty/blob/master/assets/js/index.js#L294-L318
+        // https://github.com/WordPress/twentytwentyone/blob/trunk/assets/js/responsive-embeds.js#L14-L30
+        if ( isTwentyTwenty ) {
+            jarallaxParams.onInit = function() {
+                $inner.children().addClass( 'intrinsic-ignore' );
+            };
         }
 
         $inner.jarallax( jarallaxParams );
