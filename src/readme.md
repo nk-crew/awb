@@ -83,6 +83,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.7.2 =
+
+* fixed TwentyTwenty and TwentyTwentyOne video styles conflict
+
 = 1.7.1 =
 
 * added support for Gutenberg Wide alignment
