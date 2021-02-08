@@ -23,7 +23,7 @@ const isFirefox = typeof InstallTrigger !== 'undefined';
 const isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
 const isChrome = !!window.chrome && !!window.chrome.webstore;
 const isOpera = (!!window.opr && !!window.opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
-const isTwentyTwenty = $( '#twenty-twenty-style-css, #twenty-twenty-one-style-css' ).length;
+const isTwentyTwenty = $( '#twentytwenty-style-css, #twenty-twenty-style-css, #twenty-twenty-one-style-css' ).length;
 /* eslint-enable */
 
 let wndW = 0;
