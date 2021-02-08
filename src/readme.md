@@ -83,7 +83,7 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
-= 1.7.2 =
+= 1.7.3 =
 
 * fixed TwentyTwenty and TwentyTwentyOne video styles conflict
 
