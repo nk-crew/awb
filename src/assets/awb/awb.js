@@ -549,7 +549,7 @@ window.nkAwbInit = function() {
             videoMobile = '1' === $this.attr( 'data-awb-video-mobile' ) || 'true' === $this.attr( 'data-awb-video-mobile' );
 
             // we need to enable parallax options to play videos
-            // https://github.com/nk-o/awb/issues/17
+            // https://github.com/nk-crew/awb/issues/17
             if ( video && ! parallax && ! parallaxSpeed ) {
                 parallax = 'scroll';
                 parallaxSpeed = 1;
