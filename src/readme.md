@@ -83,6 +83,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.7.4 =
+
+* tested up to WordPress 5.7
+* moved to nk-crew GitHub repo
+
 = 1.7.3 =
 
 * fixed TwentyTwenty and TwentyTwentyOne video styles conflict
