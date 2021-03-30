@@ -1,6 +1,6 @@
 # Advanced WordPress Backgrounds with Gutenberg support. Images, Videos and Parallax
 
-- Site https://wp.nkdev.info/free-advanced-wordpress-backgrounds/
+- Site https://wpbackgrounds.com/
 - WordPress Plugin https://wordpress.org/plugins/advanced-backgrounds/
 
 ## Development
