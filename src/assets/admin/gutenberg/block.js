@@ -1317,11 +1317,11 @@ export const settings = {
             default: '',
         },
         videoStartTime: {
-            type: 'string',
+            type: 'number',
             default: '',
         },
         videoEndTime: {
-            type: 'string',
+            type: 'number',
             default: '',
         },
         videoVolume: {
