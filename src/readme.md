@@ -83,6 +83,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.7.5 =
+
+* added accessibility attributes to background videos (tabindex, aria-hidden)
+* fixed video start and end time save in block
+
 = 1.7.4 =
 
 * tested up to WordPress 5.7
