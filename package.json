@@ -20,33 +20,33 @@
         "lint-staged": "lint-staged",
         "make-pot": "composer wp -- i18n make-pot ./src ./src/languages/advanced-backgrounds.pot --skip-audit --exclude=vendor,vendors,node_modules --headers='{\"Last-Translator\":\"nK\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-o/awb/issues\"}'",
         "update:packages": "npm i -g npm-check-updates && npm-check-updates -u && npm install",
-        "postinstall": "composer install"
+        "postinstall": "npx simple-git-hooks && composer install"
     },
     "devDependencies": {
-        "@babel/node": "^7.13.0",
+        "@babel/node": "^7.13.13",
         "@babel/plugin-proposal-object-rest-spread": "^7.13.8",
-        "@babel/plugin-transform-react-jsx": "^7.12.17",
-        "@babel/preset-env": "^7.13.9",
-        "@babel/register": "^7.13.8",
+        "@babel/plugin-transform-react-jsx": "^7.13.12",
+        "@babel/preset-env": "^7.14.1",
+        "@babel/register": "^7.13.16",
         "@svgr/webpack": "^5.5.0",
         "babel-eslint": "^10.1.0",
         "base64-inline-loader": "^1.1.1",
-        "eslint-config-nk": "^0.0.17",
-        "husky": "^5.1.3",
+        "eslint-config-nk": "^0.0.20",
         "json-file": "^0.1.0",
-        "lint-staged": "^10.5.4",
+        "lint-staged": "^11.0.0",
         "md5": "^2.3.0",
-        "micromatch": "^4.0.2",
-        "stylelint-config-nk": "^0.0.10",
-        "wpeg": "1.1.1"
+        "micromatch": "^4.0.4",
+        "simple-git-hooks": "^2.3.1",
+        "stylelint-config-nk": "^0.0.13",
+        "wpeg": "1.2.4"
     },
     "dependencies": {
         "babel-polyfill": "^6.26.0",
-        "classnames": "^2.2.6",
+        "classnames": "^2.3.1",
         "deep-assign": "^3.0.0",
         "deep-equal": "^2.0.5",
         "shorthash": "0.0.2",
         "throttle-debounce": "^3.0.1",
-        "video-worker": "^1.1.10"
+        "video-worker": "^1.1.13"
     }
 }
