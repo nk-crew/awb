@@ -83,6 +83,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.7.6 =
+
+* added WP 5.8 support
+
 = 1.7.5 =
 
 * added accessibility attributes to background videos (tabindex, aria-hidden)
