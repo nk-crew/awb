@@ -342,6 +342,7 @@ const {
                     // fix color picker visibility
                     $panel.find( '.wp-picker-container:visible' ).each( function() {
                         $( this ).find( '.awb-colorpicker' ).css( 'display', 'inline-block' );
+                        $( this ).find( '.wp-picker-input-wrap.hidden' ).removeClass( 'hidden' );
                     } );
 
                     // get form values
