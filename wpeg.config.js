@@ -7,6 +7,11 @@ cfg.src = './src';
 cfg.dist_root = './dist';
 cfg.dist = '{dist_root}/advanced-backgrounds';
 
+// Browser sync.
+cfg.browser_sync = {
+    proxy: 'advanced-backgrounds.local',
+};
+
 // Template variables that will be automatically replaced.
 cfg.template_files_src = '{dist}/**/*.{md,php,js,css,pot}';
 cfg.template_files_variables = {
