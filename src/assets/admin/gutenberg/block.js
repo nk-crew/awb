@@ -1,6 +1,7 @@
 import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
 
+import { maybeEncode, maybeDecode } from './utils/encode-decode';
 import ColorPicker from './components/color-picker';
 import FocalPointPicker from './components/focal-point-picker';
 import EditorStyles from './components/editor-styles';
@@ -280,6 +281,8 @@ export class BlockSave extends Component {
 
         // Fix style tag background.
         if ( resultImg ) {
+            resultImg = maybeDecode( resultImg );
+
             resultImg = resultImg.replace( 'url(&quot;', 'url(\'' );
             resultImg = resultImg.replace( '&quot;);', '\');' );
         }
@@ -695,7 +698,7 @@ export function renderInspectorControls( props ) {
                                 <Fragment>
                                     <FocalPointPicker
                                         value={ imageBackgroundPosition }
-                                        image={ imageTag }
+                                        image={ maybeDecode( imageTag ) }
                                         onChange={ ( v ) => setAttributes( { imageBackgroundPosition: v } ) }
                                     />
                                     { imageSizes ? (
@@ -904,7 +907,7 @@ export function renderEditorPreview( props ) {
         }
 
         if ( imageTag ) {
-            previewHTML = imageTag;
+            previewHTML = maybeDecode( imageTag );
         } else if ( 'yt_vm_video' === type && videoPosterPreview ) {
             jarallaxSrc = videoPosterPreview;
             previewHTML = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
@@ -1006,7 +1009,7 @@ export class BlockEdit extends Component {
 
         // set image tag to attribute
         if ( fetchImageTag && fetchImageTag !== imageTag ) {
-            setAttributes( { imageTag: fetchImageTag } );
+            setAttributes( { imageTag: maybeEncode( fetchImageTag ) } );
         }
     }
 
