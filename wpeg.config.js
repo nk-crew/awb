@@ -13,7 +13,7 @@ cfg.browser_sync = {
 };
 
 // Template variables that will be automatically replaced.
-cfg.template_files_src = '{dist}/**/*.{md,php,js,css,pot}';
+cfg.template_files_src = '{dist}/**/*.{md,php,js,css,pot,json}';
 cfg.template_files_variables = {
     text_domain: pkg.name,
     plugin_version: pkg.version,
