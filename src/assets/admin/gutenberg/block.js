@@ -547,7 +547,7 @@ export function renderInspectorControls( props ) {
                                     </span>
                                     <Button
                                         isLink
-                                        onClick={ ( ) => {
+                                        onClick={ () => {
                                             setAttributes( {
                                                 videoMp4: '',
                                             } );

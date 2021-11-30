@@ -29,6 +29,20 @@ export default class GhostKitGridWidePreview extends Component {
         this.updatePosition();
     }
 
+    componentDidUpdate() {
+        const {
+            awb_align: awbAlign,
+        } = this.props.attributes;
+
+        const {
+            previewAlign,
+        } = this.state;
+
+        if ( awbAlign && 'full' === awbAlign && previewAlign !== awbAlign ) {
+            this.updatePosition();
+        }
+    }
+
     componentWillUnmount() {
         window.removeEventListener( 'resize', this.updatePosition );
     }
@@ -80,25 +94,18 @@ export default class GhostKitGridWidePreview extends Component {
         const {
             previewLeft,
             previewRight,
-            previewAlign,
             previewSelector,
         } = this.state;
 
         let AWBpreviewStyles = '';
 
-        if ( attributes.awb_align && 'full' === attributes.awb_align ) {
-            if ( previewAlign !== attributes.awb_align ) {
-                this.updatePosition();
-            }
-
-            if ( previewLeft || previewRight ) {
-                AWBpreviewStyles = `
-                    ${ previewSelector } {
-                        margin-left: ${ previewLeft }px;
-                        margin-right: ${ previewRight }px;
-                    }
-                `;
-            }
+        if ( attributes.awb_align && 'full' === attributes.awb_align && ( previewLeft || previewRight ) ) {
+            AWBpreviewStyles = `
+                ${ previewSelector } {
+                    margin-left: ${ previewLeft }px;
+                    margin-right: ${ previewRight }px;
+                }
+            `;
         }
 
         return (
