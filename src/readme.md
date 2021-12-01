@@ -83,6 +83,13 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.7.7 =
+
+* added encode/decode to Gutenberg block image tag attribute
+* fixed shortcode inserter color overlay selection
+* fixed conflict with PublishPress Blocks plugin
+* fixed React state change inside render callback
+
 = 1.7.6 =
 
 * added WP 5.8 support
