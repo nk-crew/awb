@@ -40,7 +40,7 @@ $vc_gaps: (
 );
 @each $gap in $vc_gaps {
     .vc_row.vc_column-gap-#{$gap} > .vc_column_container > .nk-awb-wrap {
-        margin: 1px math.div($gap, 2);
+        margin: 1px #{math.div($gap, 2)}px;
     }
 }
 
