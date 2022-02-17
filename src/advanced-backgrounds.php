@@ -92,6 +92,7 @@ class NK_AWB {
     public function init_hooks() {
         add_action( 'init', array( $this, 'register_scripts' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+        add_action( 'ghostkit_parse_blocks', array( $this, 'parse_ghostkit_blocks' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'fix_youtube_embed_plus_plugin' ), 101 );
     }
 
@@ -122,8 +123,22 @@ class NK_AWB {
      * Enqueue scripts.
      */
     public function enqueue_scripts() {
-        // add styles to header to fix image jumping.
+        // add styles to header to fix image jumping when use shortcode.
         wp_enqueue_style( 'nk-awb' );
+    }
+
+    /**
+     * Enqueue awb assets when used Ghost Kit grid or Column.
+     *
+     * @param array $blocks - block list.
+     */
+    public function parse_ghostkit_blocks( $blocks ) {
+        foreach ( $blocks as $block ) {
+            if ( 'ghostkit/grid-column' === $block['blockName'] || 'ghostkit/grid' === $block['blockName'] ) {
+                wp_enqueue_script( 'nk-awb' );
+                wp_enqueue_style( 'nk-awb' );
+            }
+        }
     }
 
     /**

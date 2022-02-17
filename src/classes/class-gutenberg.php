@@ -53,22 +53,16 @@ class NK_AWB_Gutenberg {
             filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/editor.min.css' )
         );
 
-        // register block.
-        register_block_type(
-            'nk/awb',
-            array(
-                'editor_script' => 'awb-gutenberg',
-                'editor_style'  => 'awb-gutenberg',
-                'script'        => 'nk-awb',
-                'style'         => 'nk-awb',
-            )
-        );
-
         // add variables to script.
         $data = array(
             'full_width_fallback' => ! get_theme_support( 'align-wide' ),
             'is_ghostkit_active'  => class_exists( 'GhostKit' ),
         );
         wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );
+
+        // register block.
+        register_block_type(
+            nk_awb()->plugin_path . 'assets/admin/gutenberg'
+        );
     }
 }

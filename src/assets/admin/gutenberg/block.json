@@ -1,0 +1,135 @@
+{
+    "name": "nk/awb",
+    "category": "design",
+    "title": "Background (AWB)",
+    "description": "Create sections with color, image and video backgrounds.",
+    "keywords": [ "awb", "background", "parallax" ],
+    "textdomain": "advanced-backgrounds",
+    "supports": {
+        "anchor": true,
+        "className": true,
+        "html": false
+    },
+    "attributes": {
+        "type": {
+            "type": "string",
+            "default": "color"
+        },
+        "align": {
+            "type": "string"
+        },
+        "fullHeight": {
+            "type": "boolean",
+            "default": false
+        },
+        "fullHeightAlign": {
+            "type": "string",
+            "default": "center"
+        },
+
+        "image": {
+            "type": "number",
+            "default": ""
+        },
+        "imageTag": {
+            "type": "string",
+            "default": ""
+        },
+        "imageSizes": {
+            "type": "object",
+            "default": ""
+        },
+        "imageSize": {
+            "type": "string",
+            "default": "full"
+        },
+        "imageBackgroundSize": {
+            "type": "string",
+            "default": "cover"
+        },
+        "imageBackgroundPosition": {
+            "type": "string",
+            "default": "50% 50%"
+        },
+
+        "video": {
+            "type": "string",
+            "default": ""
+        },
+        "videoPosterPreview": {
+            "type": "string",
+            "default": ""
+        },
+        "videoMp4": {
+            "type": "string",
+            "default": ""
+        },
+        "videoOgv": {
+            "type": "string",
+            "default": ""
+        },
+        "videoWebm": {
+            "type": "string",
+            "default": ""
+        },
+        "videoStartTime": {
+            "type": "number",
+            "default": ""
+        },
+        "videoEndTime": {
+            "type": "number",
+            "default": ""
+        },
+        "videoVolume": {
+            "type": "number",
+            "default": 0
+        },
+        "videoLoop": {
+            "type": "boolean",
+            "default": true
+        },
+        "videoAlwaysPlay": {
+            "type": "boolean",
+            "default": false
+        },
+        "videoMobile": {
+            "type": "boolean",
+            "default": false
+        },
+
+        "color": {
+            "type": "string",
+            "default": ""
+        },
+
+        "parallax": {
+            "type": "string",
+            "default": ""
+        },
+        "parallaxSpeed": {
+            "type": "number",
+            "default": 0.5
+        },
+        "parallaxMobile": {
+            "type": "boolean",
+            "default": false
+        },
+
+        "mouseParallax": {
+            "type": "boolean",
+            "default": false
+        },
+        "mouseParallaxSize": {
+            "type": "number",
+            "default": 30
+        },
+        "mouseParallaxSpeed": {
+            "type": "number",
+            "default": 10000
+        }
+    },
+    "editorScript": "awb-gutenberg",
+    "editorStyle": "awb-gutenberg",
+    "script": "nk-awb",
+    "style": "nk-awb"
+}

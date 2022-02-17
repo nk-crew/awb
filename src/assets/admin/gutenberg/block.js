@@ -1,6 +1,7 @@
 import VideoWorker from 'video-worker';
 import classnames from 'classnames/dedupe';
 
+import metadata from './block.json';
 import { maybeEncode, maybeDecode } from './utils/encode-decode';
 import ColorPicker from './components/color-picker';
 import FocalPointPicker from './components/focal-point-picker';
@@ -1194,22 +1195,11 @@ export const BlockEditWithSelect = withSelect( ( select, props ) => {
     };
 } )( BlockEdit );
 
-export const name = 'nk/awb';
-
-const hasLayoutCategory = wp.blocks.getCategories().some( ( category ) => 'layout' === category.slug );
+export const { name } = metadata;
 
 export const settings = {
-    title: 'Background (AWB)',
-
-    description: __( 'Create sections with color, image and video backgrounds.' ),
-
-    // add element with classname to support different icon sets like FontAwesome.
+    ...metadata,
     icon: iconAWB,
-
-    category: hasLayoutCategory ? 'layout' : 'design',
-
-    keywords: [ 'awb', 'background', 'parallax' ],
-
     ghostkit: {
         supports: {
             spacings: true,
@@ -1217,132 +1207,6 @@ export const settings = {
             customCSS: true,
         },
     },
-
-    supports: {
-        anchor: true,
-        className: true,
-        html: false,
-    },
-
-    attributes: {
-        type: {
-            type: 'string',
-            default: 'color',
-        },
-        align: {
-            type: 'string',
-        },
-        fullHeight: {
-            type: 'boolean',
-            default: false,
-        },
-        fullHeightAlign: {
-            type: 'string',
-            default: 'center',
-        },
-
-        image: {
-            type: 'number',
-            default: '',
-        },
-        imageTag: {
-            type: 'string',
-            default: '',
-        },
-        imageSizes: {
-            type: 'object',
-            default: '',
-        },
-        imageSize: {
-            type: 'string',
-            default: 'full',
-        },
-        imageBackgroundSize: {
-            type: 'string',
-            default: 'cover',
-        },
-        imageBackgroundPosition: {
-            type: 'string',
-            default: '50% 50%',
-        },
-
-        video: {
-            type: 'string',
-            default: '',
-        },
-        videoPosterPreview: {
-            type: 'string',
-            default: '',
-        },
-        videoMp4: {
-            type: 'string',
-            default: '',
-        },
-        videoOgv: {
-            type: 'string',
-            default: '',
-        },
-        videoWebm: {
-            type: 'string',
-            default: '',
-        },
-        videoStartTime: {
-            type: 'number',
-            default: '',
-        },
-        videoEndTime: {
-            type: 'number',
-            default: '',
-        },
-        videoVolume: {
-            type: 'number',
-            default: 0,
-        },
-        videoLoop: {
-            type: 'boolean',
-            default: true,
-        },
-        videoAlwaysPlay: {
-            type: 'boolean',
-            default: false,
-        },
-        videoMobile: {
-            type: 'boolean',
-            default: false,
-        },
-
-        color: {
-            type: 'string',
-            default: '',
-        },
-
-        parallax: {
-            type: 'string',
-            default: '',
-        },
-        parallaxSpeed: {
-            type: 'number',
-            default: 0.5,
-        },
-        parallaxMobile: {
-            type: 'boolean',
-            default: false,
-        },
-
-        mouseParallax: {
-            type: 'boolean',
-            default: false,
-        },
-        mouseParallaxSize: {
-            type: 'number',
-            default: 30,
-        },
-        mouseParallaxSpeed: {
-            type: 'number',
-            default: 10000,
-        },
-    },
-
     getEditWrapperProps( attributes ) {
         const { align } = attributes;
         if ( -1 !== validAlignments.indexOf( align ) ) {
@@ -1350,8 +1214,6 @@ export const settings = {
         }
         return {};
     },
-
     edit: BlockEditWithSelect,
-
     save: BlockSave,
 };
