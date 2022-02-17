@@ -8,7 +8,7 @@ import classnames from 'classnames/dedupe';
  */
 import { settings } from '../block';
 import BlockSave from '../block-save';
-import { BlockEditWithSelect, renderEditorPreview } from '../block-edit';
+import { BlockEdit, renderEditorPreview } from '../block-edit';
 import GhostKitGridWidePreview from '../components/ghostkit-grid-wide-preview';
 
 /**
@@ -125,7 +125,7 @@ function addBackgroundControls(Control, props) {
 
     return (
       <PanelBody title={__('Background')} initialOpen={false}>
-        <BlockEditWithSelect {...awbProps} inspectorControlsOnly />
+        <BlockEdit {...awbProps} inspectorControlsOnly />
         <PanelBody>
           <BaseControl label={__('Full width background')}>
             {AWBData.full_width_fallback ? (

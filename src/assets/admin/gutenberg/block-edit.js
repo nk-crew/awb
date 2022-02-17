@@ -26,12 +26,17 @@ import iconVerticalBottomWhite from './icons/vertical-bottom-white.svg';
  * WordPress Dependencies
  */
 const { __ } = wp.i18n;
-const { Component, Fragment } = wp.element;
 
-const AWBData = window.AWBGutenbergData;
+const { Fragment, useEffect } = wp.element;
 
-const { InspectorControls, InnerBlocks, MediaUpload, BlockControls, BlockAlignmentToolbar } =
-  wp.blockEditor;
+const {
+  useBlockProps,
+  InspectorControls,
+  InnerBlocks,
+  MediaUpload,
+  BlockControls,
+  BlockAlignmentToolbar,
+} = wp.blockEditor;
 
 const {
   Button,
@@ -47,7 +52,9 @@ const {
   ColorIndicator,
 } = wp.components;
 
-const { withSelect } = wp.data;
+const { useSelect } = wp.data;
+
+const AWBData = window.AWBGutenbergData;
 
 const validAlignments = ['full', 'wide'];
 
@@ -760,214 +767,200 @@ export function renderEditorPreview(props) {
   );
 }
 
-class BlockEdit extends Component {
-  constructor(...args) {
-    super(...args);
+export function BlockEdit(props) {
+  const { clientId, attributes, setAttributes, inspectorControlsOnly } = props;
 
-    this.onUpdate = this.onUpdate.bind(this);
-  }
+  const {
+    type,
+    align,
+    fullHeight,
+    fullHeightAlign,
 
-  componentDidMount() {
-    this.onUpdate();
-  }
+    image,
+    imageTag,
+    imageSize,
+    imageBackgroundSize,
 
-  componentDidUpdate() {
-    this.onUpdate();
-  }
+    video,
+    videoPosterPreview,
 
-  onUpdate() {
-    const { fetchImageTag, setAttributes, attributes } = this.props;
+    ghostkitClassname,
+  } = attributes;
 
-    const { imageTag } = attributes;
+  let className = '';
 
+  const { hasChildBlocks, fetchImageTag } = useSelect(
+    (select) => {
+      const blockEditor = select('core/block-editor');
+
+      let imageQuery = '';
+
+      if (image) {
+        imageQuery = `size=${encodeURIComponent(imageSize)}&attr[class]=jarallax-img`;
+
+        // background image with pattern size
+        if ('pattern' === imageBackgroundSize) {
+          imageQuery += '&div_tag=1';
+        }
+      }
+
+      return {
+        hasChildBlocks: blockEditor ? 0 < blockEditor.getBlockOrder(clientId).length : false,
+        fetchImageTag: imageQuery
+          ? select('nk/awb').getImageTagData(`/awb/v1/get_attachment_image/${image}?${imageQuery}`)
+          : false,
+      };
+    },
+    [clientId, image, imageSize, imageBackgroundSize]
+  );
+
+  useEffect(() => {
     // set image tag to attribute
     if (fetchImageTag && maybeEncode(fetchImageTag) !== imageTag) {
       setAttributes({ imageTag: maybeEncode(fetchImageTag) });
     }
+  }, [fetchImageTag, imageTag]);
+
+  // load YouTube / Vimeo poster
+  if ('yt_vm_video' === type && video && !image) {
+    getVideoPoster(video, (url) => {
+      if (url !== videoPosterPreview) {
+        setAttributes({ videoPosterPreview: url });
+      }
+    });
   }
 
-  render() {
-    const { attributes, setAttributes, inspectorControlsOnly, hasChildBlocks } = this.props;
-
-    let { className } = this.props;
-
-    const {
-      type,
-      align,
-      fullHeight,
-      fullHeightAlign,
-
-      image,
-
-      video,
-      videoPosterPreview,
-
-      ghostkitClassname,
-    } = attributes;
-
-    // load YouTube / Vimeo poster
-    if ('yt_vm_video' === type && video && !image) {
-      getVideoPoster(video, (url) => {
-        if (url !== videoPosterPreview) {
-          setAttributes({ videoPosterPreview: url });
-        }
-      });
-    }
-
-    // add full height classname.
-    if (fullHeight) {
-      className = classnames(
-        className,
-        'nk-awb-fullheight',
-        fullHeightAlign ? `nk-awb-content-valign-${fullHeightAlign}` : ''
-      );
-    }
-
-    // add custom classname.
-    if (ghostkitClassname) {
-      className = classnames(className, ghostkitClassname);
-    }
-
-    // return controls only
-    // used in GhostKit extension
-    if (inspectorControlsOnly) {
-      return renderInspectorControls(this.props);
-    }
-
-    return (
-      <Fragment>
-        <BlockControls>
-          <ToolbarGroup>
-            {AWBData.full_width_fallback ? (
-              /* Fallback for align full */
-              <ToolbarButton
-                icon="align-full-width"
-                label={__('Full Width')}
-                isActive={'full' === align}
-                onClick={() => setAttributes({ align: 'full' === align ? '' : 'full' })}
-              />
-            ) : (
-              <BlockAlignmentToolbar
-                controls={validAlignments}
-                value={align}
-                onChange={(v) => setAttributes({ align: v })}
-              />
-            )}
-
-            <ToolbarButton
-              icon={getToolbarIcon(fullHeight ? iconFullHeightWhite : iconFullHeight)}
-              label={__('Full Height')}
-              isActive={fullHeight}
-              onClick={() => setAttributes({ fullHeight: !fullHeight })}
-            />
-            {fullHeight ? (
-              <Fragment>
-                <ToolbarButton
-                  icon={getToolbarIcon(
-                    'top' === fullHeightAlign ? iconVerticalTopWhite : iconVerticalTop
-                  )}
-                  label={__('Content Vertical Top')}
-                  isActive={'top' === fullHeightAlign}
-                  onClick={() => setAttributes({ fullHeightAlign: 'top' })}
-                />
-                <ToolbarButton
-                  icon={getToolbarIcon(
-                    'center' === fullHeightAlign ? iconVerticalCenterWhite : iconVerticalCenter
-                  )}
-                  label={__('Content Vertical Center')}
-                  isActive={'center' === fullHeightAlign}
-                  onClick={() => setAttributes({ fullHeightAlign: 'center' })}
-                />
-                <ToolbarButton
-                  icon={getToolbarIcon(
-                    'bottom' === fullHeightAlign ? iconVerticalBottomWhite : iconVerticalBottom
-                  )}
-                  label={__('Content Vertical Bottom')}
-                  isActive={'bottom' === fullHeightAlign}
-                  onClick={() => setAttributes({ fullHeightAlign: 'bottom' })}
-                />
-              </Fragment>
-            ) : (
-              ''
-            )}
-          </ToolbarGroup>
-
-          {'image' === type ? (
-            <ToolbarGroup>
-              <MediaUpload
-                onSelect={(media) => {
-                  onImageSelect(media, setAttributes);
-                }}
-                allowedTypes={['image']}
-                value={image}
-                render={({ open }) => (
-                  <ToolbarButton
-                    className="components-toolbar__control"
-                    label={__('Edit image')}
-                    icon="edit"
-                    onClick={open}
-                  />
-                )}
-              />
-            </ToolbarGroup>
-          ) : (
-            ''
-          )}
-
-          {'yt_vm_video' === type ? (
-            <ToolbarGroup>
-              <ToolbarItem>
-                {() => (
-                  <input
-                    aria-label={__('YouTube / Vimeo URL')}
-                    type="url"
-                    value={video}
-                    onChange={(event) => setAttributes({ video: event.target.value })}
-                    placeholder={__('YouTube / Vimeo URL')}
-                  />
-                )}
-              </ToolbarItem>
-            </ToolbarGroup>
-          ) : (
-            ''
-          )}
-        </BlockControls>
-        <InspectorControls>{renderInspectorControls(this.props)}</InspectorControls>
-
-        <div className={className}>
-          {renderEditorPreview(this.props)}
-          <InnerBlocks
-            templateLock={false}
-            renderAppender={hasChildBlocks ? undefined : () => <InnerBlocks.ButtonBlockAppender />}
-          />
-        </div>
-      </Fragment>
+  // add full height classname.
+  if (fullHeight) {
+    className = classnames(
+      className,
+      'nk-awb-fullheight',
+      fullHeightAlign ? `nk-awb-content-valign-${fullHeightAlign}` : ''
     );
   }
-}
 
-export const BlockEditWithSelect = withSelect((select, props) => {
-  const { clientId, attributes } = props;
-
-  const { image } = attributes;
-
-  const blockEditor = select('core/block-editor');
-
-  let imageQuery = '';
-
-  if (image) {
-    imageQuery = `size=${encodeURIComponent(attributes.imageSize)}&attr[class]=jarallax-img`;
-
-    // background image with pattern size
-    if ('pattern' === attributes.imageBackgroundSize) {
-      imageQuery += '&div_tag=1';
-    }
+  // add custom classname.
+  if (ghostkitClassname) {
+    className = classnames(className, ghostkitClassname);
   }
 
-  return {
-    hasChildBlocks: blockEditor ? 0 < blockEditor.getBlockOrder(clientId).length : false,
-    fetchImageTag: imageQuery
-      ? select('nk/awb').getImageTagData(`/awb/v1/get_attachment_image/${image}?${imageQuery}`)
-      : false,
-  };
-})(BlockEdit);
+  // return controls only
+  // used in GhostKit extension
+  if (inspectorControlsOnly) {
+    return renderInspectorControls(props);
+  }
+
+  const blockProps = useBlockProps({
+    className,
+  });
+
+  return (
+    <Fragment>
+      <BlockControls>
+        <ToolbarGroup>
+          {AWBData.full_width_fallback ? (
+            /* Fallback for align full */
+            <ToolbarButton
+              icon="align-full-width"
+              label={__('Full Width')}
+              isActive={'full' === align}
+              onClick={() => setAttributes({ align: 'full' === align ? '' : 'full' })}
+            />
+          ) : (
+            <BlockAlignmentToolbar
+              controls={validAlignments}
+              value={align}
+              onChange={(v) => setAttributes({ align: v })}
+            />
+          )}
+
+          <ToolbarButton
+            icon={getToolbarIcon(fullHeight ? iconFullHeightWhite : iconFullHeight)}
+            label={__('Full Height')}
+            isActive={fullHeight}
+            onClick={() => setAttributes({ fullHeight: !fullHeight })}
+          />
+          {fullHeight ? (
+            <Fragment>
+              <ToolbarButton
+                icon={getToolbarIcon(
+                  'top' === fullHeightAlign ? iconVerticalTopWhite : iconVerticalTop
+                )}
+                label={__('Content Vertical Top')}
+                isActive={'top' === fullHeightAlign}
+                onClick={() => setAttributes({ fullHeightAlign: 'top' })}
+              />
+              <ToolbarButton
+                icon={getToolbarIcon(
+                  'center' === fullHeightAlign ? iconVerticalCenterWhite : iconVerticalCenter
+                )}
+                label={__('Content Vertical Center')}
+                isActive={'center' === fullHeightAlign}
+                onClick={() => setAttributes({ fullHeightAlign: 'center' })}
+              />
+              <ToolbarButton
+                icon={getToolbarIcon(
+                  'bottom' === fullHeightAlign ? iconVerticalBottomWhite : iconVerticalBottom
+                )}
+                label={__('Content Vertical Bottom')}
+                isActive={'bottom' === fullHeightAlign}
+                onClick={() => setAttributes({ fullHeightAlign: 'bottom' })}
+              />
+            </Fragment>
+          ) : (
+            ''
+          )}
+        </ToolbarGroup>
+
+        {'image' === type ? (
+          <ToolbarGroup>
+            <MediaUpload
+              onSelect={(media) => {
+                onImageSelect(media, setAttributes);
+              }}
+              allowedTypes={['image']}
+              value={image}
+              render={({ open }) => (
+                <ToolbarButton
+                  className="components-toolbar__control"
+                  label={__('Edit image')}
+                  icon="edit"
+                  onClick={open}
+                />
+              )}
+            />
+          </ToolbarGroup>
+        ) : (
+          ''
+        )}
+
+        {'yt_vm_video' === type ? (
+          <ToolbarGroup>
+            <ToolbarItem>
+              {() => (
+                <input
+                  aria-label={__('YouTube / Vimeo URL')}
+                  type="url"
+                  value={video}
+                  onChange={(event) => setAttributes({ video: event.target.value })}
+                  placeholder={__('YouTube / Vimeo URL')}
+                />
+              )}
+            </ToolbarItem>
+          </ToolbarGroup>
+        ) : (
+          ''
+        )}
+      </BlockControls>
+      <InspectorControls>{renderInspectorControls(props)}</InspectorControls>
+
+      <div {...blockProps}>
+        {renderEditorPreview(props)}
+        <InnerBlocks
+          templateLock={false}
+          renderAppender={hasChildBlocks ? undefined : () => <InnerBlocks.ButtonBlockAppender />}
+        />
+      </div>
+    </Fragment>
+  );
+}

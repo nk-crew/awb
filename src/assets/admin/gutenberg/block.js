@@ -3,7 +3,7 @@
  */
 import metadata from './block.json';
 import iconAWB from './icons/awb.svg';
-import { BlockEditWithSelect } from './block-edit';
+import { BlockEdit } from './block-edit';
 import BlockSave from './block-save';
 
 const validAlignments = ['full', 'wide'];
@@ -27,6 +27,6 @@ export const settings = {
     }
     return {};
   },
-  edit: BlockEditWithSelect,
+  edit: BlockEdit,
   save: BlockSave,
 };
