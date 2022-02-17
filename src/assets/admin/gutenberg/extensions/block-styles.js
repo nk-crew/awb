@@ -4,7 +4,7 @@ import shorthash from 'shorthash';
 import classnames from 'classnames/dedupe';
 import deepEqual from 'deep-equal';
 
-import EditorStyles from './components/editor-styles';
+import EditorStyles from '../components/editor-styles';
 
 const AWBData = window.AWBGutenbergData;
 

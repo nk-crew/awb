@@ -1,8 +1,19 @@
+/**
+ * External Dependencies
+ */
 import classnames from 'classnames/dedupe';
 
-import { BlockEditWithSelect, BlockSave, renderEditorPreview, settings } from './block';
-import GhostKitGridWidePreview from './ghostkit-grid-wide-preview';
+/**
+ * Internal Dependencies
+ */
+import { settings } from '../block';
+import BlockSave from '../block-save';
+import { BlockEditWithSelect, renderEditorPreview } from '../block-edit';
+import GhostKitGridWidePreview from '../components/ghostkit-grid-wide-preview';
 
+/**
+ * WordPress Dependencies
+ */
 const AWBData = window.AWBGutenbergData;
 
 const { addFilter } = wp.hooks;

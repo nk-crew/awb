@@ -1,6 +1,6 @@
 import { throttle } from 'throttle-debounce';
 
-import EditorStyles from './components/editor-styles';
+import EditorStyles from './editor-styles';
 
 const { Component, Fragment } = wp.element;
 

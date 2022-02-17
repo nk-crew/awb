@@ -1,6 +1,11 @@
 import * as block from './block';
-import './block-styles';
-import './ghostkit-grid-extension';
+
+// Store.
+import './store/index';
+
+// Extensions.
+import './extensions/block-styles';
+import './extensions/ghostkit-grid';
 
 const { registerBlockType } = wp.blocks;
 
