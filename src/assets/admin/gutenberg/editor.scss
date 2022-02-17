@@ -29,6 +29,11 @@ img.awb-gutenberg-icon {
   }
 }
 
+// inner blocks appender
+.wp-block-nk-awb > .block-list-appender {
+  position: relative;
+}
+
 // background for block
 .awb-gutenberg-preview-block {
   position: absolute;

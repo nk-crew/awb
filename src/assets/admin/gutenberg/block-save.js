@@ -12,7 +12,13 @@ import camelCaseToDash from './utils/camel-case-to-dash';
 /**
  * WordPress Dependencies
  */
-const { useBlockProps, InnerBlocks } = wp.blockEditor;
+const {
+  useBlockProps,
+  useInnerBlocksProps: __stableUseInnerBlocksProps,
+  __experimentalUseInnerBlocksProps,
+} = wp.blockEditor;
+
+const useInnerBlocksProps = __stableUseInnerBlocksProps || __experimentalUseInnerBlocksProps;
 
 /**
  * Change attributes to data-attributes.
@@ -167,11 +173,12 @@ export default function BlockSave(props) {
   const blockProps = useBlockProps.save({
     className,
   });
+  const { children, ...innerBlocksProps } = useInnerBlocksProps.save(blockProps);
 
   return (
-    <div {...blockProps}>
+    <div {...innerBlocksProps}>
       {wrapHTML}
-      <InnerBlocks.Content />
+      {children}
     </div>
   );
 }

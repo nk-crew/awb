@@ -31,12 +31,16 @@ const { Fragment, useEffect } = wp.element;
 
 const {
   useBlockProps,
+  useInnerBlocksProps: __stableUseInnerBlocksProps,
+  __experimentalUseInnerBlocksProps,
   InspectorControls,
   InnerBlocks,
   MediaUpload,
   BlockControls,
   BlockAlignmentToolbar,
 } = wp.blockEditor;
+
+const useInnerBlocksProps = __stableUseInnerBlocksProps || __experimentalUseInnerBlocksProps;
 
 const {
   Button,
@@ -853,6 +857,10 @@ export function BlockEdit(props) {
   const blockProps = useBlockProps({
     className,
   });
+  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
+    templateLock: false,
+    renderAppender: hasChildBlocks ? undefined : () => <InnerBlocks.ButtonBlockAppender />,
+  });
 
   return (
     <Fragment>
@@ -954,12 +962,9 @@ export function BlockEdit(props) {
       </BlockControls>
       <InspectorControls>{renderInspectorControls(props)}</InspectorControls>
 
-      <div {...blockProps}>
+      <div {...innerBlocksProps}>
         {renderEditorPreview(props)}
-        <InnerBlocks
-          templateLock={false}
-          renderAppender={hasChildBlocks ? undefined : () => <InnerBlocks.ButtonBlockAppender />}
-        />
+        {children}
       </div>
     </Fragment>
   );
