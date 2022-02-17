@@ -1,17 +1,17 @@
 // icon
 img.awb-gutenberg-icon {
-    max-width: 20px;
-    height: auto;
-    pointer-events: none;
+  max-width: 20px;
+  height: auto;
+  pointer-events: none;
 }
 
 .wp-block-nk-awb {
-    padding: 1px 20px;
+  padding: 1px 20px;
 
-    .block-editor-block-list__layout {
-        margin-right: 0;
-        margin-left: 0;
-    }
+  .block-editor-block-list__layout {
+    margin-right: 0;
+    margin-left: 0;
+  }
 }
 
 // Fullheight
@@ -19,251 +19,261 @@ img.awb-gutenberg-icon {
 // 56px - gutenberg top bar
 // 28px - block padding
 .gutenberg .wp-block-nk-awb.nk-awb-fullheight {
-    min-height: calc(100vh - 32px - 56px - 28px);
+  min-height: calc(100vh - 32px - 56px - 28px);
 
-    @media screen and (max-width: 782px) {
-        min-height: calc(100vh - 42px - 56px - 28px);
-    }
-    @media screen and (max-width: 600px - 56px - 28px) {
-        min-height: calc(100vh - 56px - 28px);
-    }
+  @media screen and (max-width: 782px) {
+    min-height: calc(100vh - 42px - 56px - 28px);
+  }
+  @media screen and (max-width: 600px - 56px - 28px) {
+    min-height: calc(100vh - 56px - 28px);
+  }
 }
 
 // background for block
 .awb-gutenberg-preview-block {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  transition: 0.15s border ease-in-out;
+
+  // inside nested block
+  .block-editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit .editor-block-list__block-edit & {
+    right: -15px;
+    left: -15px;
+  }
+
+  &:empty {
+    border: 1px solid #e2e4e7;
+
+    [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > & {
+      border-right: 0;
+      border-left: 0;
+    }
+  }
+
+  .ghostkit-grid > &:empty {
+    border: none;
+  }
+
+  // fixed for some default themes styles
+  .editor-styles-wrapper & > img,
+  .editor-styles-wrapper & > div,
+  .editor-styles-wrapper & > .awb-gutenberg-preview-block-inner > img,
+  .editor-styles-wrapper & > .awb-gutenberg-preview-block-inner > div {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  > .nk-awb-overlay {
     position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
-    pointer-events: none;
-    transition: .15s border ease-in-out;
-
-    // inside nested block
-    .block-editor-block-list__layout .editor-block-list__block .editor-block-list__block-edit .editor-block-list__block-edit & {
-        right: -15px;
-        left: -15px;
-    }
-
-    &:empty {
-        border: 1px solid #e2e4e7;
-
-        [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > & {
-            border-right: 0;
-            border-left: 0;
-        }
-    }
-    .ghostkit-grid > &:empty {
-        border: none;
-    }
-
-    // fixed for some default themes styles
-    .editor-styles-wrapper & > img,
-    .editor-styles-wrapper & > div,
-    .editor-styles-wrapper & > .awb-gutenberg-preview-block-inner > img,
-    .editor-styles-wrapper & > .awb-gutenberg-preview-block-inner > div {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    > .nk-awb-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
+    width: 100%;
+    height: 100%;
+  }
 }
 
 @media (min-width: 600px) {
-    [data-align="full"] > .editor-block-list__block-edit > div > .wp-block-nk-awb {
-        > .awb-gutenberg-preview-block {
-            right: 0;
-            left: 0;
-        }
-
-        > .editor-inner-blocks > .block-editor-block-list__layout {
-            padding-right: 46px;
-            padding-left: 46px;
-        }
+  [data-align="full"] > .editor-block-list__block-edit > div > .wp-block-nk-awb {
+    > .awb-gutenberg-preview-block {
+      right: 0;
+      left: 0;
     }
+
+    > .editor-inner-blocks > .block-editor-block-list__layout {
+      padding-right: 46px;
+      padding-left: 46px;
+    }
+  }
 }
 
 // fix wide inside nested block
 .block-editor-block-list__layout .editor-block-list__block-edit .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
-    margin-right: 0;
-    margin-left: 0;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 // fix for Ghostkit Columns
 .ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"],
 .ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit {
-    position: static;
+  position: static;
 }
+
 .ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] {
-    padding-right: 10px;
-    padding-left: 10px;
+  padding-right: 10px;
+  padding-left: 10px;
 }
+
 .ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] > .editor-block-list__block-edit::before,
 .ghostkit-col .editor-block-list__block[data-align="full"][data-type="nk/awb"] .awb-gutenberg-preview-block {
-    top: -15px;
-    right: -15px;
-    bottom: -15px;
-    left: -15px;
+  top: -15px;
+  right: -15px;
+  bottom: -15px;
+  left: -15px;
 }
-// stylelint-disable-next-line
+
 [data-type="ghostkit/grid"] [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > .editor-inner-blocks > .block-editor-block-list__layout,
 [data-type="ghostkit/grid"][data-align="full"] [data-align="full"] > .editor-block-list__block-edit > .wp-block-nk-awb > .editor-inner-blocks > .block-editor-block-list__layout {
-    padding-right: 0;
-    padding-left: 0;
-    margin-right: 0;
-    margin-left: 0;
+  padding-right: 0;
+  padding-left: 0;
+  margin-right: 0;
+  margin-left: 0;
 }
 
 // preview image with background pattern in Inspector Controls
 .components-panel .awb-gutenberg-media-upload > div {
-    height: 150px;
+  height: 150px;
 }
-
 
 /**
  * Color Picker
  */
 .awb-component-color-picker-wrapper {
-    .awb-component-color-picker-wrapper + .awb-component-color-picker-wrapper {
-        margin-top: -5px;
-    }
+  .awb-component-color-picker-wrapper + .awb-component-color-picker-wrapper {
+    margin-top: -5px;
+  }
 
-    > .components-base-control__field {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-top: 16px;
+  > .components-base-control__field {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
 
-        .components-color-palette__item-wrapper {
-            margin: 0;
-        }
+    .components-color-palette__item-wrapper {
+      margin: 0;
     }
+  }
 }
+
 .awb-component-color-picker {
-    .awb-component-color-picker-palette {
-        margin: 0 17px;
-    }
-    .components-color-palette {
-        margin: 0;
-    }
+  .awb-component-color-picker-palette {
+    margin: 0 17px;
+  }
+
+  .components-color-palette {
+    margin: 0;
+  }
 }
 
 /**
  * Spacings Control.
  */
 .awb-ghostkit-control-spacing {
-    position: relative;
-    width: 100%;
-    padding-top: 87%;
-    border: 1px solid #e8eaec;
+  position: relative;
+  width: 100%;
+  padding-top: 87%;
+  border: 1px solid #e8eaec;
 
-    .components-base-control,
-    .components-base-control__field {
-        margin: 0 !important; // stylelint-disable-line
+  .components-base-control,
+  .components-base-control__field {
+    margin: 0 !important;
+  }
+
+  .awb-ghostkit-control-spacing-margin,
+  .awb-ghostkit-control-spacing-padding {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+
+    > span {
+      position: absolute;
+      top: 2px;
+      left: 6px;
+      font-size: 0.7em;
     }
 
-    .awb-ghostkit-control-spacing-margin,
-    .awb-ghostkit-control-spacing-padding {
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        width: calc(100% - 10px);
-        height: calc(100% - 10px);
-
-        > span {
-            position: absolute;
-            top: 2px;
-            left: 6px;
-            font-size: .7em;
-        }
-
-        > div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        input {
-            width: 39px;
-            padding: 3px 5px;
-            text-align: center;
-            background: none;
-            border: none;
-        }
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    // margins
-    .awb-ghostkit-control-spacing-margin {
-        .awb-ghostkit-control-spacing-margin-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-        }
-        .awb-ghostkit-control-spacing-margin-right {
-            position: absolute;
-            top: 0;
-            right: 0;
-            height: 100%;
-        }
-        .awb-ghostkit-control-spacing-margin-bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-        }
-        .awb-ghostkit-control-spacing-margin-left {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-        }
+    input {
+      width: 39px;
+      padding: 3px 5px;
+      text-align: center;
+      background: none;
+      border: none;
+    }
+  }
+
+  // margins
+  .awb-ghostkit-control-spacing-margin {
+    .awb-ghostkit-control-spacing-margin-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .awb-ghostkit-control-spacing-margin-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+
+    .awb-ghostkit-control-spacing-margin-bottom {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+
+    .awb-ghostkit-control-spacing-margin-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+    }
+  }
+
+  // paddings.
+  .awb-ghostkit-control-spacing-padding {
+    top: 36px;
+    left: 50px;
+    width: calc(100% - 100px);
+    height: calc(100% - 72px);
+    background-color: #f2f2f2;
+
+    > span {
+      top: 6px;
+      left: 10px;
     }
 
     // paddings.
-    .awb-ghostkit-control-spacing-padding {
-        top: 36px;
-        left: 50px;
-        width: calc(100% - 100px);
-        height: calc(100% - 72px);
-        background-color: #f2f2f2;
-
-        > span {
-            top: 6px;
-            left: 10px;
-        }
-
-        // paddings.
-        .awb-ghostkit-control-spacing-padding-top {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            width: calc(100% - 10px);
-        }
-        .awb-ghostkit-control-spacing-padding-right {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            height: calc(100% - 10px);
-        }
-        .awb-ghostkit-control-spacing-padding-bottom {
-            position: absolute;
-            bottom: 5px;
-            left: 5px;
-            width: calc(100% - 10px);
-        }
-        .awb-ghostkit-control-spacing-padding-left {
-            position: absolute;
-            top: 5px;
-            left: 5px;
-            height: calc(100% - 10px);
-        }
+    .awb-ghostkit-control-spacing-padding-top {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: calc(100% - 10px);
     }
+
+    .awb-ghostkit-control-spacing-padding-right {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      height: calc(100% - 10px);
+    }
+
+    .awb-ghostkit-control-spacing-padding-bottom {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      width: calc(100% - 10px);
+    }
+
+    .awb-ghostkit-control-spacing-padding-left {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      height: calc(100% - 10px);
+    }
+  }
 }

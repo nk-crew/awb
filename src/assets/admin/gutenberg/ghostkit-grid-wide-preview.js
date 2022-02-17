@@ -5,116 +5,97 @@ import EditorStyles from './components/editor-styles';
 const { Component, Fragment } = wp.element;
 
 export default class GhostKitGridWidePreview extends Component {
-    constructor( ...args ) {
-        super( ...args );
+  constructor(...args) {
+    super(...args);
 
-        this.state = {
-            previewLeft: 0,
-            previewRight: 0,
-            previewAlign: false,
-            previewSelector: (
-                'ghostkit/grid' === this.props.name ? (
-                    `[data-block="${ this.props.clientId }"] > .ghostkit-grid > .awb-gutenberg-preview-block`
-                ) : (
-                    `[data-block="${ this.props.clientId }"] > .awb-gutenberg-preview-block`
-                )
-            ),
-        };
+    this.state = {
+      previewLeft: 0,
+      previewRight: 0,
+      previewAlign: false,
+      previewSelector:
+        'ghostkit/grid' === this.props.name
+          ? `[data-block="${this.props.clientId}"] > .ghostkit-grid > .awb-gutenberg-preview-block`
+          : `[data-block="${this.props.clientId}"] > .awb-gutenberg-preview-block`,
+    };
 
-        this.updatePosition = throttle( 300, this.updatePosition.bind( this ) );
+    this.updatePosition = throttle(300, this.updatePosition.bind(this));
+  }
+
+  componentDidMount() {
+    window.addEventListener('resize', this.updatePosition);
+    this.updatePosition();
+  }
+
+  componentDidUpdate() {
+    const { awb_align: awbAlign } = this.props.attributes;
+
+    const { previewAlign } = this.state;
+
+    if (awbAlign && 'full' === awbAlign && previewAlign !== awbAlign) {
+      this.updatePosition();
     }
+  }
 
-    componentDidMount() {
-        window.addEventListener( 'resize', this.updatePosition );
-        this.updatePosition();
-    }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updatePosition);
+  }
 
-    componentDidUpdate() {
-        const {
-            awb_align: awbAlign,
-        } = this.props.attributes;
+  updatePosition() {
+    const { attributes } = this.props;
 
-        const {
-            previewAlign,
-        } = this.state;
+    const { previewLeft, previewRight, previewSelector } = this.state;
 
-        if ( awbAlign && 'full' === awbAlign && previewAlign !== awbAlign ) {
-            this.updatePosition();
+    const newState = {
+      previewLeft: 0,
+      previewRight: 0,
+      previewAlign: attributes.awb_align,
+    };
+
+    if ('full' === attributes.awb_align) {
+      const $layout = document.querySelector('.block-editor-block-list__layout');
+      const $parentBlock = document.querySelector(
+        '.block-editor-block-list__layout .wp-block:not([data-align])'
+      );
+      const $preview = document.querySelector(previewSelector);
+
+      if ($layout && $parentBlock && $preview) {
+        const layoutRect = $layout.getBoundingClientRect();
+        const parentRect = $parentBlock.getBoundingClientRect();
+        const previewRect = $preview.getBoundingClientRect();
+
+        if (parentRect.left === previewRect.left - previewLeft) {
+          newState.previewLeft = layoutRect.left - parentRect.left;
         }
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener( 'resize', this.updatePosition );
-    }
-
-    updatePosition() {
-        const {
-            attributes,
-        } = this.props;
-
-        const {
-            previewLeft,
-            previewRight,
-            previewSelector,
-        } = this.state;
-
-        const newState = {
-            previewLeft: 0,
-            previewRight: 0,
-            previewAlign: attributes.awb_align,
-        };
-
-        if ( 'full' === attributes.awb_align ) {
-            const $layout = document.querySelector( '.block-editor-block-list__layout' );
-            const $parentBlock = document.querySelector( '.block-editor-block-list__layout .wp-block:not([data-align])' );
-            const $preview = document.querySelector( previewSelector );
-
-            if ( $layout && $parentBlock && $preview ) {
-                const layoutRect = $layout.getBoundingClientRect();
-                const parentRect = $parentBlock.getBoundingClientRect();
-                const previewRect = $preview.getBoundingClientRect();
-
-                if ( parentRect.left === previewRect.left - previewLeft ) {
-                    newState.previewLeft = layoutRect.left - parentRect.left;
-                }
-                if ( parentRect.right === previewRect.right + previewRight ) {
-                    newState.previewRight = parentRect.right - layoutRect.right;
-                }
-            }
+        if (parentRect.right === previewRect.right + previewRight) {
+          newState.previewRight = parentRect.right - layoutRect.right;
         }
-
-        this.setState( newState );
+      }
     }
 
-    render() {
-        const {
-            attributes,
-        } = this.props;
+    this.setState(newState);
+  }
 
-        const {
-            previewLeft,
-            previewRight,
-            previewSelector,
-        } = this.state;
+  render() {
+    const { attributes } = this.props;
 
-        let AWBpreviewStyles = '';
+    const { previewLeft, previewRight, previewSelector } = this.state;
 
-        if ( attributes.awb_align && 'full' === attributes.awb_align && ( previewLeft || previewRight ) ) {
-            AWBpreviewStyles = `
-                ${ previewSelector } {
-                    margin-left: ${ previewLeft }px;
-                    margin-right: ${ previewRight }px;
-                }
-            `;
+    let AWBpreviewStyles = '';
+
+    if (attributes.awb_align && 'full' === attributes.awb_align && (previewLeft || previewRight)) {
+      AWBpreviewStyles = `
+        ${previewSelector} {
+          margin-left: ${previewLeft}px;
+          margin-right: ${previewRight}px;
         }
-
-        return (
-            <Fragment>
-                { AWBpreviewStyles ? (
-                    <EditorStyles styles={ AWBpreviewStyles } />
-                ) : '' }
-                { this.props.children }
-            </Fragment>
-        );
+      `;
     }
+
+    return (
+      <Fragment>
+        {AWBpreviewStyles ? <EditorStyles styles={AWBpreviewStyles} /> : ''}
+        {this.props.children}
+      </Fragment>
+    );
+  }
 }

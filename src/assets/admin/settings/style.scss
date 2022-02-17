@@ -1,29 +1,30 @@
 .settings_page_advanced-backgrounds-settings {
-    .metabox-holder form > h2 {
-        display: none;
+  .metabox-holder form > h2 {
+    display: none;
+  }
+
+  /* stylelint-disable-next-line selector-id-pattern */
+  #awb_pro {
+    .pro_notice > th {
+      display: none;
     }
 
-    #awb_pro {
-        .pro_notice > th {
-            display: none;
-        }
+    .awb-pro-subscribe-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 20px;
+      color: #fff;
+      text-decoration: none;
+      background-color: #0085ba;
+      border-radius: 2px;
 
-        .awb-pro-subscribe-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 20px;
-            color: #fff;
-            text-decoration: none;
-            background-color: #0085ba;
-            border-radius: 2px;
-
-            &:hover {
-                background-color: #1290c2;
-            }
-        }
-
-        .submit {
-            display: none;
-        }
+      &:hover {
+        background-color: #1290c2;
+      }
     }
+
+    .submit {
+      display: none;
+    }
+  }
 }

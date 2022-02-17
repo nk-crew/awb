@@ -4,78 +4,78 @@
 const { compact, map } = window.lodash;
 
 /**
-  * WordPress dependencies
-  */
+ * WordPress dependencies
+ */
 const { Component, createRef } = wp.element;
 
 const { transformStyles } = wp.blockEditor;
 
 export default class EditorStyles extends Component {
-    constructor( props ) {
-        super( props );
+  constructor(props) {
+    super(props);
 
-        this.styleRef = createRef();
-        this.$styleTag = null;
+    this.styleRef = createRef();
+    this.$styleTag = null;
+  }
+
+  componentDidMount() {
+    this.createStyleTag();
+    this.updateStyles();
+  }
+
+  componentDidUpdate(prevProps) {
+    const { styles } = this.props;
+
+    const { styles: prevStyles } = prevProps;
+
+    if (styles !== prevStyles) {
+      this.updateStyles();
     }
+  }
 
-    componentDidMount() {
-        this.createStyleTag();
-        this.updateStyles();
-    }
+  componentWillUnmount() {
+    this.removeStyleTag();
+  }
 
-    componentDidUpdate( prevProps ) {
-        const { styles } = this.props;
+  createStyleTag() {
+    const { ownerDocument } = this.styleRef.current;
+    const { body } = ownerDocument;
 
-        const { styles: prevStyles } = prevProps;
+    this.$styleTag = ownerDocument.createElement('style');
+    body.appendChild(this.$styleTag);
+  }
 
-        if ( styles !== prevStyles ) {
-            this.updateStyles();
-        }
-    }
+  removeStyleTag() {
+    const { ownerDocument } = this.styleRef.current;
+    const { body } = ownerDocument;
 
-    componentWillUnmount() {
-        this.removeStyleTag();
-    }
+    body.removeChild(this.$styleTag);
+  }
 
-    createStyleTag() {
-        const { ownerDocument } = this.styleRef.current;
-        const { body } = ownerDocument;
+  updateStyles() {
+    const { styles } = this.props;
 
-        this.$styleTag = ownerDocument.createElement( 'style' );
-        body.appendChild( this.$styleTag );
-    }
+    const transformedStyles = transformStyles(
+      [
+        {
+          css: styles,
+        },
+      ],
+      '.editor-styles-wrapper'
+    );
 
-    removeStyleTag() {
-        const { ownerDocument } = this.styleRef.current;
-        const { body } = ownerDocument;
+    let resultStyles = '';
 
-        body.removeChild( this.$styleTag );
-    }
+    map(compact(transformedStyles), (updatedCSS) => {
+      resultStyles += updatedCSS;
+    });
 
-    updateStyles() {
-        const { styles } = this.props;
+    this.$styleTag.innerHTML = resultStyles;
+  }
 
-        const transformedStyles = transformStyles(
-            [
-                {
-                    css: styles,
-                },
-            ],
-            '.editor-styles-wrapper'
-        );
-
-        let resultStyles = '';
-
-        map( compact( transformedStyles ), ( updatedCSS ) => {
-            resultStyles += updatedCSS;
-        } );
-
-        this.$styleTag.innerHTML = resultStyles;
-    }
-
-    render() {
-        // Use an empty style element to have a document reference, but this could be any element.
-        // This is important for FSE templates editor, which use iframe.
-        return <style ref={ this.styleRef } />;
-    }
+  render() {
+    // Use an empty style element to have a document reference, but this could be any element.
+    // This is important for FSE templates editor, which use iframe.
+    return <style ref={this.styleRef} />;
+  }
 }
