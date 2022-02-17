@@ -45,11 +45,20 @@ class NK_AWB_Gutenberg {
             true
         );
 
+        // enqueue block css.
+        wp_register_style(
+            'awb-gutenberg',
+            nk_awb()->plugin_url . 'assets/admin/gutenberg/editor.min.css',
+            array(),
+            filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/editor.min.css' )
+        );
+
         // register block.
         register_block_type(
             'nk/awb',
             array(
                 'editor_script' => 'awb-gutenberg',
+                'editor_style'  => 'awb-gutenberg',
                 'script'        => 'nk-awb',
                 'style'         => 'nk-awb',
             )

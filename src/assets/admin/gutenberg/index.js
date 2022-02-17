@@ -1,5 +1,3 @@
-import './editor.scss';
-
 import * as block from './block';
 import './block-styles';
 import './ghostkit-grid-extension';

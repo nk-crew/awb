@@ -16,7 +16,7 @@ const {
 
 const {
     PanelBody,
-    Toolbar,
+    ToolbarButton,
     BaseControl,
 } = wp.components;
 
@@ -145,14 +145,11 @@ function addBackgroundControls( Control, props ) {
                     >
                         { AWBData.full_width_fallback ? (
                             /* Fallback for align full */
-                            <Toolbar controls={ [
-                                {
-                                    icon: 'align-full-width',
-                                    title: __( 'Full Width' ),
-                                    onClick: () => awbProps.setAttributes( { align: 'full' === awbProps.attributes.align ? '' : 'full' } ),
-                                    isActive: 'full' === awbProps.attributes.align,
-                                },
-                            ] }
+                            <ToolbarButton
+                                icon="align-full-width"
+                                label={ __( 'Full Width' ) }
+                                isActive={ 'full' === awbProps.attributes.align }
+                                onClick={ () => awbProps.setAttributes( { align: 'full' === awbProps.attributes.align ? '' : 'full' } ) }
                             />
                         ) : (
                             <BlockAlignmentToolbar

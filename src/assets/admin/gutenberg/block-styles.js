@@ -332,7 +332,7 @@ const withInspectorControl = createHigherOrderComponent( ( OriginalComponent ) =
                         setState={ this.setState }
                     />
                     { attributes.ghostkitClassname && attributes.ghostkitStyles && Object.keys( attributes.ghostkitStyles ).length ? (
-                        <EditorStyles styles={ [ { css: getStyles( attributes.ghostkitStyles ) } ] } />
+                        <EditorStyles styles={ getStyles( attributes.ghostkitStyles ) } />
                     ) : '' }
                     <InspectorControls>
                         <PanelBody

@@ -111,7 +111,7 @@ export default class GhostKitGridWidePreview extends Component {
         return (
             <Fragment>
                 { AWBpreviewStyles ? (
-                    <EditorStyles styles={ [ { css: AWBpreviewStyles } ] } />
+                    <EditorStyles styles={ AWBpreviewStyles } />
                 ) : '' }
                 { this.props.children }
             </Fragment>

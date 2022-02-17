@@ -46,8 +46,9 @@ const {
     ToggleControl,
     TextControl,
     RangeControl,
-    Toolbar,
-    DropdownMenu,
+    ToolbarGroup,
+    ToolbarButton,
+    ToolbarItem,
     ColorIndicator,
 } = wp.components;
 
@@ -959,14 +960,12 @@ export function renderEditorPreview( props ) {
                             } }
                         />
                         <EditorStyles
-                            styles={ [ {
-                                css: `
-                                    #block-${ clientId } > .wp-block > .wp-block-nk-awb > .awb-gutenberg-preview-block img {
-                                        object-fit: ${ imageBackgroundSize || 'cover' };
-                                        object-position: ${ imageBackgroundPosition || '50% 50%' };
-                                    }
-                                `,
-                            } ] }
+                            styles={ `
+                                #block-${ clientId } > .wp-block > .wp-block-nk-awb > .awb-gutenberg-preview-block img {
+                                    object-fit: ${ imageBackgroundSize || 'cover' };
+                                    object-position: ${ imageBackgroundPosition || '50% 50%' };
+                                }
+                            ` }
                         />
                     </Fragment>
                 ) }
@@ -1058,14 +1057,6 @@ export class BlockEdit extends Component {
             className = classnames( className, ghostkitClassname );
         }
 
-        let currentTypeIcon = 'format-image';
-        if ( 'color' === type ) {
-            currentTypeIcon = 'art';
-        }
-        if ( 'yt_vm_video' === type || 'video' === type ) {
-            currentTypeIcon = 'format-video';
-        }
-
         // return controls only
         // used in GhostKit extension
         if ( inspectorControlsOnly ) {
@@ -1075,84 +1066,55 @@ export class BlockEdit extends Component {
         return (
             <Fragment>
                 <BlockControls>
-                    <Toolbar>
-                        <DropdownMenu
-                            icon={ currentTypeIcon }
-                            label={ __( 'Type' ) }
-                            controls={ [
-                                {
-                                    title: __( 'Color' ),
-                                    icon: 'art',
-                                    onClick: () => setAttributes( { type: 'color' } ),
-                                    isActive: 'color' === type,
-                                },
-                                {
-                                    title: __( 'Image' ),
-                                    icon: 'format-image',
-                                    onClick: () => setAttributes( { type: 'image' } ),
-                                    isActive: 'image' === type,
-                                },
-                                {
-                                    title: __( 'Video' ),
-                                    icon: 'format-video',
-                                    onClick: () => setAttributes( { type: 'yt_vm_video' } ),
-                                    isActive: 'yt_vm_video' === type,
-                                },
-                            ] }
+                    <ToolbarGroup>
+                        { AWBData.full_width_fallback ? (
+                            /* Fallback for align full */
+                            <ToolbarButton
+                                icon="align-full-width"
+                                label={ __( 'Full Width' ) }
+                                isActive={ 'full' === align }
+                                onClick={ () => setAttributes( { align: 'full' === align ? '' : 'full' } ) }
+                            />
+                        ) : (
+                            <BlockAlignmentToolbar
+                                controls={ validAlignments }
+                                value={ align }
+                                onChange={ ( v ) => setAttributes( { align: v } ) }
+                            />
+                        ) }
+
+                        <ToolbarButton
+                            icon={ getToolbarIcon( fullHeight ? iconFullHeightWhite : iconFullHeight ) }
+                            label={ __( 'Full Height' ) }
+                            isActive={ fullHeight }
+                            onClick={ () => setAttributes( { fullHeight: ! fullHeight } ) }
                         />
-                    </Toolbar>
-                    { AWBData.full_width_fallback ? (
-                        /* Fallback for align full */
-                        <Toolbar controls={ [
-                            {
-                                icon: 'align-full-width',
-                                title: __( 'Full Width' ),
-                                onClick: () => setAttributes( { align: 'full' === align ? '' : 'full' } ),
-                                isActive: 'full' === align,
-                            },
-                        ] }
-                        />
-                    ) : (
-                        <BlockAlignmentToolbar
-                            controls={ validAlignments }
-                            value={ align }
-                            onChange={ ( v ) => setAttributes( { align: v } ) }
-                        />
-                    ) }
-                    <Toolbar controls={ [
-                        {
-                            icon: getToolbarIcon( fullHeight ? iconFullHeightWhite : iconFullHeight ),
-                            title: __( 'Full Height' ),
-                            onClick: () => setAttributes( { fullHeight: ! fullHeight } ),
-                            isActive: fullHeight,
-                        },
-                    ] }
-                    />
-                    { fullHeight ? (
-                        <Toolbar controls={ [
-                            {
-                                icon: getToolbarIcon( 'top' === fullHeightAlign ? iconVerticalTopWhite : iconVerticalTop ),
-                                title: __( 'Content Vertical Top' ),
-                                onClick: () => setAttributes( { fullHeightAlign: 'top' } ),
-                                isActive: 'top' === fullHeightAlign,
-                            },
-                            {
-                                icon: getToolbarIcon( 'center' === fullHeightAlign ? iconVerticalCenterWhite : iconVerticalCenter ),
-                                title: __( 'Content Vertical Center' ),
-                                onClick: () => setAttributes( { fullHeightAlign: 'center' } ),
-                                isActive: 'center' === fullHeightAlign,
-                            },
-                            {
-                                icon: getToolbarIcon( 'bottom' === fullHeightAlign ? iconVerticalBottomWhite : iconVerticalBottom ),
-                                title: __( 'Content Vertical Bottom' ),
-                                onClick: () => setAttributes( { fullHeightAlign: 'bottom' } ),
-                                isActive: 'bottom' === fullHeightAlign,
-                            },
-                        ] }
-                        />
-                    ) : '' }
+                        { fullHeight ? (
+                            <Fragment>
+                                <ToolbarButton
+                                    icon={ getToolbarIcon( 'top' === fullHeightAlign ? iconVerticalTopWhite : iconVerticalTop ) }
+                                    label={ __( 'Content Vertical Top' ) }
+                                    isActive={ 'top' === fullHeightAlign }
+                                    onClick={ () => setAttributes( { fullHeightAlign: 'top' } ) }
+                                />
+                                <ToolbarButton
+                                    icon={ getToolbarIcon( 'center' === fullHeightAlign ? iconVerticalCenterWhite : iconVerticalCenter ) }
+                                    label={ __( 'Content Vertical Center' ) }
+                                    isActive={ 'center' === fullHeightAlign }
+                                    onClick={ () => setAttributes( { fullHeightAlign: 'center' } ) }
+                                />
+                                <ToolbarButton
+                                    icon={ getToolbarIcon( 'bottom' === fullHeightAlign ? iconVerticalBottomWhite : iconVerticalBottom ) }
+                                    label={ __( 'Content Vertical Bottom' ) }
+                                    isActive={ 'bottom' === fullHeightAlign }
+                                    onClick={ () => setAttributes( { fullHeightAlign: 'bottom' } ) }
+                                />
+                            </Fragment>
+                        ) : '' }
+                    </ToolbarGroup>
+
                     { 'image' === type ? (
-                        <Toolbar>
+                        <ToolbarGroup>
                             <MediaUpload
                                 onSelect={ ( media ) => {
                                     onImageSelect( media, setAttributes );
@@ -1160,7 +1122,7 @@ export class BlockEdit extends Component {
                                 allowedTypes={ [ 'image' ] }
                                 value={ image }
                                 render={ ( { open } ) => (
-                                    <Button
+                                    <ToolbarButton
                                         className="components-toolbar__control"
                                         label={ __( 'Edit image' ) }
                                         icon="edit"
@@ -1168,18 +1130,23 @@ export class BlockEdit extends Component {
                                     />
                                 ) }
                             />
-                        </Toolbar>
+                        </ToolbarGroup>
                     ) : '' }
+
                     { 'yt_vm_video' === type ? (
-                        <Toolbar>
-                            <input
-                                aria-label={ __( 'YouTube / Vimeo URL' ) }
-                                type="url"
-                                value={ video }
-                                onChange={ ( event ) => setAttributes( { video: event.target.value } ) }
-                                placeholder={ __( 'YouTube / Vimeo URL' ) }
-                            />
-                        </Toolbar>
+                        <ToolbarGroup>
+                            <ToolbarItem>
+                                { () => (
+                                    <input
+                                        aria-label={ __( 'YouTube / Vimeo URL' ) }
+                                        type="url"
+                                        value={ video }
+                                        onChange={ ( event ) => setAttributes( { video: event.target.value } ) }
+                                        placeholder={ __( 'YouTube / Vimeo URL' ) }
+                                    />
+                                ) }
+                            </ToolbarItem>
+                        </ToolbarGroup>
                     ) : '' }
                 </BlockControls>
                 <InspectorControls>
