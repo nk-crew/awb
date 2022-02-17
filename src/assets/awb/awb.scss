@@ -107,25 +107,16 @@ $vc_gaps: (
     width: 100%;
     height: 100%;
     pointer-events: none;
-
-    /* support for plugin https://github.com/bfred-it/object-fit-images */
-    font-family: "object-fit: cover;"; // stylelint-disable-line
     z-index: -100;
     object-fit: cover;
 }
 .nk-awb [data-awb-image-background-size="contain"] > .nk-awb-inner > .jarallax-img,
 .nk-awb [data-awb-image-background-size="contain"] > .nk-awb-inner > picture > img {
     object-fit: contain;
-
-    /* support for plugin https://github.com/bfred-it/object-fit-images */
-    font-family: "object-fit: contain;"; // stylelint-disable-line
 }
 .nk-awb .nk-awb-inner picture.jarallax-img > img {
     width: 100%;
     height: 100%;
-
-    /* support for plugin https://github.com/bfred-it/object-fit-images */
-    font-family: "object-fit: cover;"; // stylelint-disable-line
     object-fit: inherit;
     object-position: inherit;
 }

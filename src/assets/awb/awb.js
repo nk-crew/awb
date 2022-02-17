@@ -8,7 +8,6 @@ import { throttle } from 'throttle-debounce';
 // variables
 const {
     AWBData,
-    objectFitImages,
 } = window;
 const $ = window.jQuery;
 const $wnd = $( window );
@@ -34,11 +33,6 @@ function getWndSize() {
 }
 getWndSize();
 $wnd.on( 'resize load orientationchange', getWndSize );
-
-// enable object-fit
-if ( 'undefined' !== typeof objectFitImages ) {
-    objectFitImages( '.jarallax-img' );
-}
 
 // disable parallax/video on some devices.
 let disableParallax = false;
@@ -566,8 +560,6 @@ window.nkAwbInit = function() {
             $this.find( '.jarallax-img' ).css( {
                 objectFit: objectSize,
                 objectPosition,
-                // support for plugin https://github.com/bfred-it/object-fit-images
-                fontFamily: `object-fit: ${ objectSize }; object-position: ${ objectPosition };`,
             } );
 
             return;

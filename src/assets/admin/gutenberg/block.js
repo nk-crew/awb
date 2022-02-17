@@ -910,7 +910,7 @@ export function renderEditorPreview( props ) {
             previewHTML = maybeDecode( imageTag );
         } else if ( 'yt_vm_video' === type && videoPosterPreview ) {
             jarallaxSrc = videoPosterPreview;
-            previewHTML = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;font-family: 'object-fit: cover;object-position: 50% 50%;';">`;
+            previewHTML = `<img src="${ videoPosterPreview }" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;">`;
         }
     }
 
