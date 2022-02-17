@@ -25,15 +25,6 @@ const isOpera = (!!window.opr && !!window.opr.addons) || !!window.opera || navig
 const isTwentyTwenty = $( '#twentytwenty-style-css, #twenty-twenty-style-css, #twenty-twenty-one-style-css' ).length;
 /* eslint-enable */
 
-let wndW = 0;
-let wndH = 0;
-function getWndSize() {
-    wndW = $wnd.width();
-    wndH = $wnd.height();
-}
-getWndSize();
-$wnd.on( 'resize load orientationchange', getWndSize );
-
 // disable parallax/video on some devices.
 let disableParallax = false;
 let disableVideo = false;
@@ -122,22 +113,22 @@ function isInViewport( $item, returnRect ) {
     const rect = $item[ 0 ].getBoundingClientRect();
     let result = 1;
 
-    if ( 0 >= rect.right || rect.left >= wndW ) {
+    if ( 0 >= rect.right || rect.left >= window.innerWidth ) {
         result = 0;
-    } else if ( 0 > rect.bottom && rect.top <= wndH ) {
+    } else if ( 0 > rect.bottom && rect.top <= window.innerHeight ) {
         result = 0;
     } else {
         const beforeTopEnd = Math.max( 0, rect.height + rect.top );
-        const beforeBottomEnd = Math.max( 0, rect.height - ( rect.top + rect.height - wndH ) );
+        const beforeBottomEnd = Math.max( 0, rect.height - ( rect.top + rect.height - window.innerHeight ) );
         const afterTop = Math.max( 0, -rect.top );
-        const beforeBottom = Math.max( 0, rect.top + rect.height - wndH );
+        const beforeBottom = Math.max( 0, rect.top + rect.height - window.innerHeight );
 
-        if ( rect.height < wndH ) {
+        if ( rect.height < window.innerHeight ) {
             result = 1 - ( ( afterTop || beforeBottom ) / rect.height );
-        } else if ( beforeTopEnd <= wndH ) {
-            result = beforeTopEnd / wndH;
-        } else if ( beforeBottomEnd <= wndH ) {
-            result = beforeBottomEnd / wndH;
+        } else if ( beforeTopEnd <= window.innerHeight ) {
+            result = beforeTopEnd / window.innerHeight;
+        } else if ( beforeBottomEnd <= window.innerHeight ) {
+            result = beforeBottomEnd / window.innerHeight;
         }
         result = 0 > result ? 0 : result;
     }
@@ -272,7 +263,7 @@ function stretchAwb() {
         const $this = $( this );
         const rect = this.getBoundingClientRect();
         const { left } = rect;
-        const right = wndW - rect.right;
+        const right = window.innerWidth - rect.right;
 
         const ml = parseFloat( $this.css( 'margin-left' ) || 0 );
         const mr = parseFloat( $this.css( 'margin-right' ) || 0 );
@@ -291,11 +282,11 @@ function stretchAwb() {
         const rectRow = $row[ 0 ].getBoundingClientRect();
         const rectCol = $col[ 0 ].getBoundingClientRect();
         const leftAWB = rectAWB.left;
-        const rightAWB = wndW - rectAWB.right;
+        const rightAWB = window.innerWidth - rectAWB.right;
         const leftRow = rectRow.left + ( parseFloat( $row.css( 'padding-left' ) ) || 0 );
-        const rightRow = wndW - rectRow.right + ( parseFloat( $row.css( 'padding-right' ) ) || 0 );
+        const rightRow = window.innerWidth - rectRow.right + ( parseFloat( $row.css( 'padding-right' ) ) || 0 );
         const leftCol = rectCol.left;
-        const rightCol = wndW - rectCol.right;
+        const rightCol = window.innerWidth - rectCol.right;
         const css = {
             'margin-left': 0,
             'margin-right': 0,
@@ -329,7 +320,7 @@ function stretchAwb() {
 
             const rect = $this[ 0 ].getBoundingClientRect();
             const { left } = rect;
-            const right = wndW - rect.right;
+            const right = window.innerWidth - rect.right;
             const { bottom } = rect;
 
             const ml = parseFloat( $this.css( 'margin-left' ) || 0 );
@@ -347,9 +338,9 @@ function stretchAwb() {
                 const rectRow = $row[ 0 ].getBoundingClientRect();
                 const rectCol = $col[ 0 ].getBoundingClientRect();
                 const leftRow = rectRow.left;
-                const rightRow = wndW - rectRow.right;
+                const rightRow = window.innerWidth - rectRow.right;
                 const leftCol = rectCol.left;
-                const rightCol = wndW - rectCol.right;
+                const rightCol = window.innerWidth - rectCol.right;
                 const bottomCol = rectCol.bottom;
 
                 // We need to round numbers because in some situations the same blocks has different offsets, for example
