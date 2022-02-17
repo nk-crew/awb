@@ -1008,7 +1008,7 @@ export class BlockEdit extends Component {
         } = attributes;
 
         // set image tag to attribute
-        if ( fetchImageTag && fetchImageTag !== imageTag ) {
+        if ( fetchImageTag && maybeEncode( fetchImageTag ) !== imageTag ) {
             setAttributes( { imageTag: maybeEncode( fetchImageTag ) } );
         }
     }
