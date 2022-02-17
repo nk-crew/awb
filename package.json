@@ -19,8 +19,7 @@
         "lint-fix": "npm-run-all php-lint-fix css-lint-fix js-lint-fix",
         "lint-staged": "lint-staged",
         "make-pot": "composer wp -- i18n make-pot ./src ./src/languages/advanced-backgrounds.pot --skip-audit --exclude=vendor,vendors,node_modules --headers='{\"Last-Translator\":\"nK\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-o/awb/issues\"}'",
-        "update:packages": "npm i -g npm-check-updates && npm-check-updates -u && npm install",
-        "update-git-hooks": "npx simple-git-hooks",
+        "prepare": "husky install",
         "postinstall": "composer install"
     },
     "devDependencies": {
@@ -34,11 +33,11 @@
         "base64-inline-loader": "^2.0.1",
         "browserslist-config-nk": "^1.0.0",
         "eslint-config-nk": "^0.0.20",
+        "husky": "^7.0.4",
         "json-file": "^0.1.0",
-        "lint-staged": "^12.1.2",
+        "lint-staged": "^12.3.4",
         "md5": "^2.3.0",
         "micromatch": "^4.0.4",
-        "simple-git-hooks": "^2.7.0",
         "stylelint-config-nk": "^0.0.13",
         "wpeg": "1.2.6"
     },
