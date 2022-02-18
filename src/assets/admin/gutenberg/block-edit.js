@@ -18,10 +18,6 @@ import iconFullHeight from './icons/fullheight.svg';
 import iconVerticalCenter from './icons/vertical-center.svg';
 import iconVerticalTop from './icons/vertical-top.svg';
 import iconVerticalBottom from './icons/vertical-bottom.svg';
-import iconFullHeightWhite from './icons/fullheight-white.svg';
-import iconVerticalCenterWhite from './icons/vertical-center-white.svg';
-import iconVerticalTopWhite from './icons/vertical-top-white.svg';
-import iconVerticalBottomWhite from './icons/vertical-bottom-white.svg';
 
 /**
  * WordPress Dependencies
@@ -860,7 +856,7 @@ export function BlockEdit(props) {
           )}
 
           <ToolbarButton
-            icon={getToolbarIcon(fullHeight ? iconFullHeightWhite : iconFullHeight)}
+            icon={getToolbarIcon(iconFullHeight)}
             label={__('Full Height')}
             isActive={fullHeight}
             onClick={() => setAttributes({ fullHeight: !fullHeight })}
@@ -868,25 +864,19 @@ export function BlockEdit(props) {
           {fullHeight ? (
             <Fragment>
               <ToolbarButton
-                icon={getToolbarIcon(
-                  'top' === fullHeightAlign ? iconVerticalTopWhite : iconVerticalTop
-                )}
+                icon={getToolbarIcon(iconVerticalTop)}
                 label={__('Content Vertical Top')}
                 isActive={'top' === fullHeightAlign}
                 onClick={() => setAttributes({ fullHeightAlign: 'top' })}
               />
               <ToolbarButton
-                icon={getToolbarIcon(
-                  'center' === fullHeightAlign ? iconVerticalCenterWhite : iconVerticalCenter
-                )}
+                icon={getToolbarIcon(iconVerticalCenter)}
                 label={__('Content Vertical Center')}
                 isActive={'center' === fullHeightAlign}
                 onClick={() => setAttributes({ fullHeightAlign: 'center' })}
               />
               <ToolbarButton
-                icon={getToolbarIcon(
-                  'bottom' === fullHeightAlign ? iconVerticalBottomWhite : iconVerticalBottom
-                )}
+                icon={getToolbarIcon(iconVerticalBottom)}
                 label={__('Content Vertical Bottom')}
                 isActive={'bottom' === fullHeightAlign}
                 onClick={() => setAttributes({ fullHeightAlign: 'bottom' })}
