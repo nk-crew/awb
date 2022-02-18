@@ -731,7 +731,7 @@ export function renderEditorPreview(props) {
           />
           <EditorStyles
             styles={`
-              #block-${clientId} > .wp-block > .wp-block-nk-awb > .awb-gutenberg-preview-block img {
+              #block-${clientId} > .awb-gutenberg-preview-block img {
                 object-fit: ${imageBackgroundSize || 'cover'};
                 object-position: ${imageBackgroundPosition || '50% 50%'};
               }
