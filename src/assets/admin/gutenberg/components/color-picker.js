@@ -30,6 +30,7 @@ export default class ColorPicker extends Component {
       value,
       onChange,
       label,
+      help,
       alpha = false,
       colorPalette = true,
       hint = __('Custom Color Picker', '@@text_domain'),
@@ -37,7 +38,7 @@ export default class ColorPicker extends Component {
     } = this.props;
 
     return (
-      <BaseControl label={label} className="awb-component-color-picker-wrapper">
+      <BaseControl label={label} help={help} className="awb-component-color-picker-wrapper">
         <Dropdown
           position="bottom left"
           className="awb-component-color-picker__dropdown"

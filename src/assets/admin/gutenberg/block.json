@@ -99,7 +99,16 @@
       "default": false
     },
 
+    "mediaOpacity": {
+      "type": "number",
+      "default": 100
+    },
+
     "color": {
+      "type": "string",
+      "default": ""
+    },
+    "backgroundColor": {
       "type": "string",
       "default": ""
     },

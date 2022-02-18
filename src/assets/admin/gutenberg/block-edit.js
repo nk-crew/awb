@@ -154,7 +154,10 @@ export function renderInspectorControls(props) {
     videoAlwaysPlay,
     videoMobile,
 
+    mediaOpacity,
+
     color,
+    backgroundColor,
 
     parallax,
     parallaxSpeed,
@@ -420,6 +423,13 @@ export function renderInspectorControls(props) {
                 checked={!!videoAlwaysPlay}
                 onChange={(v) => setAttributes({ videoAlwaysPlay: v })}
               />
+              <RangeControl
+                label={__('Video Opacity')}
+                value={mediaOpacity}
+                min="0"
+                max="100"
+                onChange={(value) => setAttributes({ mediaOpacity: value })}
+              />
             </PanelBody>
           ) : (
             ''
@@ -493,18 +503,28 @@ export function renderInspectorControls(props) {
                     ]}
                     onChange={(v) => setAttributes({ imageBackgroundSize: v })}
                   />
-                  <Button
-                    isLink
-                    onClick={() => {
-                      setAttributes({
-                        image: '',
-                        imageTag: '',
-                        imageSizes: '',
-                      });
-                    }}
-                  >
-                    {__('Remove image')}
-                  </Button>
+                  <RangeControl
+                    label={__('Image Opacity')}
+                    value={mediaOpacity}
+                    min="0"
+                    max="100"
+                    onChange={(value) => setAttributes({ mediaOpacity: value })}
+                  />
+                  <div style={{ textAlign: 'right' }}>
+                    <Button
+                      isSecondary
+                      isSmall
+                      onClick={() => {
+                        setAttributes({
+                          image: '',
+                          imageTag: '',
+                          imageSizes: '',
+                        });
+                      }}
+                    >
+                      {__('Remove Image')}
+                    </Button>
+                  </div>
                 </Fragment>
               ) : (
                 ''
@@ -514,17 +534,38 @@ export function renderInspectorControls(props) {
             ''
           )}
 
+          {'image' === type || 'yt_vm_video' === type || 'video' === type ? (
+            <PanelBody
+              title={
+                <Fragment>
+                  {__('Background Color')}
+                  {backgroundColor ? <ColorIndicator colorValue={backgroundColor} /> : null}
+                </Fragment>
+              }
+            >
+              <ColorPicker
+                label={__('Background Color')}
+                help={__(
+                  'You should always specify the background color, as it will be visible once the Media is in loading state. It will be also helpful when you set the Media opacity.'
+                )}
+                value={backgroundColor}
+                onChange={(val) => setAttributes({ backgroundColor: val })}
+                alpha
+              />
+            </PanelBody>
+          ) : null}
+
           <PanelBody
             title={
               <Fragment>
-                {'color' === type ? __('Color') : __('Overlay')}
-                <ColorIndicator colorValue={color} />
+                {'color' === type ? __('Color') : __('Overlay Color')}
+                {color ? <ColorIndicator colorValue={color} /> : null}
               </Fragment>
             }
             initialOpen={'color' === type}
           >
             <ColorPicker
-              label={__('Background Color')}
+              label={'color' === type ? __('Background Color') : __('Overlay Color')}
               value={color}
               onChange={(val) => setAttributes({ color: val })}
               alpha
@@ -657,7 +698,10 @@ export function renderEditorPreview(props) {
     parallax,
     parallaxSpeed,
 
+    mediaOpacity,
+
     color,
+    backgroundColor,
   } = attributes;
 
   // load YouTube / Vimeo poster
@@ -712,7 +756,10 @@ export function renderEditorPreview(props) {
   }
 
   return (
-    <div className="awb-gutenberg-preview-block">
+    <div
+      className="awb-gutenberg-preview-block"
+      style={backgroundColor ? { backgroundColor } : null}
+    >
       {useJarallax ? (
         <Jarallax
           key={`${jarallaxParams.videoSrc || ''} ${jarallaxParams.imgSrc || ''} ${
@@ -721,25 +768,27 @@ export function renderEditorPreview(props) {
           options={jarallaxParams}
         />
       ) : (
-        <Fragment>
-          <div
-            className="awb-gutenberg-preview-block-inner"
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{
-              __html: previewHTML,
-            }}
-          />
-          <EditorStyles
-            styles={`
-              #block-${clientId} > .awb-gutenberg-preview-block img {
-                object-fit: ${imageBackgroundSize || 'cover'};
-                object-position: ${imageBackgroundPosition || '50% 50%'};
-              }
-            `}
-          />
-        </Fragment>
+        <div
+          className="awb-gutenberg-preview-block-inner"
+          // eslint-disable-next-line react/no-danger
+          dangerouslySetInnerHTML={{
+            __html: previewHTML,
+          }}
+        />
       )}
       {color ? <div className="nk-awb-overlay" style={{ backgroundColor: color }} /> : ''}
+      <EditorStyles
+        styles={`
+          #block-${clientId} > .awb-gutenberg-preview-block > .awb-gutenberg-preview-block-inner img {
+            object-fit: ${imageBackgroundSize || 'cover'};
+            object-position: ${imageBackgroundPosition || '50% 50%'};
+          }
+          #block-${clientId} > .awb-gutenberg-preview-block > .jarallax,
+          #block-${clientId} > .awb-gutenberg-preview-block > .awb-gutenberg-preview-block-inner {
+            opacity: ${'number' === typeof mediaOpacity ? mediaOpacity / 100 : 1};
+          }
+        `}
+      />
     </div>
   );
 }

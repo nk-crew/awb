@@ -76,6 +76,7 @@ function prepareAWBprops(props) {
 
   return {
     name: 'nk/awb',
+    clientId: props.clientId,
     setAttributes(data) {
       const newData = {};
 

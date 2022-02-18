@@ -149,12 +149,18 @@ export default function BlockSave(props) {
     wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${attributes.color};"></div>`;
   }
   if (resultImg || resultAtts.video) {
-    wrapHTML += `<div class="nk-awb-inner">${resultImg || ''}</div>`;
+    const opacityStyle =
+      'number' === typeof attributes.mediaOpacity && 100 !== attributes.mediaOpacity
+        ? ` style="opacity: ${attributes.mediaOpacity / 100};"`
+        : '';
+
+    wrapHTML += `<div class="nk-awb-inner"${opacityStyle}>${resultImg || ''}</div>`;
   }
   // eslint-disable-next-line react/no-danger
   wrapHTML = wrapHTML ? (
     <div
       className="nk-awb-wrap"
+      style={attributes.backgroundColor ? { backgroundColor: attributes.backgroundColor } : null}
       {...getDataAttributes(resultAtts)}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: wrapHTML }}
