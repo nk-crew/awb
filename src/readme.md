@@ -2,8 +2,8 @@
 
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
-* Requires at least: 5.4
-* Tested up to: 5.8
+* Requires at least: 5.8
+* Tested up to: 5.9
 * Requires PHP: 7.2
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -82,6 +82,17 @@ The manual installation method involves downloading our AWB plugin and uploading
 5. Extended WPBakery Page Builder ROW options
 
 ## Changelog
+
+= 1.8.0 =
+
+* dropped support for IE and old browsers
+* added support for block-based themes and WordPress 5.9
+* added Media Opacity and Background Color attributes to Gutenberg block
+* changed block to Blocks API v2 (less wrappers in the Gutenberg editor)
+* fixed block re-saving when image tag fetched
+* fixed invalid CSS for WPBakery gaps
+* removed usage of DOMContentLoaded for register block
+* minor changes
 
 = 1.7.7 =
 
