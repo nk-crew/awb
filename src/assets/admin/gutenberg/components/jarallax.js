@@ -3,7 +3,7 @@ import classnames from 'classnames/dedupe';
 /**
  * WordPress Dependencies
  */
-const { Component, Fragment, createRef } = wp.element;
+const { useRef, useEffect, Fragment } = wp.element;
 
 /**
  * Local Dependencies
@@ -13,63 +13,50 @@ const { jarallax } = window;
 /**
  * Component
  */
-class Jarallax extends Component {
-  constructor(props) {
-    super(props);
+export default function Jarallax({ className = '', options }) {
+  const $el = useRef();
 
-    this.$el = createRef();
-  }
-
-  // init on mount.
-  componentDidMount() {
-    jarallax(this.$el.current, this.props.options);
-  }
-
-  // reinit when props changed.
-  componentDidUpdate(prevProps) {
-    if (
-      !this.isDestroyed &&
-      this.$el.current &&
-      JSON.stringify(prevProps) !== JSON.stringify(this.props)
-    ) {
-      jarallax(this.$el.current, 'destroy');
-      jarallax(this.$el.current, this.props.options);
+  // Init Jarallax.
+  useEffect(() => {
+    if ($el.current) {
+      jarallax($el.current, options);
     }
-  }
 
-  // destroy on unmount.
-  componentWillUnmount() {
-    this.isDestroyed = true;
-    if (this.$el.current) {
-      jarallax(this.$el.current, 'destroy');
+    // Destroy Jarallax.
+    return function destroy() {
+      if ($el.current) {
+        jarallax($el.current, 'destroy');
+      }
+    };
+  }, []);
+
+  // Update options.
+  useEffect(() => {
+    if ($el.current) {
+      jarallax($el.current, 'destroy');
+      jarallax($el.current, options);
     }
-  }
+  }, [options]);
 
-  render() {
-    const { options, className = '' } = this.props;
-
-    return (
-      <div className={classnames('jarallax', className)} ref={this.$el}>
-        {options.imgSrc ? (
-          // eslint-disable-next-line react/jsx-no-useless-fragment
-          <Fragment>
-            {'auto' === options.imgSize && 'repeat' === options.imgRepeat ? (
-              <div
-                className="jarallax-img"
-                style={{
-                  backgroundImage: `url(${options.imgSrc})`,
-                }}
-              />
-            ) : (
-              <img className="jarallax-img" src={options.imgSrc} alt="" />
-            )}
-          </Fragment>
-        ) : (
-          ''
-        )}
-      </div>
-    );
-  }
+  return (
+    <div className={classnames('jarallax', className)} ref={$el}>
+      {options.imgSrc ? (
+        // eslint-disable-next-line react/jsx-no-useless-fragment
+        <Fragment>
+          {'auto' === options.imgSize && 'repeat' === options.imgRepeat ? (
+            <div
+              className="jarallax-img"
+              style={{
+                backgroundImage: `url(${options.imgSrc})`,
+              }}
+            />
+          ) : (
+            <img className="jarallax-img" src={options.imgSrc} alt="" />
+          )}
+        </Fragment>
+      ) : (
+        ''
+      )}
+    </div>
+  );
 }
-
-export default Jarallax;
