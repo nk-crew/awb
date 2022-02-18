@@ -1,3 +1,17 @@
+/**
+ * Grid System.
+ * https://make.wordpress.org/design/2019/10/31/proposal-a-consistent-spacing-system-for-wordpress/
+ */
+$grid-unit: 8px;
+$grid-unit-05: 0.5 * $grid-unit;	// 4px
+$grid-unit-10: 1 * $grid-unit;		// 8px
+$grid-unit-15: 1.5 * $grid-unit;	// 12px
+$grid-unit-20: 2 * $grid-unit;		// 16px
+$grid-unit-30: 3 * $grid-unit;		// 24px
+$grid-unit-40: 4 * $grid-unit;		// 32px
+$grid-unit-50: 5 * $grid-unit;		// 40px
+$grid-unit-60: 6 * $grid-unit;		// 48px
+
 // icon
 img.awb-gutenberg-icon {
   max-width: 20px;
@@ -138,29 +152,109 @@ img.awb-gutenberg-icon {
  * Color Picker
  */
 .awb-component-color-picker-wrapper {
-  .awb-component-color-picker-wrapper + .awb-component-color-picker-wrapper {
-    margin-top: -5px;
-  }
-
   > .components-base-control__field {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    margin-top: 16px;
+    margin: 0;
+
+    .components-base-control__label {
+      order: 2;
+      margin-bottom: 0;
+      margin-left: 8px;
+    }
 
     .components-color-palette__item-wrapper {
       margin: 0;
     }
   }
+
+  .components-dropdown {
+    display: block;
+  }
+}
+
+.awb-component-color-toggle {
+  position: relative;
+  display: block;
+  width: 25px;
+  height: 25px;
+  padding: 0;
+  color: transparent;
+  cursor: pointer;
+  background:
+    linear-gradient(
+      -45deg,
+      transparent 48%,
+      #ddd 0,
+      #ddd 52%,
+      transparent 0
+    );
+  border: none;
+  border-radius: 50%;
+  transition: transform 0.1s ease;
+
+  &:hover,
+  &:focus {
+    transform: scale(1.2);
+  }
+
+  > span {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    background-color: currentcolor;
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 20%);
+  }
 }
 
 .awb-component-color-picker {
   .awb-component-color-picker-palette {
-    margin: 0 17px;
+    margin: 0 16px;
+  }
+
+  .components-color-picker {
+    margin: 0 auto;
   }
 
   .components-color-palette {
     margin: 0;
+  }
+}
+
+.awb-component-color-picker__dropdown {
+  display: block;
+}
+
+.awb-component-color-picker__dropdown-content {
+  @media screen and (min-width: 782px) {
+    .components-popover__content {
+      margin-right: #{ $grid-unit-40 } !important;
+    }
+
+    &.is-from-top .components-popover__content {
+      margin-top: #{ -($grid-unit-60 + $grid-unit-15) } !important;
+    }
+
+    &.is-from-bottom .components-popover__content {
+      margin-bottom: #{ -($grid-unit-60 + $grid-unit-15) } !important;
+    }
+  }
+}
+
+/**
+ * Color Indicator
+ */
+.components-panel__body-toggle > .awb-color-indicator {
+  width: 15px;
+  height: 15px;
+  margin-left: 8px;
+
+  + .awb-color-indicator {
+    margin-left: 2px;
   }
 }
 

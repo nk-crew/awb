@@ -9,6 +9,7 @@ import classnames from 'classnames/dedupe';
  */
 import toTitleCase from './utils/str-to-title-case';
 import { maybeEncode, maybeDecode } from './utils/encode-decode';
+import ColorIndicator from './components/color-indicator';
 import ColorPicker from './components/color-picker';
 import FocalPointPicker from './components/focal-point-picker';
 import ToggleGroup from './components/toggle-group';
@@ -49,7 +50,6 @@ const {
   ToolbarGroup,
   ToolbarButton,
   ToolbarItem,
-  ColorIndicator,
 } = wp.components;
 
 const { useSelect } = wp.data;

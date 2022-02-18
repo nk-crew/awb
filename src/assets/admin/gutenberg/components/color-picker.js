@@ -1,5 +1,6 @@
-import classnames from 'classnames/dedupe';
-
+/**
+ * WordPress dependencies
+ */
 const WPColorPicker = wp.components.ColorPicker;
 
 const { Component } = wp.element;
@@ -10,29 +11,48 @@ const { Dropdown, Tooltip, BaseControl } = wp.components;
 
 const { ColorPalette } = wp.blockEditor;
 
+/**
+ * Component Class
+ */
 export default class ColorPicker extends Component {
+  constructor(...args) {
+    super(...args);
+
+    // These states used to fix components re-rendering
+    this.state = {
+      keyForPalette: this.props.value,
+      keyForPicker: this.props.value,
+    };
+  }
+
   render() {
-    const { value, onChange, label, alpha = false } = this.props;
+    const {
+      value,
+      onChange,
+      label,
+      alpha = false,
+      colorPalette = true,
+      hint = __('Custom Color Picker', '@@text_domain'),
+      afterDropdownContent,
+    } = this.props;
 
     return (
       <BaseControl label={label} className="awb-component-color-picker-wrapper">
         <Dropdown
-          className={classnames(
-            'components-color-palette__item-wrapper components-circular-option-picker__option-wrapper',
-            value ? '' : 'components-color-palette__custom-color'
-          )}
-          contentClassName="components-color-palette__picker"
+          position="bottom left"
+          className="awb-component-color-picker__dropdown"
+          contentClassName="awb-component-color-picker__dropdown-content"
           renderToggle={({ isOpen, onToggle }) => (
-            <Tooltip text={__('Custom color picker')}>
+            <Tooltip text={hint}>
               <button
                 type="button"
                 aria-expanded={isOpen}
-                className="components-color-palette__item components-circular-option-picker__option"
+                className="awb-component-color-toggle"
                 onClick={onToggle}
-                aria-label={__('Custom Color Picker')}
+                aria-label={hint}
                 style={{ color: value || '' }}
               >
-                <span className="components-color-palette__custom-color-gradient" />
+                <span />
               </button>
             </Tooltip>
           )}
@@ -50,20 +70,37 @@ export default class ColorPicker extends Component {
                     colorString = `rgba(${r}, ${g}, ${b}, ${a})`;
                   }
 
-                  onChange(colorString);
+                  onChange(colorString || '');
+
+                  this.setState({
+                    keyForPalette: colorString,
+                  });
                 }}
                 disableAlpha={!alpha}
+                key={this.state.keyForPicker}
               />
-              <BaseControl
-                label={__('Color palette')}
-                className="awb-component-color-picker-palette"
-              >
-                <ColorPalette
-                  value={value}
-                  onChange={(color) => onChange(color)}
-                  disableCustomColors
-                />
-              </BaseControl>
+              {colorPalette ? (
+                <BaseControl
+                  label={__('Color Palette', '@@text_domain')}
+                  className="awb-component-color-picker-palette"
+                >
+                  <ColorPalette
+                    value={value}
+                    onChange={(color) => {
+                      onChange(color || '');
+
+                      this.setState({
+                        keyForPicker: color,
+                      });
+                    }}
+                    disableCustomColors
+                    key={this.state.keyForPalette}
+                  />
+                </BaseControl>
+              ) : (
+                ''
+              )}
+              {afterDropdownContent || ''}
             </div>
           )}
         />
