@@ -11,6 +11,7 @@ import toTitleCase from './utils/str-to-title-case';
 import { maybeEncode, maybeDecode } from './utils/encode-decode';
 import ColorPicker from './components/color-picker';
 import FocalPointPicker from './components/focal-point-picker';
+import ToggleGroup from './components/toggle-group';
 import EditorStyles from './components/editor-styles';
 import Jarallax from './components/jarallax';
 import iconFullHeight from './icons/fullheight.svg';
@@ -44,7 +45,6 @@ const useInnerBlocksProps = __stableUseInnerBlocksProps || __experimentalUseInne
 
 const {
   Button,
-  ButtonGroup,
   PanelBody,
   SelectControl,
   ToggleControl,
@@ -181,8 +181,9 @@ export function renderInspectorControls(props) {
   return (
     <Fragment>
       <PanelBody>
-        <ButtonGroup aria-label={__('Background type')} style={{ marginTop: 15, marginBottom: 10 }}>
-          {[
+        <ToggleGroup
+          value={'video' === type || 'yt_vm_video' === type ? 'yt_vm_video' : type}
+          options={[
             {
               label: __('Color'),
               value: 'color',
@@ -195,33 +196,16 @@ export function renderInspectorControls(props) {
               label: __('Video'),
               value: 'yt_vm_video',
             },
-          ].map((val) => {
-            let selected = type === val.value;
-
-            // select video
-            if ('yt_vm_video' === val.value) {
-              if ('video' === type || 'yt_vm_video' === type) {
-                selected = true;
-              }
-            }
-
-            return (
-              <Button
-                isSmall
-                isPrimary={selected}
-                isPressed={selected}
-                onClick={() => setAttributes({ type: val.value })}
-                key={`type_${val.label}`}
-              >
-                {val.label}
-              </Button>
-            );
-          })}
-        </ButtonGroup>
+          ]}
+          onChange={(value) => {
+            setAttributes({ type: value });
+          }}
+        />
 
         {'video' === type || 'yt_vm_video' === type ? (
-          <ButtonGroup aria-label={__('Background video type')} style={{ marginBottom: 10 }}>
-            {[
+          <ToggleGroup
+            value={type}
+            options={[
               {
                 label: __('YouTube / Vimeo'),
                 value: 'yt_vm_video',
@@ -230,18 +214,11 @@ export function renderInspectorControls(props) {
                 label: __('Self Hosted'),
                 value: 'video',
               },
-            ].map((val) => (
-              <Button
-                isSmall
-                isPrimary={type === val.value}
-                isPressed={type === val.value}
-                onClick={() => setAttributes({ type: val.value })}
-                key={`type_${val.label}`}
-              >
-                {val.label}
-              </Button>
-            ))}
-          </ButtonGroup>
+            ]}
+            onChange={(value) => {
+              setAttributes({ type: value });
+            }}
+          />
         ) : (
           ''
         )}

@@ -165,6 +165,24 @@ img.awb-gutenberg-icon {
 }
 
 /**
+ * Toggle Group Control.
+ */
+.awb-control-toggle-group {
+  > div {
+    margin-bottom: -10px;
+  }
+
+  [aria-checked="false"] {
+    color: #000;
+  }
+
+  button[disabled] {
+    background-color: #b7b7b7;
+    opacity: 0.4;
+  }
+}
+
+/**
  * Spacings Control.
  */
 .awb-ghostkit-control-spacing {
