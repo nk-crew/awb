@@ -38,63 +38,99 @@ function getDataAttributes(attributes) {
 
 export default function BlockSave(props) {
   const { attributes, backgroundHTMLOnly } = props;
+  const {
+    align,
+    fullHeight,
+    fullHeightAlign,
+
+    type,
+
+    imageTag,
+    imageBackgroundSize,
+    imageBackgroundPosition,
+
+    videoMp4,
+    videoOgv,
+    videoWebm,
+    videoStartTime,
+    videoEndTime,
+    videoVolume,
+    videoLoop,
+    videoAlwaysPlay,
+    videoMobile,
+
+    parallax,
+    parallaxSpeed,
+    parallaxMobile,
+
+    mouseParallax,
+    mouseParallaxSize,
+    mouseParallaxSpeed,
+
+    mediaOpacity,
+
+    color,
+    backgroundColor,
+  } = attributes;
+
+  let { video } = attributes;
+
   const resultAtts = {
     type: attributes.type,
   };
 
   let resultImg = false;
-  let { video } = attributes;
 
-  let className = classnames('nk-awb', attributes.align ? ` align${attributes.align}` : '');
+  let className = classnames('nk-awb', align ? ` align${align}` : '');
 
   // add full height classname.
-  if (attributes.fullHeight) {
+  if (fullHeight) {
     className = classnames(
       className,
       'nk-awb-fullheight',
-      attributes.fullHeightAlign ? `nk-awb-content-valign-${attributes.fullHeightAlign}` : ''
+      fullHeightAlign ? `nk-awb-content-valign-${fullHeightAlign}` : ''
     );
   }
 
-  switch (attributes.type) {
+  switch (type) {
     case 'color':
       break;
     case 'video':
       video = '';
-      if (attributes.videoMp4) {
-        video += `mp4:${attributes.videoMp4}`;
+      if (videoMp4) {
+        video += `mp4:${videoMp4}`;
       }
-      if (attributes.videoOgv) {
-        video += `${video ? ',' : ''}ogv:${attributes.videoOgv}`;
+      if (videoOgv) {
+        video += `${video ? ',' : ''}ogv:${videoOgv}`;
       }
-      if (attributes.videoWebm) {
-        video += `${video ? ',' : ''}webm:${attributes.videoWebm}`;
+      if (videoWebm) {
+        video += `${video ? ',' : ''}webm:${videoWebm}`;
       }
     // eslint-disable-next-line
     case 'yt_vm_video':
       if (video) {
         resultAtts.video = video;
-        if (attributes.videoStartTime) {
-          resultAtts.videoStartTime = attributes.videoStartTime;
+        if (videoStartTime) {
+          resultAtts.videoStartTime = videoStartTime;
         }
-        if (attributes.videoEndTime) {
-          resultAtts.videoEndTime = attributes.videoEndTime;
+        if (videoEndTime) {
+          resultAtts.videoEndTime = videoEndTime;
         }
-        if (attributes.videoVolume) {
-          resultAtts.videoVolume = attributes.videoVolume;
+        if (videoVolume) {
+          resultAtts.videoVolume = videoVolume;
         }
-        if (!attributes.videoLoop) {
-          resultAtts.videoLoop = attributes.videoLoop;
+        if (!videoLoop) {
+          resultAtts.videoLoop = videoLoop;
         }
-        if (attributes.videoAlwaysPlay) {
-          resultAtts.videoAlwaysPlay = attributes.videoAlwaysPlay;
+        if (videoAlwaysPlay) {
+          resultAtts.videoAlwaysPlay = videoAlwaysPlay;
         }
-        resultAtts.videoMobile = attributes.videoMobile;
+        resultAtts.videoMobile = videoMobile;
       }
     // eslint-disable-next-line
     case 'image':
-      if (attributes.imageTag) {
-        resultImg = attributes.imageTag;
+      if (imageTag) {
+        resultImg = imageTag;
 
         // inside exported xml file almost all symbols are escaped.
         if (resultImg && /^u003c/g.test(resultImg)) {
@@ -105,11 +141,11 @@ export default function BlockSave(props) {
             .replace(/u0026/g, '&');
         }
 
-        if (attributes.imageBackgroundSize) {
-          resultAtts.imageBackgroundSize = attributes.imageBackgroundSize;
+        if (imageBackgroundSize) {
+          resultAtts.imageBackgroundSize = imageBackgroundSize;
         }
-        if (attributes.imageBackgroundPosition) {
-          resultAtts.imageBackgroundPosition = attributes.imageBackgroundPosition;
+        if (imageBackgroundPosition) {
+          resultAtts.imageBackgroundPosition = imageBackgroundPosition;
         }
       }
       break;
@@ -117,21 +153,21 @@ export default function BlockSave(props) {
       break;
   }
 
-  if (attributes.parallax) {
-    resultAtts.parallax = attributes.parallax;
-    if (attributes.parallaxSpeed) {
-      resultAtts.parallaxSpeed = attributes.parallaxSpeed;
+  if (parallax) {
+    resultAtts.parallax = parallax;
+    if (parallaxSpeed) {
+      resultAtts.parallaxSpeed = parallaxSpeed;
     }
-    resultAtts.parallaxMobile = attributes.parallaxMobile;
+    resultAtts.parallaxMobile = parallaxMobile;
   }
 
-  if (attributes.mouseParallax) {
-    resultAtts.mouseParallax = attributes.mouseParallax;
-    if (attributes.mouseParallaxSize) {
-      resultAtts.mouseParallaxSize = attributes.mouseParallaxSize;
+  if (mouseParallax) {
+    resultAtts.mouseParallax = mouseParallax;
+    if (mouseParallaxSize) {
+      resultAtts.mouseParallaxSize = mouseParallaxSize;
     }
-    if (attributes.mouseParallaxSpeed) {
-      resultAtts.mouseParallaxSpeed = attributes.mouseParallaxSpeed;
+    if (mouseParallaxSpeed) {
+      resultAtts.mouseParallaxSpeed = mouseParallaxSpeed;
     }
   }
 
@@ -145,13 +181,13 @@ export default function BlockSave(props) {
 
   // awb wrap inner html
   let wrapHTML = '';
-  if (attributes.color) {
-    wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${attributes.color};"></div>`;
+  if (color) {
+    wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${color};"></div>`;
   }
   if (resultImg || resultAtts.video) {
     const opacityStyle =
-      'number' === typeof attributes.mediaOpacity && 100 !== attributes.mediaOpacity
-        ? ` style="opacity: ${attributes.mediaOpacity / 100};"`
+      'number' === typeof mediaOpacity && 100 !== mediaOpacity
+        ? ` style="opacity: ${mediaOpacity / 100};"`
         : '';
 
     wrapHTML += `<div class="nk-awb-inner"${opacityStyle}>${resultImg || ''}</div>`;
@@ -160,7 +196,7 @@ export default function BlockSave(props) {
   wrapHTML = wrapHTML ? (
     <div
       className="nk-awb-wrap"
-      style={attributes.backgroundColor ? { backgroundColor: attributes.backgroundColor } : null}
+      style={backgroundColor ? { backgroundColor } : null}
       {...getDataAttributes(resultAtts)}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: wrapHTML }}
