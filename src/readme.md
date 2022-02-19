@@ -83,6 +83,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.8.1 =
+
+* fixed tinymce error - `Failed to initialize plugin: awb`
+* disabled block align fallback in block-based themes
+
 = 1.8.0 =
 
 * dropped support for IE and old browsers
