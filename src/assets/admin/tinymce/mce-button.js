@@ -8,7 +8,8 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
     return;
   }
 
-  tinymce.PluginManager.add('awb', (editor) => {
+  // ! Be careful, we should not use the arrow function here.
+  tinymce.PluginManager.add('awb', function (editor) {
     const shortcodeTag = 'nk_awb';
 
     // default shortcode attributes
