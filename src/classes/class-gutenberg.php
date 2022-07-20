@@ -34,13 +34,14 @@ class NK_AWB_Gutenberg {
      * Enqueue admin scripts hook
      */
     public function register_block() {
-        $deps = array( 'wp-i18n', 'wp-element', 'wp-components', 'wp-block-editor', 'underscore', 'jquery', 'jarallax', 'jarallax-video' );
+        $js_deps  = array( 'wp-i18n', 'wp-element', 'wp-components', 'wp-block-editor', 'underscore', 'jquery', 'jarallax', 'jarallax-video' );
+        $css_deps = array();
 
         // enqueue block js.
         wp_register_script(
             'awb-gutenberg',
             nk_awb()->plugin_url . 'assets/admin/gutenberg/index.min.js',
-            $deps,
+            $js_deps,
             filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/index.min.js' ),
             true
         );
@@ -49,7 +50,7 @@ class NK_AWB_Gutenberg {
         wp_register_style(
             'awb-gutenberg',
             nk_awb()->plugin_url . 'assets/admin/gutenberg/editor.min.css',
-            array(),
+            $css_deps,
             filemtime( nk_awb()->plugin_path . 'assets/admin/gutenberg/editor.min.css' )
         );
 

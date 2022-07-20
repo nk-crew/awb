@@ -94,6 +94,16 @@ img.awb-gutenberg-icon {
     width: 100%;
     height: 100%;
   }
+
+  > .jarallax > .jarallax-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+
+    // we need to hide this image, as it is not removed by the Jarallax inside FSE editor, once Jarallax inited.
+    opacity: 0;
+  }
 }
 
 @media (min-width: 600px) {

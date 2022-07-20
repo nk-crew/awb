@@ -6,7 +6,7 @@
 import { throttle } from 'throttle-debounce';
 
 // variables
-const { AWBData } = window;
+const { AWBData = {} } = window;
 const $ = window.jQuery;
 const $wnd = $(window);
 const $doc = $(document);
@@ -340,7 +340,7 @@ function stretchAwb() {
     });
 
   // Gutenberg stretch fallback
-  if (AWBData.settings.full_width_fallback) {
+  if (AWBData.settings && AWBData.settings.full_width_fallback) {
     $('.nk-awb.alignfull').each(function () {
       const $this = $(this).children('.nk-awb-wrap');
 
