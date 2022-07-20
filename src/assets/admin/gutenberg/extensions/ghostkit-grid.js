@@ -8,7 +8,7 @@ import classnames from 'classnames/dedupe';
  */
 import { settings } from '../block';
 import BlockSave from '../block-save';
-import { BlockEdit, renderEditorPreview } from '../block-edit';
+import { BlockEdit, RenderEditorPreview } from '../block-edit';
 import GhostKitGridWidePreview from '../components/ghostkit-grid-wide-preview';
 
 /**
@@ -105,7 +105,9 @@ function addEditorBackground(background, props) {
     const awbProps = prepareAWBprops(props);
 
     return (
-      <GhostKitGridWidePreview {...props}>{renderEditorPreview(awbProps)}</GhostKitGridWidePreview>
+      <GhostKitGridWidePreview {...props}>
+        <RenderEditorPreview {...awbProps} />
+      </GhostKitGridWidePreview>
     );
   }
 

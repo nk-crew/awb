@@ -130,7 +130,7 @@ function getVideoPoster(url, cb) {
   }, 500);
 }
 
-export function renderInspectorControls(props) {
+export function RenderInspectorControls(props) {
   const { attributes, setAttributes } = props;
 
   const {
@@ -674,9 +674,7 @@ export function renderInspectorControls(props) {
   );
 }
 
-export function renderEditorPreview(props) {
-  const { attributes, setAttributes, clientId } = props;
-
+export function RenderEditorPreview({ attributes, setAttributes, clientId }) {
   const {
     type,
 
@@ -765,7 +763,7 @@ export function renderEditorPreview(props) {
           key={`${jarallaxParams.videoSrc || ''} ${jarallaxParams.imgSrc || ''} ${
             jarallaxParams.imgSize || ''
           } ${jarallaxParams.imgRepeat || ''}`}
-          options={jarallaxParams}
+          {...jarallaxParams}
         />
       ) : (
         <div
@@ -873,7 +871,7 @@ export function BlockEdit(props) {
   // return controls only
   // used in GhostKit extension
   if (inspectorControlsOnly) {
-    return renderInspectorControls(props);
+    return <RenderInspectorControls {...props} />;
   }
 
   const blockProps = useBlockProps({
@@ -976,10 +974,12 @@ export function BlockEdit(props) {
           ''
         )}
       </BlockControls>
-      <InspectorControls>{renderInspectorControls(props)}</InspectorControls>
+      <InspectorControls>
+        <RenderInspectorControls {...props} />
+      </InspectorControls>
 
       <div {...innerBlocksProps}>
-        {renderEditorPreview(props)}
+        <RenderEditorPreview {...props} />
         {children}
       </div>
     </Fragment>
