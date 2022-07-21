@@ -218,9 +218,7 @@ export function RenderInspectorControls(props) {
               setAttributes({ type: value });
             }}
           />
-        ) : (
-          ''
-        )}
+        ) : null}
       </PanelBody>
 
       {type ? (
@@ -235,9 +233,7 @@ export function RenderInspectorControls(props) {
                   onChange={(v) => setAttributes({ video: v })}
                   help={__('Supported YouTube and Vimeo URLs')}
                 />
-              ) : (
-                ''
-              )}
+              ) : null}
 
               {/* Preview Video */}
               {'video' === type && (videoMp4 || videoOgv || videoWebm) ? (
@@ -247,9 +243,7 @@ export function RenderInspectorControls(props) {
                   {videoOgv ? <source src={videoOgv} type="video/ogg" /> : ''}
                   {videoWebm ? <source src={videoWebm} type="video/webm" /> : ''}
                 </video>
-              ) : (
-                ''
-              )}
+              ) : null}
 
               {/* Select Videos */}
               {'video' === type && !videoMp4 ? (
@@ -277,9 +271,7 @@ export function RenderInspectorControls(props) {
                     </div>
                   )}
                 />
-              ) : (
-                ''
-              )}
+              ) : null}
               {'video' === type && videoMp4 ? (
                 <div>
                   <span>{videoMp4.substring(videoMp4.lastIndexOf('/') + 1)} </span>
@@ -295,9 +287,7 @@ export function RenderInspectorControls(props) {
                   </Button>
                   <div style={{ marginBottom: 13 }} />
                 </div>
-              ) : (
-                ''
-              )}
+              ) : null}
               {'video' === type && !videoOgv ? (
                 <MediaUpload
                   onSelect={(media) => {
@@ -323,9 +313,7 @@ export function RenderInspectorControls(props) {
                     </div>
                   )}
                 />
-              ) : (
-                ''
-              )}
+              ) : null}
               {'video' === type && videoOgv ? (
                 <div>
                   <span>{videoOgv.substring(videoOgv.lastIndexOf('/') + 1)} </span>
@@ -341,9 +329,7 @@ export function RenderInspectorControls(props) {
                   </Button>
                   <div style={{ marginBottom: 13 }} />
                 </div>
-              ) : (
-                ''
-              )}
+              ) : null}
               {'video' === type && !videoWebm ? (
                 <MediaUpload
                   onSelect={(media) => {
@@ -369,9 +355,7 @@ export function RenderInspectorControls(props) {
                     </div>
                   )}
                 />
-              ) : (
-                ''
-              )}
+              ) : null}
               {'video' === type && videoWebm ? (
                 <div>
                   <span>{videoWebm.substring(videoWebm.lastIndexOf('/') + 1)} </span>
@@ -387,9 +371,7 @@ export function RenderInspectorControls(props) {
                   </Button>
                   <div style={{ marginBottom: 13 }} />
                 </div>
-              ) : (
-                ''
-              )}
+              ) : null}
               <ToggleControl
                 label={__('Enable on mobile devices')}
                 checked={!!videoMobile}
@@ -431,9 +413,7 @@ export function RenderInspectorControls(props) {
                 onChange={(value) => setAttributes({ mediaOpacity: value })}
               />
             </PanelBody>
-          ) : (
-            ''
-          )}
+          ) : null}
 
           {'image' === type || 'yt_vm_video' === type || 'video' === type ? (
             <PanelBody
@@ -454,9 +434,7 @@ export function RenderInspectorControls(props) {
                     </Button>
                   )}
                 />
-              ) : (
-                ''
-              )}
+              ) : null}
 
               {image && imageTag ? (
                 <Fragment>
@@ -481,9 +459,7 @@ export function RenderInspectorControls(props) {
                       })()}
                       onChange={(v) => setAttributes({ imageSize: v })}
                     />
-                  ) : (
-                    ''
-                  )}
+                  ) : null}
                   <SelectControl
                     label={__('Background size')}
                     value={imageBackgroundSize}
@@ -526,13 +502,9 @@ export function RenderInspectorControls(props) {
                     </Button>
                   </div>
                 </Fragment>
-              ) : (
-                ''
-              )}
+              ) : null}
             </PanelBody>
-          ) : (
-            ''
-          )}
+          ) : null}
 
           {'image' === type || 'yt_vm_video' === type || 'video' === type ? (
             <PanelBody
@@ -629,9 +601,7 @@ export function RenderInspectorControls(props) {
                       onChange={(v) => setAttributes({ parallaxMobile: v })}
                     />
                   </Fragment>
-                ) : (
-                  ''
-                )}
+                ) : null}
               </PanelBody>
               <PanelBody title={__('Mouse parallax')} initialOpen={false}>
                 <ToggleControl
@@ -658,18 +628,12 @@ export function RenderInspectorControls(props) {
                       onChange={(v) => setAttributes({ mouseParallaxSpeed: v })}
                     />
                   </Fragment>
-                ) : (
-                  ''
-                )}
+                ) : null}
               </PanelBody>
             </Fragment>
-          ) : (
-            ''
-          )}
+          ) : null}
         </Fragment>
-      ) : (
-        ''
-      )}
+      ) : null}
     </Fragment>
   );
 }
@@ -929,9 +893,7 @@ export function BlockEdit(props) {
                 onClick={() => setAttributes({ fullHeightAlign: 'bottom' })}
               />
             </Fragment>
-          ) : (
-            ''
-          )}
+          ) : null}
         </ToolbarGroup>
 
         {'image' === type ? (
@@ -952,9 +914,7 @@ export function BlockEdit(props) {
               )}
             />
           </ToolbarGroup>
-        ) : (
-          ''
-        )}
+        ) : null}
 
         {'yt_vm_video' === type ? (
           <ToolbarGroup>
@@ -970,9 +930,7 @@ export function BlockEdit(props) {
               )}
             </ToolbarItem>
           </ToolbarGroup>
-        ) : (
-          ''
-        )}
+        ) : null}
       </BlockControls>
       <InspectorControls>
         <RenderInspectorControls {...props} />

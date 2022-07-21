@@ -330,9 +330,7 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent) => {
           attributes.ghostkitStyles &&
           Object.keys(attributes.ghostkitStyles).length ? (
             <EditorStyles styles={getStyles(attributes.ghostkitStyles)} />
-          ) : (
-            ''
-          )}
+          ) : null}
           <InspectorControls>
             <PanelBody title={__('Spacings')} initialOpen={false}>
               <BaseControl className="awb-ghostkit-control-spacing">
