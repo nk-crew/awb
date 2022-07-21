@@ -811,7 +811,7 @@ export function BlockEdit(props) {
     ghostkitClassname,
   } = attributes;
 
-  let className = '';
+  let className = 'nk-awb';
 
   const { hasChildBlocks, fetchImageTag } = useSelect(
     (select) => {
