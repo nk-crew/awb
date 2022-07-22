@@ -29,16 +29,16 @@
       "default": "center"
     },
 
+    "useFeaturedImage": {
+      "type": "boolean",
+      "default": false
+    },
     "image": {
       "type": "number",
       "default": ""
     },
     "imageTag": {
       "type": "string",
-      "default": ""
-    },
-    "imageSizes": {
-      "type": "object",
       "default": ""
     },
     "imageSize": {
@@ -139,6 +139,7 @@
       "default": 10000
     }
   },
+  "usesContext": ["postId", "postType"],
   "editorScript": "awb-gutenberg",
   "editorStyle": "awb-gutenberg",
   "script": "nk-awb",

@@ -7,7 +7,6 @@ import classnames from 'classnames/dedupe';
 /**
  * Internal Dependencies
  */
-import toTitleCase from './utils/str-to-title-case';
 import { maybeEncode, maybeDecode } from './utils/encode-decode';
 import ColorIndicator from './components/color-indicator';
 import ColorPicker from './components/color-picker';
@@ -77,7 +76,6 @@ function getToolbarIcon(Svg) {
 function onImageSelect(media, setAttributes) {
   setAttributes({
     image: '',
-    imageSizes: '',
   });
 
   wp.media
@@ -93,7 +91,6 @@ function onImageSelect(media, setAttributes) {
         if (url) {
           setAttributes({
             image: media.id,
-            imageSizes: data.sizes,
           });
         }
       }
@@ -136,9 +133,9 @@ export function RenderInspectorControls(props) {
   const {
     type,
 
+    useFeaturedImage,
     image,
     imageTag,
-    imageSizes,
     imageSize,
     imageBackgroundSize,
     imageBackgroundPosition,
@@ -167,6 +164,34 @@ export function RenderInspectorControls(props) {
     mouseParallaxSize,
     mouseParallaxSpeed,
   } = attributes;
+
+  // featuredImage
+  const { imageSizes, featuredImageId, featuredImageUrl } = useSelect(
+    (select) => {
+      const { getEditedPostAttribute } = select('core/editor');
+      const blockEditor = select('core/block-editor');
+      const editorSettings = blockEditor.getSettings();
+      const { getMedia } = select('core');
+
+      const featuredImage = getEditedPostAttribute('featured_media');
+      const featuredImageData = featuredImage ? getMedia(featuredImage) : null;
+
+      const result = {
+        imageSizes: editorSettings.imageSizes,
+        featuredImageId: featuredImage,
+        featuredImageUrl: null,
+      };
+
+      if (featuredImageData && imageSize) {
+        result.featuredImageUrl =
+          featuredImageData?.media_details?.sizes[imageSize]?.source_url ||
+          featuredImageData?.source_url;
+      }
+
+      return result;
+    },
+    [imageSize]
+  );
 
   // load YouTube / Vimeo poster
   if ('yt_vm_video' === type && video && !image) {
@@ -421,42 +446,53 @@ export function RenderInspectorControls(props) {
               initialOpen={'image' === type}
             >
               {/* Select Image */}
-              {!image || !imageTag ? (
-                <MediaUpload
-                  onSelect={(media) => {
-                    onImageSelect(media, setAttributes);
-                  }}
-                  allowedTypes={['image']}
-                  value={image}
-                  render={({ open }) => (
-                    <Button onClick={open} isPrimary>
-                      {__('Select image')}
-                    </Button>
-                  )}
-                />
+              {!useFeaturedImage && (!image || !imageTag) ? (
+                <Fragment>
+                  <MediaUpload
+                    onSelect={(media) => {
+                      onImageSelect(media, setAttributes);
+                    }}
+                    allowedTypes={['image']}
+                    value={image}
+                    render={({ open }) => (
+                      <Button onClick={open} isPrimary>
+                        {__('Select image')}
+                      </Button>
+                    )}
+                  />
+                  <Button onClick={() => setAttributes({ useFeaturedImage: true })} isSecondary>
+                    {__('Use featured image')}
+                  </Button>
+                </Fragment>
               ) : null}
 
-              {image && imageTag ? (
+              {useFeaturedImage ? (
+                <p>{__('Post featured image will be used automatically on the background.')}</p>
+              ) : null}
+
+              {useFeaturedImage || (image && imageTag) ? (
                 <Fragment>
-                  <FocalPointPicker
-                    value={imageBackgroundPosition}
-                    image={maybeDecode(imageTag)}
-                    onChange={(v) => setAttributes({ imageBackgroundPosition: v })}
-                  />
+                  {(image && imageTag) ||
+                  (useFeaturedImage && featuredImageId && featuredImageUrl) ? (
+                    <FocalPointPicker
+                      value={imageBackgroundPosition}
+                      image={
+                        useFeaturedImage
+                          ? `<img src="${featuredImageUrl}" />`
+                          : maybeDecode(imageTag)
+                      }
+                      onChange={(v) => setAttributes({ imageBackgroundPosition: v })}
+                    />
+                  ) : null}
+
                   {imageSizes ? (
                     <SelectControl
-                      label={__('Size')}
+                      label={__('Image Size')}
                       value={imageSize}
-                      options={(() => {
-                        const result = [];
-                        Object.keys(imageSizes).forEach((k) => {
-                          result.push({
-                            value: k,
-                            label: toTitleCase(k),
-                          });
-                        });
-                        return result;
-                      })()}
+                      options={imageSizes.map((imgSize) => ({
+                        value: imgSize.slug,
+                        label: imgSize.name,
+                      }))}
                       onChange={(v) => setAttributes({ imageSize: v })}
                     />
                   ) : null}
@@ -494,11 +530,11 @@ export function RenderInspectorControls(props) {
                         setAttributes({
                           image: '',
                           imageTag: '',
-                          imageSizes: '',
+                          useFeaturedImage: false,
                         });
                       }}
                     >
-                      {__('Remove Image')}
+                      {__('Clear Media')}
                     </Button>
                   </div>
                 </Fragment>
@@ -642,10 +678,10 @@ export function RenderEditorPreview({ attributes, setAttributes, clientId }) {
   const {
     type,
 
+    useFeaturedImage,
     image,
     imageTag,
     imageSize = 'full',
-    imageSizes,
     imageBackgroundSize,
     imageBackgroundPosition,
 
@@ -666,6 +702,42 @@ export function RenderEditorPreview({ attributes, setAttributes, clientId }) {
     backgroundColor,
   } = attributes;
 
+  // featuredImage
+  const { selectedImageUrl, featuredImageId, featuredImageUrl } = useSelect(
+    (select) => {
+      const { getEditedPostAttribute } = select('core/editor');
+      const { getMedia } = select('core');
+      const featuredImage = getEditedPostAttribute('featured_media');
+
+      const selectedImageData = image ? getMedia(image) : null;
+      const featuredImageData = featuredImage ? getMedia(featuredImage) : null;
+
+      const result = {
+        selectedImageUrl: null,
+        featuredImageId: featuredImage,
+        featuredImageUrl: null,
+      };
+
+      if (selectedImageData && imageSize) {
+        result.selectedImageUrl =
+          selectedImageData?.media_details?.sizes[imageSize]?.source_url ||
+          selectedImageData?.source_url;
+      }
+
+      if (featuredImageData && imageSize) {
+        result.featuredImageUrl =
+          featuredImageData?.media_details?.sizes[imageSize]?.source_url ||
+          featuredImageData?.source_url;
+      }
+
+      return result;
+    },
+    [image, imageSize]
+  );
+
+  let previewHTML = '';
+  let jarallaxSrc = '';
+
   // load YouTube / Vimeo poster
   if ('yt_vm_video' === type && video && !image) {
     getVideoPoster(video, (url) => {
@@ -675,14 +747,20 @@ export function RenderEditorPreview({ attributes, setAttributes, clientId }) {
     });
   }
 
-  let previewHTML = '';
-  let jarallaxSrc = '';
   if ('image' === type || 'video' === type || 'yt_vm_video' === type) {
-    if (imageSizes && imageSize && imageSizes[imageSize] && imageSizes[imageSize].url) {
-      jarallaxSrc = imageSizes[imageSize].url;
+    if (selectedImageUrl) {
+      jarallaxSrc = selectedImageUrl;
     }
 
-    if (imageTag) {
+    if (useFeaturedImage) {
+      jarallaxSrc = featuredImageId ? featuredImageUrl || '' : AWBData.placeholder_url;
+
+      if (jarallaxSrc) {
+        previewHTML = `<img src="${jarallaxSrc}" class="jarallax-img" alt="" style="object-fit: ${
+          imageBackgroundSize || 'cover'
+        };object-position: ${imageBackgroundPosition || '50% 50%'};">`;
+      }
+    } else if (imageTag) {
       previewHTML = maybeDecode(imageTag);
     } else if ('yt_vm_video' === type && videoPosterPreview) {
       jarallaxSrc = videoPosterPreview;
@@ -764,6 +842,7 @@ export function BlockEdit(props) {
     fullHeight,
     fullHeightAlign,
 
+    useFeaturedImage,
     image,
     imageTag,
     imageSize,
@@ -775,7 +854,7 @@ export function BlockEdit(props) {
     ghostkitClassname,
   } = attributes;
 
-  let className = 'nk-awb';
+  let className = classnames('nk-awb', useFeaturedImage ? 'nk-awb-with-featured-image' : '');
 
   const { hasChildBlocks, fetchImageTag } = useSelect(
     (select) => {
@@ -895,6 +974,39 @@ export function BlockEdit(props) {
             </Fragment>
           ) : null}
         </ToolbarGroup>
+
+        {'image' === type ? (
+          <ToolbarGroup>
+            <ToolbarButton
+              className="components-toolbar__control"
+              label={__('Use featured image')}
+              isActive={useFeaturedImage}
+              icon={
+                <svg
+                  width="24"
+                  height="24"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M19 3H5c-.6 0-1 .4-1 1v7c0 .5.4 1 1 1h14c.5 0 1-.4 1-1V4c0-.6-.4-1-1-1zM5.5 10.5v-.4l1.8-1.3 1.3.8c.3.2.7.2.9-.1L11 8.1l2.4 2.4H5.5zm13 0h-2.9l-4-4c-.3-.3-.8-.3-1.1 0L8.9 8l-1.2-.8c-.3-.2-.6-.2-.9 0l-1.3 1V4.5h13v6zM4 20h9v-1.5H4V20zm0-4h16v-1.5H4V16z" />
+                </svg>
+              }
+              onClick={() =>
+                setAttributes({
+                  useFeaturedImage: !useFeaturedImage,
+                  ...(!useFeaturedImage
+                    ? {
+                        image: '',
+                        imageTag: '',
+                      }
+                    : {}),
+                })
+              }
+            />
+          </ToolbarGroup>
+        ) : null}
 
         {'image' === type ? (
           <ToolbarGroup>

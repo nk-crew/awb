@@ -45,6 +45,7 @@ export default function BlockSave(props) {
 
     type,
 
+    useFeaturedImage,
     imageTag,
     imageBackgroundSize,
     imageBackgroundPosition,
@@ -81,7 +82,11 @@ export default function BlockSave(props) {
 
   let resultImg = false;
 
-  let className = classnames('nk-awb', align ? ` align${align}` : '');
+  let className = classnames(
+    'nk-awb',
+    align ? ` align${align}` : '',
+    useFeaturedImage ? 'nk-awb-with-featured-image' : ''
+  );
 
   // add full height classname.
   if (fullHeight) {
@@ -129,7 +134,7 @@ export default function BlockSave(props) {
       }
     // eslint-disable-next-line
     case 'image':
-      if (imageTag) {
+      if (useFeaturedImage || imageTag) {
         resultImg = imageTag;
 
         // inside exported xml file almost all symbols are escaped.
@@ -184,7 +189,7 @@ export default function BlockSave(props) {
   if (color) {
     wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${color};"></div>`;
   }
-  if (resultImg || resultAtts.video) {
+  if (useFeaturedImage || resultImg || resultAtts.video) {
     const opacityStyle =
       'number' === typeof mediaOpacity && 100 !== mediaOpacity
         ? ` style="opacity: ${mediaOpacity / 100};"`
