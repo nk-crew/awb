@@ -55,17 +55,20 @@ class NK_AWB_Rest extends WP_REST_Controller {
     /**
      * Get attachment image <img> tag permissions.
      *
-     * @param WP_REST_Request $request  request object.
-     *
      * @return bool
      */
-    public function get_attachment_image_permission( WP_REST_Request $request ) {
-        $id = $request->get_param( 'id' );
-
-        if ( ! $id ) {
-            return $this->error( 'no_id_found', __( 'Provide image ID.', '@@text_domain' ) );
+    public function get_attachment_image_permission() {
+        if ( current_user_can( 'edit_posts' ) ) {
+            return true;
         }
-        return true;
+
+        foreach ( get_post_types( array( 'show_in_rest' => true ), 'objects' ) as $post_type ) {
+            if ( current_user_can( $post_type->cap->edit_posts ) ) {
+                return true;
+            }
+        }
+
+        return $this->error( 'not_allowed', esc_html__( 'Sorry, you are not allowed to get the image for background.', '@@text_domain' ), true );
     }
 
     /**
@@ -81,6 +84,10 @@ class NK_AWB_Rest extends WP_REST_Controller {
         $icon    = $request->get_param( 'icon' );
         $attr    = $request->get_param( 'attr' );
         $div_tag = $request->get_param( 'div_tag' );
+
+        if ( ! $id ) {
+            return $this->error( 'no_id_found', __( 'Provide image ID.', '@@text_domain' ) );
+        }
 
         $attr = isset( $attr ) && $attr && is_array( $attr ) ? $attr : array();
 
@@ -158,11 +165,16 @@ class NK_AWB_Rest extends WP_REST_Controller {
     /**
      * Error rest.
      *
-     * @param mixed $code     error code.
-     * @param mixed $response response data.
+     * @param mixed   $code     error code.
+     * @param mixed   $response response data.
+     * @param boolean $true_error use true error response to stop the code processing.
      * @return mixed
      */
-    public function error( $code, $response ) {
+    public function error( $code, $response, $true_error = false ) {
+        if ( $true_error ) {
+            return new WP_Error( $code, $response, array( 'status' => 401 ) );
+        }
+
         return new WP_REST_Response(
             array(
                 'error'      => true,
