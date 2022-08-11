@@ -4,7 +4,7 @@
   "name": "nk/awb",
   "category": "design",
   "title": "Background (AWB)",
-  "description": "Create sections with color, image and video backgrounds.",
+  "description": "Create sections with background image, parallax, video or solid color.",
   "keywords": ["awb", "background", "parallax"],
   "textdomain": "advanced-backgrounds",
   "supports": {
