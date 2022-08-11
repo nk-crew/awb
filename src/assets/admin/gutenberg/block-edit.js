@@ -762,6 +762,17 @@ export function RenderEditorPreview({ attributes, setAttributes, clientId }) {
       }
     } else if (imageTag) {
       previewHTML = maybeDecode(imageTag);
+
+      // Fallback image src from saved img tag string.
+      // While `selectedImageUrl` is in loading state, we can display the saved image.
+      if (!jarallaxSrc) {
+        const fallbackSrc = /<img.*?src="([^">]*\/([^">]*?))".*?>/g.exec(previewHTML);
+
+        if (fallbackSrc && fallbackSrc[1]) {
+          // eslint-disable-next-line prefer-destructuring
+          jarallaxSrc = fallbackSrc[1];
+        }
+      }
     } else if ('yt_vm_video' === type && videoPosterPreview) {
       jarallaxSrc = videoPosterPreview;
       previewHTML = `<img src="${videoPosterPreview}" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;">`;
