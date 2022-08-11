@@ -73,6 +73,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.9.1 =
+
+* added fallback image url in Gutenberg block preview to display image faster when page loaded
+* improved rest permissions check
+
 = 1.9.0 =
 
 * added support for Featured Image in the block background
