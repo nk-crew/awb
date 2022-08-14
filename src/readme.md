@@ -18,7 +18,7 @@ Easy to use advanced Parallax, Image and Video backgrounds block plugin with par
 
 **Create any type of backgrounds using advanced block settings**. We created [**Advanced WordPress Backgrounds plugin**](https://wpbackgrounds.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=head) to insert the Youtube and Image Parallax backgrounds with a few clicks on block sites of our clients.
 
-[See Live Demo](https://wpbackgrounds.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=head) | [Documentation](https://wpbackgrounds.com/documentation/getting-started/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=head) | [GitHub](https://github.com/nk-crew/awb/)
+[See Live Demo](https://wpbackgrounds.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=head) | [Documentation](https://wpbackgrounds.com/docs/getting-started/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=head) | [GitHub](https://github.com/nk-crew/awb/)
 
 ### Features
 
@@ -61,7 +61,7 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ### How to enable `Stretch` with Gutenberg
 
-[Read in documentation](https://wpbackgrounds.com/documentation/enable-stretch-option-with-gutenberg/)
+[Read in documentation](https://wpbackgrounds.com/docs/enable-stretch-option-with-gutenberg/)
 
 ## Screenshots
 
