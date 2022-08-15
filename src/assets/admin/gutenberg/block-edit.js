@@ -8,6 +8,7 @@ import classnames from 'classnames/dedupe';
  * Internal Dependencies
  */
 import { maybeEncode, maybeDecode } from './utils/encode-decode';
+import prepareJarallaxParams from './utils/prepare-jarallax-params';
 import ColorIndicator from './components/color-indicator';
 import ColorPicker from './components/color-picker';
 import FocalPointPicker from './components/focal-point-picker';
@@ -675,16 +676,9 @@ export function RenderEditorPreview({ attributes, clientId }) {
     imageBackgroundSize,
     imageBackgroundPosition,
 
-    video,
     videoPosterPreview,
-    videoStartTime,
-    videoEndTime,
-    videoVolume,
-    videoLoop,
-    videoAlwaysPlay,
 
     parallax,
-    parallaxSpeed,
 
     mediaOpacity,
 
@@ -761,27 +755,7 @@ export function RenderEditorPreview({ attributes, clientId }) {
   }
 
   const useJarallax = (parallax && 'image' === type) || 'video' === type || 'yt_vm_video' === type;
-  const jarallaxParams = {
-    type: parallax,
-    speed: parallaxSpeed,
-    imgSize: imageBackgroundSize || 'cover',
-    imgPosition: imageBackgroundPosition || '50% 50%',
-  };
-
-  if ('pattern' === imageBackgroundSize) {
-    jarallaxParams.imgSize = 'auto';
-    jarallaxParams.imgRepeat = 'repeat';
-  }
-
-  if (video && ('video' === type || 'yt_vm_video' === type)) {
-    jarallaxParams.speed = parallax ? parallaxSpeed : 1;
-    jarallaxParams.videoSrc = video;
-    jarallaxParams.videoStartTime = videoStartTime;
-    jarallaxParams.videoEndTime = videoEndTime;
-    jarallaxParams.videoVolume = videoVolume;
-    jarallaxParams.videoLoop = videoLoop;
-    jarallaxParams.videoPlayOnlyVisible = !videoAlwaysPlay;
-  }
+  const jarallaxParams = prepareJarallaxParams(attributes);
 
   if (jarallaxSrc) {
     jarallaxParams.imgSrc = jarallaxSrc;

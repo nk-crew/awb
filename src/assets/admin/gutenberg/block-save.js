@@ -8,6 +8,7 @@ import classnames from 'classnames/dedupe';
  */
 import { maybeDecode } from './utils/encode-decode';
 import camelCaseToDash from './utils/camel-case-to-dash';
+import prepareJarallaxParams from './utils/prepare-jarallax-params';
 
 /**
  * WordPress Dependencies
@@ -50,20 +51,6 @@ export default function BlockSave(props) {
     imageBackgroundSize,
     imageBackgroundPosition,
 
-    videoMp4,
-    videoOgv,
-    videoWebm,
-    videoStartTime,
-    videoEndTime,
-    videoVolume,
-    videoLoop,
-    videoAlwaysPlay,
-    videoMobile,
-
-    parallax,
-    parallaxSpeed,
-    parallaxMobile,
-
     mouseParallax,
     mouseParallaxSize,
     mouseParallaxSpeed,
@@ -74,11 +61,15 @@ export default function BlockSave(props) {
     backgroundColor,
   } = attributes;
 
-  let { video } = attributes;
-
+  const jarallaxParams = prepareJarallaxParams(attributes);
   const resultAtts = {
     type: attributes.type,
+    ...jarallaxParams,
   };
+
+  // Remove attributes and add it later if needed.
+  delete resultAtts.imageBackgroundSize;
+  delete resultAtts.imageBackgroundPosition;
 
   let resultImg = false;
 
@@ -101,37 +92,8 @@ export default function BlockSave(props) {
     case 'color':
       break;
     case 'video':
-      video = '';
-      if (videoMp4) {
-        video += `mp4:${videoMp4}`;
-      }
-      if (videoOgv) {
-        video += `${video ? ',' : ''}ogv:${videoOgv}`;
-      }
-      if (videoWebm) {
-        video += `${video ? ',' : ''}webm:${videoWebm}`;
-      }
     // eslint-disable-next-line
     case 'yt_vm_video':
-      if (video) {
-        resultAtts.video = video;
-        if (videoStartTime) {
-          resultAtts.videoStartTime = videoStartTime;
-        }
-        if (videoEndTime) {
-          resultAtts.videoEndTime = videoEndTime;
-        }
-        if (videoVolume) {
-          resultAtts.videoVolume = videoVolume;
-        }
-        if (!videoLoop) {
-          resultAtts.videoLoop = videoLoop;
-        }
-        if (videoAlwaysPlay) {
-          resultAtts.videoAlwaysPlay = videoAlwaysPlay;
-        }
-        resultAtts.videoMobile = videoMobile;
-      }
     // eslint-disable-next-line
     case 'image':
       if (useFeaturedImage || imageTag) {
@@ -156,14 +118,6 @@ export default function BlockSave(props) {
       break;
     default:
       break;
-  }
-
-  if (parallax) {
-    resultAtts.parallax = parallax;
-    if (parallaxSpeed) {
-      resultAtts.parallaxSpeed = parallaxSpeed;
-    }
-    resultAtts.parallaxMobile = parallaxMobile;
   }
 
   if (mouseParallax) {

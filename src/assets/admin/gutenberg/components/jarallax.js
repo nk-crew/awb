@@ -16,6 +16,21 @@ const { jarallax } = window;
 export default function Jarallax({ className = '', ...options }) {
   const $el = useRef();
 
+  if (options.video) {
+    options.videoSrc = options.video;
+  }
+
+  options.type = options.parallax;
+  options.speed = options.parallaxSpeed;
+  options.imgSize = options.imageBackgroundSize;
+  options.imgPosition = options.imageBackgroundPosition;
+  options.videoPlayOnlyVisible = !options.videoAlwaysPlay;
+
+  if ('pattern' === options.imageBackgroundSize) {
+    options.imgSize = 'auto';
+    options.imgRepeat = 'repeat';
+  }
+
   // Init Jarallax and update options.
   useEffect(() => {
     if ($el.current) {
