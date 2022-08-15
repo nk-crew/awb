@@ -73,6 +73,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.9.2 =
+
+* fixed self-hosted video preview loading in block editor
+* fixed Youtube / Vimeo video preview image loading in block editor
+
 = 1.9.1 =
 
 * added fallback image url in Gutenberg block preview to display image faster when page loaded
