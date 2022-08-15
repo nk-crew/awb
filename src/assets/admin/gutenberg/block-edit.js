@@ -141,7 +141,6 @@ export function RenderInspectorControls(props) {
     imageBackgroundPosition,
 
     video,
-    videoPosterPreview,
     videoMp4,
     videoOgv,
     videoWebm,
@@ -192,15 +191,6 @@ export function RenderInspectorControls(props) {
     },
     [imageSize]
   );
-
-  // load YouTube / Vimeo poster
-  if ('yt_vm_video' === type && video && !image) {
-    getVideoPoster(video, (url) => {
-      if (url !== videoPosterPreview) {
-        setAttributes({ videoPosterPreview: url });
-      }
-    });
-  }
 
   return (
     <Fragment>
@@ -674,7 +664,7 @@ export function RenderInspectorControls(props) {
   );
 }
 
-export function RenderEditorPreview({ attributes, setAttributes, clientId }) {
+export function RenderEditorPreview({ attributes, clientId }) {
   const {
     type,
 
@@ -737,15 +727,6 @@ export function RenderEditorPreview({ attributes, setAttributes, clientId }) {
 
   let previewHTML = '';
   let jarallaxSrc = '';
-
-  // load YouTube / Vimeo poster
-  if ('yt_vm_video' === type && video && !image) {
-    getVideoPoster(video, (url) => {
-      if (url !== videoPosterPreview) {
-        setAttributes({ videoPosterPreview: url });
-      }
-    });
-  }
 
   if ('image' === type || 'video' === type || 'yt_vm_video' === type) {
     if (selectedImageUrl) {
@@ -900,13 +881,15 @@ export function BlockEdit(props) {
   }, [fetchImageTag, imageTag]);
 
   // load YouTube / Vimeo poster
-  if ('yt_vm_video' === type && video && !image) {
-    getVideoPoster(video, (url) => {
-      if (url !== videoPosterPreview) {
-        setAttributes({ videoPosterPreview: url });
-      }
-    });
-  }
+  useEffect(() => {
+    if ('yt_vm_video' === type && video && !image) {
+      getVideoPoster(video, (url) => {
+        if (url !== videoPosterPreview) {
+          setAttributes({ videoPosterPreview: url });
+        }
+      });
+    }
+  }, [type, video, image]);
 
   // add full height classname.
   if (fullHeight) {
