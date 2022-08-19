@@ -164,15 +164,9 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
             <div data-cond="[name=awb_type] == yt_vm_video">
               <div class="awb-clearfix"></div>
               <h3 class="awb-title">Youtube / Vimeo</h3>
-              <div class="awb-col-6">
+              <div class="awb-col-12">
                 <input type="text" name="awb_video" value="${atts.awb_video}">
                 <div class="awb-description">Supported YouTube and Vimeo URLs</div>
-              </div>
-              <div class="awb-col-6">
-                <h3>Enable on Mobile Devices</h3>
-                <input type="checkbox" value="1" name="awb_video_mobile" ${isChecked(
-                  atts.awb_video_mobile
-                )}>
               </div>
             </div>
 
@@ -215,6 +209,12 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
                   atts.awb_video_always_play
                 )}>
                 <div class="awb-description">Play video also when not in viewport.</div>
+              </div>
+              <div class="awb-col-6">
+                <h3>Enable on Mobile Devices</h3>
+                <input type="checkbox" value="1" name="awb_video_mobile" ${isChecked(
+                  atts.awb_video_mobile
+                )}>
               </div>
             </div>
 
