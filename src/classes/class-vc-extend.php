@@ -205,7 +205,7 @@ class NK_AWB_VC_Extend {
                     esc_html__( 'Color', '@@text_domain' ) => 'color',
                     esc_html__( 'Image', '@@text_domain' ) => 'image',
                     esc_html__( 'YouTube / Vimeo', '@@text_domain' ) => 'yt_vm_video',
-                    esc_html__( 'Local Video', '@@text_domain' ) => 'video',
+                    esc_html__( 'Self Hosted Video', '@@text_domain' ) => 'video',
                 ),
                 'group'            => $group_name,
                 'edit_field_class' => 'vc_col-sm-6 vc_column-with-padding',
@@ -357,7 +357,7 @@ class NK_AWB_VC_Extend {
             )
         );
 
-        // Local Video.
+        // Self Hosted Video.
         vc_add_param(
             $element,
             array(

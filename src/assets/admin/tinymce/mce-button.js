@@ -117,7 +117,7 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
                     color: 'Color',
                     image: 'Image',
                     yt_vm_video: 'YouTube / Vimeo',
-                    video: 'Local Video',
+                    video: 'Self Hosted Video',
                   },
                   atts.awb_type
                 )}
