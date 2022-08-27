@@ -73,6 +73,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.9.3 =
+
+* fixed shortcode builder "Enable on Mobile Devices" checkbox displaying for Local videos
+* renamed `Local Video` to `Self Hosted Video`
+
 = 1.9.2 =
 
 * fixed self-hosted video preview loading in block editor
