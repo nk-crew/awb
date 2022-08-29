@@ -168,12 +168,14 @@ export function RenderInspectorControls(props) {
   // featuredImage
   const { imageSizes, featuredImageId, featuredImageUrl } = useSelect(
     (select) => {
-      const { getEditedPostAttribute } = select('core/editor');
+      const { getEditedPostAttribute } = select('core/editor') || {};
       const blockEditor = select('core/block-editor');
       const editorSettings = blockEditor.getSettings();
       const { getMedia } = select('core');
 
-      const featuredImage = getEditedPostAttribute('featured_media');
+      const featuredImage = getEditedPostAttribute
+        ? getEditedPostAttribute('featured_media')
+        : false;
       const featuredImageData = featuredImage ? getMedia(featuredImage) : null;
 
       const result = {
@@ -689,9 +691,11 @@ export function RenderEditorPreview({ attributes, clientId }) {
   // featuredImage
   const { selectedImageUrl, featuredImageId, featuredImageUrl } = useSelect(
     (select) => {
-      const { getEditedPostAttribute } = select('core/editor');
+      const { getEditedPostAttribute } = select('core/editor') || {};
       const { getMedia } = select('core');
-      const featuredImage = getEditedPostAttribute('featured_media');
+      const featuredImage = getEditedPostAttribute
+        ? getEditedPostAttribute('featured_media')
+        : false;
 
       const selectedImageData = image ? getMedia(image) : null;
       const featuredImageData = featuredImage ? getMedia(featuredImage) : null;
