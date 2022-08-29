@@ -73,6 +73,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.9.4 =
+
+* fixed error on widgets screen
+
 = 1.9.3 =
 
 * fixed shortcode builder "Enable on Mobile Devices" checkbox displaying for Local videos
