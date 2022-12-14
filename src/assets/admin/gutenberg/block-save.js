@@ -151,7 +151,7 @@ export default function BlockSave(props) {
 
     wrapHTML += `<div class="nk-awb-inner"${opacityStyle}>${resultImg || ''}</div>`;
   }
-  // eslint-disable-next-line react/no-danger
+
   wrapHTML = wrapHTML ? (
     <div
       className="nk-awb-wrap"

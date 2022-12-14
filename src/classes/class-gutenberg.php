@@ -73,29 +73,23 @@ class NK_AWB_Gutenberg {
 
     /**
      * Renders the block on server.
+     * Adds Featured Image when useFeaturedImage is true.
      *
      * @param array  $attributes The block attributes.
      * @param string $content    The block rendered content.
      *
-     * @return string Returns the cover block markup, if useFeaturedImage is true.
+     * @return string
      */
     public function render_block( $attributes, $content ) {
         if ( 'image' !== $attributes['type'] || false === $attributes['useFeaturedImage'] ) {
             return $content;
         }
 
-        if ( ! class_exists( 'DOMDocument' ) || ! class_exists( 'DOMXPath' ) ) {
-            return $content;
-        }
+        $regex = '/<div class="nk-awb-inner"[^>]*(>)/';
 
-        $doc = new DOMDocument();
-        $doc->loadHTML( $content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+        preg_match( $regex, $content, $matches, PREG_OFFSET_CAPTURE );
 
-        $xpath = new DOMXPath( $doc );
-
-        $awb_wrap = $xpath->query( '//div[@class="nk-awb-wrap"]/div[@class="nk-awb-inner"]' );
-
-        if ( ! $awb_wrap->length ) {
+        if ( ! isset( $matches[0][0] ) ) {
             return $content;
         }
 
@@ -123,11 +117,8 @@ class NK_AWB_Gutenberg {
             return $content;
         }
 
-        $image_node = $doc->createDocumentFragment();
-        $image_node->appendXML( $image );
+        $content = preg_replace( $regex, $matches[0][0] . $image, $content, 1 );
 
-        $awb_wrap[0]->appendChild( $image_node );
-
-        return $doc->saveHTML();
+        return $content;
     }
 }
