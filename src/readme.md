@@ -3,7 +3,7 @@
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
 * Requires at least: 5.8
-* Tested up to: 5.9
+* Tested up to: 6.1
 * Requires PHP: 7.2
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -72,6 +72,13 @@ The manual installation method involves downloading our AWB plugin and uploading
 5. Extended WPBakery Page Builder ROW options
 
 ## Changelog
+
+= 1.10.0 =
+
+* added `IntersectionObserver` to detect element in viewport (increased performance)
+* added support for Youtube Shorts
+* added support for Vimeo high quality thumbnails
+* improved rendering of Featured Image - use faster method without `DOMDocument`
 
 = 1.9.4 =
 
