@@ -26,7 +26,7 @@ export default function Jarallax({ className = '', ...options }) {
   options.imgPosition = options.imageBackgroundPosition;
   options.videoPlayOnlyVisible = !options.videoAlwaysPlay;
 
-  if ('pattern' === options.imageBackgroundSize) {
+  if (options.imageBackgroundSize === 'pattern') {
     options.imgSize = 'auto';
     options.imgRepeat = 'repeat';
   }
@@ -69,7 +69,7 @@ export default function Jarallax({ className = '', ...options }) {
       {options.imgSrc ? (
         // eslint-disable-next-line react/jsx-no-useless-fragment
         <Fragment>
-          {'auto' === options.imgSize && 'repeat' === options.imgRepeat ? (
+          {options.imgSize === 'auto' && options.imgRepeat === 'repeat' ? (
             <div
               className="jarallax-img"
               style={{

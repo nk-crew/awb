@@ -40,7 +40,7 @@ const imgCache = {};
  * @return {string} - image src
  */
 function parseImageUrl(image) {
-  if ('undefined' !== typeof imgCache[image]) {
+  if (typeof imgCache[image] !== 'undefined') {
     return imgCache[image];
   }
 

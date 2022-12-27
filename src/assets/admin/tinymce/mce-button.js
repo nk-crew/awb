@@ -4,7 +4,7 @@
 const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
 
 (() => {
-  if ('undefined' === typeof options) {
+  if (typeof options === 'undefined') {
     return;
   }
 
@@ -58,7 +58,7 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
 
     // is checked
     function isChecked(val) {
-      return 1 === val || '1' === val || true === val || 'true' === val || 'on' === val
+      return val === 1 || val === '1' || val === true || val === 'true' || val === 'on'
         ? 'checked="checked"'
         : '';
     }
@@ -373,7 +373,7 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
             } else if (!$this.is(':visible')) {
               return;
             }
-            newAtts[this.name] = 'checkbox' === this.type ? this.checked : this.value;
+            newAtts[this.name] = this.type === 'checkbox' ? this.checked : this.value;
           });
 
           // build shortcode
@@ -381,7 +381,7 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
 
           // insert available attributes
           Object.keys(defaultAtts).forEach((k) => {
-            if ('undefined' !== typeof newAtts[k] && newAtts[k]) {
+            if (typeof newAtts[k] !== 'undefined' && newAtts[k]) {
               shortcodeStr += ` ${k}="${newAtts[k]}"`;
             }
           });
@@ -416,7 +416,7 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
           const $panel = $(windows.$el[0]);
 
           /* check if wpColorPicker available */
-          if ('object' === typeof $.wp && 'function' === typeof $.wp.wpColorPicker) {
+          if (typeof $.wp === 'object' && typeof $.wp.wpColorPicker === 'function') {
             $panel.find('.awb-colorpicker').wpColorPicker({
               alpha: true,
             });

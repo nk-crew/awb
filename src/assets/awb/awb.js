@@ -126,9 +126,9 @@ function isInViewport($item, returnRect) {
   const rect = $item[0].getBoundingClientRect();
   let result = 1;
 
-  if (0 >= rect.right || rect.left >= window.innerWidth) {
+  if (rect.right <= 0 || rect.left >= window.innerWidth) {
     result = 0;
-  } else if (0 > rect.bottom && rect.top <= window.innerHeight) {
+  } else if (rect.bottom < 0 && rect.top <= window.innerHeight) {
     result = 0;
   } else {
     const beforeTopEnd = Math.max(0, rect.height + rect.top);
@@ -146,7 +146,7 @@ function isInViewport($item, returnRect) {
     } else if (beforeBottomEnd <= window.innerHeight) {
       result = beforeBottomEnd / window.innerHeight;
     }
-    result = 0 > result ? 0 : result;
+    result = result < 0 ? 0 : result;
   }
   if (returnRect) {
     return [result, rect];
@@ -172,7 +172,7 @@ function parallaxMouseRun(x, y, deviceOrientation) {
 
     // don't animate if block isn't in viewport
     if (
-      'object' !== typeof data ||
+      typeof data !== 'object' ||
       (!data.is_in_viewport && !(deviceOrientation && parallaxMouseFirstRun))
     ) {
       return;
@@ -187,7 +187,7 @@ function parallaxMouseRun(x, y, deviceOrientation) {
     } else {
       itemX = (data.rect.width - (x - data.rect.left)) / data.rect.width;
       itemY = (data.rect.height - (y - data.rect.top)) / data.rect.height;
-      if (1 < itemX || 0 > itemX || 1 < itemY || 0 > itemY) {
+      if (itemX > 1 || itemX < 0 || itemY > 1 || itemY < 0) {
         itemX = 0.5;
         itemY = 0.5;
       }
@@ -413,7 +413,7 @@ function fixSrcsetAwb() {
 
     const CSS = window.getComputedStyle(this, null);
 
-    if (CSS && CSS.objectFit && 'cover' === CSS.objectFit) {
+    if (CSS && CSS.objectFit && CSS.objectFit === 'cover') {
       const imgHeight = parseInt(this.getAttribute('height'), 10);
       const imgWidth = parseInt(this.getAttribute('width'), 10);
 
@@ -535,7 +535,7 @@ window.nkAwbInit = function () {
   fixSrcsetAwb();
 
   // init jarallax
-  if ('undefined' === typeof $.fn.jarallax) {
+  if (typeof $.fn.jarallax === 'undefined') {
     return;
   }
 
@@ -554,20 +554,20 @@ window.nkAwbInit = function () {
     let parallax = $this.attr('data-awb-parallax');
     let parallaxSpeed = $this.attr('data-awb-parallax-speed');
     let parallaxMobile =
-      'true' === $this.attr('data-awb-parallax-mobile') ||
-      '1' === $this.attr('data-awb-parallax-mobile');
+      $this.attr('data-awb-parallax-mobile') === 'true' ||
+      $this.attr('data-awb-parallax-mobile') === '1';
 
     // video type
-    if ('yt_vm_video' === type || 'video' === type) {
+    if (type === 'yt_vm_video' || type === 'video') {
       video = $this.attr('data-awb-video');
       videoStartTime = parseFloat($this.attr('data-awb-video-start-time')) || 0;
       videoEndTime = parseFloat($this.attr('data-awb-video-end-time')) || 0;
       videoVolume = parseFloat($this.attr('data-awb-video-volume')) || 0;
-      videoLoop = 'false' !== $this.attr('data-awb-video-loop');
-      videoAlwaysPlay = 'true' === $this.attr('data-awb-video-always-play');
+      videoLoop = $this.attr('data-awb-video-loop') !== 'false';
+      videoAlwaysPlay = $this.attr('data-awb-video-always-play') === 'true';
       videoMobile =
-        '1' === $this.attr('data-awb-video-mobile') ||
-        'true' === $this.attr('data-awb-video-mobile');
+        $this.attr('data-awb-video-mobile') === '1' ||
+        $this.attr('data-awb-video-mobile') === 'true';
 
       // we need to enable parallax options to play videos
       // https://github.com/nk-crew/awb/issues/17
@@ -605,7 +605,7 @@ window.nkAwbInit = function () {
       imgPosition: imageBgPosition || '50% 50%',
     };
 
-    if ('pattern' === imageBgSize) {
+    if (imageBgSize === 'pattern') {
       jarallaxParams.imgSize = 'auto';
       jarallaxParams.imgRepeat = 'repeat';
     }

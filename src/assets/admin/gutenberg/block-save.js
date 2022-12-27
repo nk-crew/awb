@@ -145,7 +145,7 @@ export default function BlockSave(props) {
   }
   if (useFeaturedImage || resultImg || resultAtts.video) {
     const opacityStyle =
-      'number' === typeof mediaOpacity && 100 !== mediaOpacity
+      typeof mediaOpacity === 'number' && mediaOpacity !== 100
         ? ` style="opacity: ${mediaOpacity / 100};"`
         : '';
 

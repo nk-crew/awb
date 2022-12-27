@@ -22,7 +22,7 @@ export const settings = {
   },
   getEditWrapperProps(attributes) {
     const { align } = attributes;
-    if (-1 !== validAlignments.indexOf(align)) {
+    if (validAlignments.indexOf(align) !== -1) {
       return { 'data-align': align };
     }
     return {};

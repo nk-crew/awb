@@ -13,7 +13,7 @@ export default class GhostKitGridWidePreview extends Component {
       previewRight: 0,
       previewAlign: false,
       previewSelector:
-        'ghostkit/grid' === this.props.name
+        this.props.name === 'ghostkit/grid'
           ? `[data-block="${this.props.clientId}"] > .ghostkit-grid > .awb-gutenberg-preview-block`
           : `[data-block="${this.props.clientId}"] > .awb-gutenberg-preview-block`,
     };
@@ -31,7 +31,7 @@ export default class GhostKitGridWidePreview extends Component {
 
     const { previewAlign } = this.state;
 
-    if (awbAlign && 'full' === awbAlign && previewAlign !== awbAlign) {
+    if (awbAlign && awbAlign === 'full' && previewAlign !== awbAlign) {
       this.updatePosition();
     }
   }
@@ -51,7 +51,7 @@ export default class GhostKitGridWidePreview extends Component {
       previewAlign: attributes.awb_align,
     };
 
-    if ('full' === attributes.awb_align) {
+    if (attributes.awb_align === 'full') {
       const $layout = document.querySelector('.block-editor-block-list__layout');
       const $parentBlock = document.querySelector(
         '.block-editor-block-list__layout .wp-block:not([data-align])'
@@ -82,7 +82,7 @@ export default class GhostKitGridWidePreview extends Component {
 
     let AWBpreviewStyles = '';
 
-    if (attributes.awb_align && 'full' === attributes.awb_align && (previewLeft || previewRight)) {
+    if (attributes.awb_align && attributes.awb_align === 'full' && (previewLeft || previewRight)) {
       AWBpreviewStyles = `
         ${previewSelector} {
           margin-left: ${previewLeft}px;

@@ -55,7 +55,7 @@ const cssPropsWithPixels = [
  * @return {string} - new dashed string.
  */
 function camelCaseToDash(str) {
-  if ('string' !== typeof str) {
+  if (typeof str !== 'string') {
     return str;
   }
 
@@ -78,7 +78,7 @@ function getStyles(data = {}, selector = '') {
   // add styles.
   Object.keys(data).forEach((key) => {
     // object values.
-    if (null !== data[key] && 'object' === typeof data[key]) {
+    if (data[key] !== null && typeof data[key] === 'object') {
       let nestedSelector = selector;
       if (nestedSelector) {
         nestedSelector = `${nestedSelector} ${key}`;
@@ -88,7 +88,7 @@ function getStyles(data = {}, selector = '') {
       resultCSS += (resultCSS ? ' ' : '') + getStyles(data[key], nestedSelector);
 
       // style properties and values.
-    } else if ('undefined' !== typeof data[key] && false !== data[key]) {
+    } else if (typeof data[key] !== 'undefined' && data[key] !== false) {
       if (!result[selector]) {
         result[selector] = '';
       }
@@ -97,8 +97,8 @@ function getStyles(data = {}, selector = '') {
 
       // add pixels.
       if (
-        ('number' === typeof propValue &&
-          0 !== propValue &&
+        (typeof propValue === 'number' &&
+          propValue !== 0 &&
           cssPropsWithPixels.includes(propName)) ||
         (typeof propValue === 'string' && /^[0-9.\-]*$/.test(propValue)) // eslint-disable-line
       ) {
@@ -198,22 +198,22 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent) => {
       }
 
       // add new ghostkit props.
-      if (this.props.clientId && 'undefined' !== typeof this.props.attributes.ghostkitId) {
+      if (this.props.clientId && typeof this.props.attributes.ghostkitId !== 'undefined') {
         let ID = this.props.attributes.ghostkitId || '';
 
         // check if ID already exist.
         let tryCount = 10;
         while (
           !ID ||
-          ('undefined' !== typeof usedIds[ID] &&
+          (typeof usedIds[ID] !== 'undefined' &&
             usedIds[ID] !== this.props.clientId &&
-            0 < tryCount)
+            tryCount > 0)
         ) {
           ID = shorthash.unique(this.props.clientId);
           tryCount -= 1;
         }
 
-        if (ID && 'undefined' === typeof usedIds[ID]) {
+        if (ID && typeof usedIds[ID] === 'undefined') {
           usedIds[ID] = this.props.clientId;
         }
 
@@ -223,7 +223,7 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent) => {
         }
 
         // force update when new ID.
-        if (10 > tryCount) {
+        if (tryCount < 10) {
           this.onUpdate(false);
         }
       }
@@ -301,7 +301,7 @@ const withInspectorControl = createHigherOrderComponent((OriginalComponent) => {
       Object.keys(ghostkitSpacings).forEach((key) => {
         if (ghostkitSpacings[key]) {
           // device object supported by GhostKit plugin only.
-          if ('object' !== typeof ghostkitSpacings[key]) {
+          if (typeof ghostkitSpacings[key] !== 'object') {
             result[key] = ghostkitSpacings[key];
           }
         }
@@ -437,7 +437,7 @@ function addSaveProps(extraProps, blockType, attributes) {
 
   const customStyles = attributes.ghostkitStyles ? { ...attributes.ghostkitStyles } : false;
 
-  if (customStyles && 0 !== Object.keys(customStyles).length) {
+  if (customStyles && Object.keys(customStyles).length !== 0) {
     extraProps = Object.assign(extraProps || {}, getCustomStylesAttr(customStyles));
 
     if (attributes.ghostkitClassname) {

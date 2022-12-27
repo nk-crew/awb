@@ -35,7 +35,7 @@ const { __ } = wp.i18n;
  * @return {Object}               Filtered block settings
  */
 export function addAttribute(blockSettings) {
-  if ('ghostkit/grid' === blockSettings.name || 'ghostkit/grid-column' === blockSettings.name) {
+  if (blockSettings.name === 'ghostkit/grid' || blockSettings.name === 'ghostkit/grid-column') {
     blockSettings.supports.awb = true;
   }
 
@@ -64,7 +64,7 @@ function prepareAWBprops(props) {
     awbAttributes[name] = props.attributes[`awb_${name}`];
 
     // inside exported xml file almost all symbols are escaped.
-    if ('imageTag' === name && awbAttributes[name] && /^u003c/g.test(awbAttributes[name])) {
+    if (name === 'imageTag' && awbAttributes[name] && /^u003c/g.test(awbAttributes[name])) {
       awbAttributes[name] = awbAttributes[name]
         .replace(/u003c/g, '<')
         .replace(/u003e/g, '>')
@@ -123,7 +123,7 @@ function addEditorBackground(background, props) {
  * @return {Object} Control.
  */
 function addBackgroundControls(Control, props) {
-  if ('background' === props.attribute && hasBlockSupport(props.props.name, 'awb', false)) {
+  if (props.attribute === 'background' && hasBlockSupport(props.props.name, 'awb', false)) {
     const awbProps = prepareAWBprops(props.props);
 
     return (
@@ -136,10 +136,10 @@ function addBackgroundControls(Control, props) {
               <ToolbarButton
                 icon="align-full-width"
                 label={__('Full Width')}
-                isActive={'full' === awbProps.attributes.align}
+                isActive={awbProps.attributes.align === 'full'}
                 onClick={() =>
                   awbProps.setAttributes({
-                    align: 'full' === awbProps.attributes.align ? '' : 'full',
+                    align: awbProps.attributes.align === 'full' ? '' : 'full',
                   })
                 }
               />
@@ -175,19 +175,19 @@ function addSaveBackground(background, props) {
     });
     let addBackground = false;
 
-    if ('color' === awbProps.attributes.type && awbProps.attributes.color) {
+    if (awbProps.attributes.type === 'color' && awbProps.attributes.color) {
       addBackground = true;
     }
 
     if (
-      'image' === awbProps.attributes.type &&
+      awbProps.attributes.type === 'image' &&
       (awbProps.attributes.color || awbProps.attributes.imageTag)
     ) {
       addBackground = true;
     }
 
     if (
-      'video' === awbProps.attributes.type &&
+      awbProps.attributes.type === 'video' &&
       (awbProps.attributes.color ||
         awbProps.attributes.videoMp4 ||
         awbProps.attributes.videoOgv ||
@@ -198,7 +198,7 @@ function addSaveBackground(background, props) {
     }
 
     if (
-      'yt_vm_video' === awbProps.attributes.type &&
+      awbProps.attributes.type === 'yt_vm_video' &&
       (awbProps.attributes.color || awbProps.attributes.video || awbProps.attributes.imageTag)
     ) {
       addBackground = true;

@@ -6,14 +6,14 @@ const { jQuery: $, _ } = window;
 $(() => {
   const { vc } = window;
 
-  if ('undefined' === typeof vc) {
+  if (typeof vc === 'undefined') {
     return;
   }
 
   // shortcode frontend editor
   // on shortcode add and update events
   vc.events.on('shortcodes:add shortcodeView:updated', (e) => {
-    if ('vc_row' !== e.settings.base && 'vc_column' !== e.settings.base) {
+    if (e.settings.base !== 'vc_row' && e.settings.base !== 'vc_column') {
       return;
     }
 
@@ -49,7 +49,7 @@ $(() => {
 
     // find icon
     let $icon = false;
-    if ('nk_awb' === e.attributes.shortcode) {
+    if (e.attributes.shortcode === 'nk_awb') {
       $icon = e.view.$el.find('.wpb_element_title .nk-awb-icon');
     } else {
       $icon = e.view.$controls_buttons.parent().children('.vc_control-awb');
@@ -67,7 +67,7 @@ $(() => {
     // add indicator to row or column
     if (
       !$icon.length &&
-      ('vc_row' === e.attributes.shortcode || 'vc_column' === e.attributes.shortcode)
+      (e.attributes.shortcode === 'vc_row' || e.attributes.shortcode === 'vc_column')
     ) {
       $icon = $('<span class="vc_control-awb">').appendTo(e.view.$controls_buttons.parent());
     }

@@ -199,7 +199,7 @@ export function RenderInspectorControls(props) {
     <Fragment>
       <PanelBody>
         <ToggleGroup
-          value={'video' === type || 'yt_vm_video' === type ? 'yt_vm_video' : type}
+          value={type === 'video' || type === 'yt_vm_video' ? 'yt_vm_video' : type}
           options={[
             {
               label: __('Color'),
@@ -219,7 +219,7 @@ export function RenderInspectorControls(props) {
           }}
         />
 
-        {'video' === type || 'yt_vm_video' === type ? (
+        {type === 'video' || type === 'yt_vm_video' ? (
           <ToggleGroup
             value={type}
             options={[
@@ -241,9 +241,9 @@ export function RenderInspectorControls(props) {
 
       {type ? (
         <Fragment>
-          {'yt_vm_video' === type || 'video' === type ? (
-            <PanelBody title={__('Video')} initialOpen={'yt_vm_video' === type || 'video' === type}>
-              {'yt_vm_video' === type ? (
+          {type === 'yt_vm_video' || type === 'video' ? (
+            <PanelBody title={__('Video')} initialOpen={type === 'yt_vm_video' || type === 'video'}>
+              {type === 'yt_vm_video' ? (
                 <TextControl
                   label={__('Video URL')}
                   type="url"
@@ -254,7 +254,7 @@ export function RenderInspectorControls(props) {
               ) : null}
 
               {/* Preview Video */}
-              {'video' === type && (videoMp4 || videoOgv || videoWebm) ? (
+              {type === 'video' && (videoMp4 || videoOgv || videoWebm) ? (
                 // eslint-disable-next-line jsx-a11y/media-has-caption
                 <video controls>
                   {videoMp4 ? <source src={videoMp4} type="video/mp4" /> : ''}
@@ -264,7 +264,7 @@ export function RenderInspectorControls(props) {
               ) : null}
 
               {/* Select Videos */}
-              {'video' === type && !videoMp4 ? (
+              {type === 'video' && !videoMp4 ? (
                 <MediaUpload
                   onSelect={(media) => {
                     setAttributes({
@@ -290,7 +290,7 @@ export function RenderInspectorControls(props) {
                   )}
                 />
               ) : null}
-              {'video' === type && videoMp4 ? (
+              {type === 'video' && videoMp4 ? (
                 <div>
                   <span>{videoMp4.substring(videoMp4.lastIndexOf('/') + 1)} </span>
                   <Button
@@ -306,7 +306,7 @@ export function RenderInspectorControls(props) {
                   <div style={{ marginBottom: 13 }} />
                 </div>
               ) : null}
-              {'video' === type && !videoOgv ? (
+              {type === 'video' && !videoOgv ? (
                 <MediaUpload
                   onSelect={(media) => {
                     setAttributes({
@@ -332,7 +332,7 @@ export function RenderInspectorControls(props) {
                   )}
                 />
               ) : null}
-              {'video' === type && videoOgv ? (
+              {type === 'video' && videoOgv ? (
                 <div>
                   <span>{videoOgv.substring(videoOgv.lastIndexOf('/') + 1)} </span>
                   <Button
@@ -348,7 +348,7 @@ export function RenderInspectorControls(props) {
                   <div style={{ marginBottom: 13 }} />
                 </div>
               ) : null}
-              {'video' === type && !videoWebm ? (
+              {type === 'video' && !videoWebm ? (
                 <MediaUpload
                   onSelect={(media) => {
                     setAttributes({
@@ -374,7 +374,7 @@ export function RenderInspectorControls(props) {
                   )}
                 />
               ) : null}
-              {'video' === type && videoWebm ? (
+              {type === 'video' && videoWebm ? (
                 <div>
                   <span>{videoWebm.substring(videoWebm.lastIndexOf('/') + 1)} </span>
                   <Button
@@ -433,10 +433,10 @@ export function RenderInspectorControls(props) {
             </PanelBody>
           ) : null}
 
-          {'image' === type || 'yt_vm_video' === type || 'video' === type ? (
+          {type === 'image' || type === 'yt_vm_video' || type === 'video' ? (
             <PanelBody
-              title={'image' === type ? __('Image') : __('Poster Image')}
-              initialOpen={'image' === type}
+              title={type === 'image' ? __('Image') : __('Poster Image')}
+              initialOpen={type === 'image'}
             >
               {/* Select Image */}
               {!useFeaturedImage && (!image || !imageTag) ? (
@@ -535,7 +535,7 @@ export function RenderInspectorControls(props) {
             </PanelBody>
           ) : null}
 
-          {'image' === type || 'yt_vm_video' === type || 'video' === type ? (
+          {type === 'image' || type === 'yt_vm_video' || type === 'video' ? (
             <PanelBody
               title={
                 <Fragment>
@@ -559,26 +559,26 @@ export function RenderInspectorControls(props) {
           <PanelBody
             title={
               <Fragment>
-                {'color' === type ? __('Color') : __('Overlay Color')}
+                {type === 'color' ? __('Color') : __('Overlay Color')}
                 {color ? <ColorIndicator colorValue={color} /> : null}
               </Fragment>
             }
-            initialOpen={'color' === type}
+            initialOpen={type === 'color'}
           >
             <ColorPicker
-              label={'color' === type ? __('Background Color') : __('Overlay Color')}
+              label={type === 'color' ? __('Background Color') : __('Overlay Color')}
               value={color}
               onChange={(val) => setAttributes({ color: val })}
               alpha
             />
           </PanelBody>
 
-          {'image' === type || 'yt_vm_video' === type || 'video' === type ? (
+          {type === 'image' || type === 'yt_vm_video' || type === 'video' ? (
             <Fragment>
               <PanelBody
                 title={
                   __('Parallax') +
-                  (parallax && '' !== parallaxSpeed ? ` (${parallax} ${parallaxSpeed})` : '')
+                  (parallax && parallaxSpeed !== '' ? ` (${parallax} ${parallaxSpeed})` : '')
                 }
                 initialOpen={false}
               >
@@ -726,7 +726,7 @@ export function RenderEditorPreview({ attributes, clientId }) {
   let previewHTML = '';
   let jarallaxSrc = '';
 
-  if ('image' === type || 'video' === type || 'yt_vm_video' === type) {
+  if (type === 'image' || type === 'video' || type === 'yt_vm_video') {
     if (selectedImageUrl) {
       jarallaxSrc = selectedImageUrl;
     }
@@ -752,13 +752,13 @@ export function RenderEditorPreview({ attributes, clientId }) {
           jarallaxSrc = fallbackSrc[1];
         }
       }
-    } else if ('yt_vm_video' === type && videoPosterPreview) {
+    } else if (type === 'yt_vm_video' && videoPosterPreview) {
       jarallaxSrc = videoPosterPreview;
       previewHTML = `<img src="${videoPosterPreview}" class="jarallax-img" alt="" style="object-fit: cover;object-position: 50% 50%;">`;
     }
   }
 
-  const useJarallax = (parallax && 'image' === type) || 'video' === type || 'yt_vm_video' === type;
+  const useJarallax = (parallax && type === 'image') || type === 'video' || type === 'yt_vm_video';
   const jarallaxParams = prepareJarallaxParams(attributes);
 
   if (jarallaxSrc) {
@@ -795,7 +795,7 @@ export function RenderEditorPreview({ attributes, clientId }) {
           }
           #block-${clientId} > .awb-gutenberg-preview-block > .jarallax,
           #block-${clientId} > .awb-gutenberg-preview-block > .awb-gutenberg-preview-block-inner {
-            opacity: ${'number' === typeof mediaOpacity ? mediaOpacity / 100 : 1};
+            opacity: ${typeof mediaOpacity === 'number' ? mediaOpacity / 100 : 1};
           }
         `}
       />
@@ -836,13 +836,13 @@ export function BlockEdit(props) {
         imageQuery = `size=${encodeURIComponent(imageSize)}&attr[class]=jarallax-img`;
 
         // background image with pattern size
-        if ('pattern' === imageBackgroundSize) {
+        if (imageBackgroundSize === 'pattern') {
           imageQuery += '&div_tag=1';
         }
       }
 
       return {
-        hasChildBlocks: blockEditor ? 0 < blockEditor.getBlockOrder(clientId).length : false,
+        hasChildBlocks: blockEditor ? blockEditor.getBlockOrder(clientId).length > 0 : false,
         fetchImageTag: imageQuery
           ? select('nk/awb').getImageTagData(`/awb/v1/get_attachment_image/${image}?${imageQuery}`)
           : false,
@@ -860,7 +860,7 @@ export function BlockEdit(props) {
 
   // load YouTube / Vimeo poster
   useEffect(() => {
-    if ('yt_vm_video' === type && video && !image) {
+    if (type === 'yt_vm_video' && video && !image) {
       getVideoPoster(video, (url) => {
         if (url !== videoPosterPreview) {
           setAttributes({ videoPosterPreview: url });
@@ -906,8 +906,8 @@ export function BlockEdit(props) {
             <ToolbarButton
               icon="align-full-width"
               label={__('Full Width')}
-              isActive={'full' === align}
-              onClick={() => setAttributes({ align: 'full' === align ? '' : 'full' })}
+              isActive={align === 'full'}
+              onClick={() => setAttributes({ align: align === 'full' ? '' : 'full' })}
             />
           ) : (
             <BlockAlignmentToolbar
@@ -928,26 +928,26 @@ export function BlockEdit(props) {
               <ToolbarButton
                 icon={getToolbarIcon(iconVerticalTop)}
                 label={__('Content Vertical Top')}
-                isActive={'top' === fullHeightAlign}
+                isActive={fullHeightAlign === 'top'}
                 onClick={() => setAttributes({ fullHeightAlign: 'top' })}
               />
               <ToolbarButton
                 icon={getToolbarIcon(iconVerticalCenter)}
                 label={__('Content Vertical Center')}
-                isActive={'center' === fullHeightAlign}
+                isActive={fullHeightAlign === 'center'}
                 onClick={() => setAttributes({ fullHeightAlign: 'center' })}
               />
               <ToolbarButton
                 icon={getToolbarIcon(iconVerticalBottom)}
                 label={__('Content Vertical Bottom')}
-                isActive={'bottom' === fullHeightAlign}
+                isActive={fullHeightAlign === 'bottom'}
                 onClick={() => setAttributes({ fullHeightAlign: 'bottom' })}
               />
             </Fragment>
           ) : null}
         </ToolbarGroup>
 
-        {'image' === type ? (
+        {type === 'image' ? (
           <ToolbarGroup>
             <ToolbarButton
               className="components-toolbar__control"
@@ -980,7 +980,7 @@ export function BlockEdit(props) {
           </ToolbarGroup>
         ) : null}
 
-        {'image' === type ? (
+        {type === 'image' ? (
           <ToolbarGroup>
             <MediaUpload
               onSelect={(media) => {
@@ -1000,7 +1000,7 @@ export function BlockEdit(props) {
           </ToolbarGroup>
         ) : null}
 
-        {'yt_vm_video' === type ? (
+        {type === 'yt_vm_video' ? (
           <ToolbarGroup>
             <ToolbarItem>
               {() => (
