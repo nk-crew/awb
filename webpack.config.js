@@ -50,10 +50,8 @@ module.exports = {
             svgoConfig: {
               plugins: [
                 {
-                  removeViewBox: false,
-                },
-                {
-                  cleanupIDs: {
+                  name: 'cleanupIDs',
+                  params: {
                     prefix: `awb-${md5(resource)}-`,
                   },
                 },

@@ -1,12 +1,15 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
+/* eslint-disable import/no-extraneous-dependencies */
+const path = require('path');
+
 const pkg = require('json-file').read('./package.json').data;
 
 const cfg = {};
 
 // Build Paths.
+cfg.name = 'advanced-backgrounds';
 cfg.src = './src';
 cfg.dist_root = './dist';
-cfg.dist = '{dist_root}/advanced-backgrounds';
+cfg.dist = '{dist_root}/{name}';
 
 // Browser sync.
 cfg.browser_sync = {
@@ -24,7 +27,29 @@ cfg.template_files_variables = {
 };
 
 // Copy files.
-cfg.copy_files_src = ['{src}/**/*', '!{src}/**/*.{js,scss}', '{src}/**/vendor/**/*.{js,scss}'];
+cfg.copy_files_src = [
+  '{src}/**/*',
+  '!{src}/**/*.{js,scss}',
+  '{src}/**/vendor/**/*.{js,scss}',
+  './node_modules/*jarallax/dist/jarallax-video.min.js',
+  './node_modules/*jarallax/dist/jarallax-video.min.js.map',
+  './node_modules/*jarallax/dist/jarallax.min.js',
+  './node_modules/*jarallax/dist/jarallax.min.js.map',
+  './node_modules/*jarallax/dist/jarallax.css',
+  './node_modules/*conditionize/dist/conditionize.min.js',
+  './node_modules/*conditionize/dist/conditionize.min.js.map',
+];
+
+cfg.copy_files_dist = (file) => {
+  let destPath = `${cfg.dist_root}/${cfg.name}`;
+  const filePath = path.relative(process.cwd(), file.path);
+
+  if (filePath && /^node_modules/g.test(filePath)) {
+    destPath += '/assets/vendor';
+  }
+
+  return destPath;
+};
 
 // Compile SCSS files.
 cfg.compile_scss_files_src = ['{src}/*assets/**/*.scss'];
