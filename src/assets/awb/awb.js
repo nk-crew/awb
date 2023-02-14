@@ -424,7 +424,10 @@ function fixSrcsetAwb() {
           calculatedWidth = parseInt((this.clientHeight * imgWidth) / imgHeight, 10);
         }
 
-        this.setAttribute('sizes', `${calculatedWidth}px`);
+        // Make changes only if value changed to prevent image force reload.
+        if (this.getAttribute('sizes') !== `${calculatedWidth}px`) {
+          this.setAttribute('sizes', `${calculatedWidth}px`);
+        }
       }
     }
   });
@@ -647,7 +650,39 @@ const throttledInitAwb = throttle(200, () => {
   window.nkAwbInit();
 });
 if (window.MutationObserver) {
-  new window.MutationObserver(throttledInitAwb).observe(document.documentElement, {
+  new window.MutationObserver((mutations) => {
+    if (!mutations || !mutations.length) {
+      return;
+    }
+
+    let allowInit = false;
+
+    // Check if AWB elements added, and run Init function.
+    mutations.forEach(({ addedNodes }) => {
+      if (!allowInit && addedNodes && addedNodes.length) {
+        addedNodes.forEach((node) => {
+          if (!allowInit && node.tagName) {
+            if (
+              node.classList.contains('nk-awb') ||
+              node.classList.contains('nk-awb-after-vc_row') ||
+              node.classList.contains('nk-awb-after-vc_column')
+            ) {
+              allowInit = true;
+            } else if (
+              node.firstElementChild &&
+              node.querySelector('.nk-awb, .nk-awb-after-vc_row, .nk-awb-after-vc_column')
+            ) {
+              allowInit = true;
+            }
+          }
+        });
+      }
+    });
+
+    if (allowInit) {
+      throttledInitAwb();
+    }
+  }).observe(document.documentElement, {
     childList: true,
     subtree: true,
   });
