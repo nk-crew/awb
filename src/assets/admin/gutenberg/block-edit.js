@@ -35,7 +35,7 @@ const {
   InnerBlocks,
   MediaUpload,
   BlockControls,
-  BlockAlignmentToolbar,
+  BlockAlignmentControl,
 } = wp.blockEditor;
 
 const useInnerBlocksProps = __stableUseInnerBlocksProps || __experimentalUseInnerBlocksProps;
@@ -56,7 +56,7 @@ const { useSelect } = wp.data;
 
 const AWBData = window.AWBGutenbergData;
 
-const validAlignments = ['full', 'wide'];
+const validAlignments = ['none', 'full', 'wide'];
 
 /**
  * Get icon for toolbar.
@@ -910,7 +910,7 @@ export function BlockEdit(props) {
               onClick={() => setAttributes({ align: align === 'full' ? '' : 'full' })}
             />
           ) : (
-            <BlockAlignmentToolbar
+            <BlockAlignmentControl
               controls={validAlignments}
               value={align}
               onChange={(v) => setAttributes({ align: v })}

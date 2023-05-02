@@ -18,13 +18,9 @@ const AWBData = window.AWBGutenbergData;
 
 const { addFilter } = wp.hooks;
 
-const { PanelBody, ToolbarButton, BaseControl } = wp.components;
+const { PanelBody, ToolbarGroup, ToolbarButton, BaseControl } = wp.components;
 
 const { hasBlockSupport } = wp.blocks;
-
-const { BlockAlignmentToolbar } = wp.blockEditor;
-
-const validAlignments = ['full', 'wide'];
 
 const { __ } = wp.i18n;
 
@@ -131,25 +127,61 @@ function addBackgroundControls(Control, props) {
         <BlockEdit {...awbProps} inspectorControlsOnly />
         <PanelBody>
           <BaseControl label={__('Full width background')}>
-            {AWBData.full_width_fallback ? (
-              /* Fallback for align full */
-              <ToolbarButton
-                icon="align-full-width"
-                label={__('Full Width')}
-                isActive={awbProps.attributes.align === 'full'}
-                onClick={() =>
-                  awbProps.setAttributes({
-                    align: awbProps.attributes.align === 'full' ? '' : 'full',
-                  })
-                }
-              />
-            ) : (
-              <BlockAlignmentToolbar
-                controls={validAlignments}
-                value={awbProps.attributes.align}
-                onChange={(v) => awbProps.setAttributes({ align: v })}
-              />
-            )}
+            <ToolbarGroup>
+              {AWBData.full_width_fallback ? (
+                /* Fallback for align full */
+                <ToolbarButton
+                  icon="align-full-width"
+                  label={__('Full Width')}
+                  isActive={awbProps.attributes.align === 'full'}
+                  onClick={() =>
+                    awbProps.setAttributes({
+                      align: awbProps.attributes.align === 'full' ? '' : 'full',
+                    })
+                  }
+                />
+              ) : (
+                <>
+                  {/*
+                   * We can't use the BlockAlignmentToolbar just because our plugin is used
+                   * inside the Ghost Kit columns and `BlockAlignmentToolbar` will not display
+                   * full and wide alignment in this case */}
+                  <ToolbarButton
+                    icon={
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M5 15h14V9H5v6zm0 4.8h14v-1.5H5v1.5zM5 4.2v1.5h14V4.2H5z" />
+                      </svg>
+                    }
+                    label={__('None')}
+                    onClick={() =>
+                      awbProps.setAttributes({
+                        align: '',
+                      })
+                    }
+                  />
+                  <ToolbarButton
+                    icon="align-full-width"
+                    label={__('Full width')}
+                    isActive={awbProps.attributes.align === 'full'}
+                    onClick={() =>
+                      awbProps.setAttributes({
+                        align: awbProps.attributes.align === 'full' ? '' : 'full',
+                      })
+                    }
+                  />
+                  <ToolbarButton
+                    icon="align-wide"
+                    label={__('Wide width')}
+                    isActive={awbProps.attributes.align === 'wide'}
+                    onClick={() =>
+                      awbProps.setAttributes({
+                        align: awbProps.attributes.align === 'wide' ? '' : 'wide',
+                      })
+                    }
+                  />
+                </>
+              )}
+            </ToolbarGroup>
           </BaseControl>
         </PanelBody>
       </PanelBody>
