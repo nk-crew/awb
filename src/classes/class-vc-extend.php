@@ -298,6 +298,7 @@ class NK_AWB_VC_Extend {
                 'value'            => array(
                     esc_html__( 'Cover', '@@text_domain' ) => 'cover',
                     esc_html__( 'Contain', '@@text_domain' ) => 'contain',
+                    esc_html__( 'Fill', '@@text_domain' )  => 'fill',
                     esc_html__( 'Pattern', '@@text_domain' ) => 'pattern',
                 ),
                 'edit_field_class' => 'vc_col-sm-6',

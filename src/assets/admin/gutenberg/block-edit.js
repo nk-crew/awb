@@ -502,6 +502,10 @@ export function RenderInspectorControls(props) {
                         value: 'contain',
                       },
                       {
+                        label: __('Fill'),
+                        value: 'fill',
+                      },
+                      {
                         label: __('Pattern'),
                         value: 'pattern',
                       },

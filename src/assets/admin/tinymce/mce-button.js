@@ -147,6 +147,7 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
                     {
                       cover: 'Cover',
                       contain: 'Contain',
+                      fill: 'Fill',
                       pattern: 'Pattern',
                     },
                     atts.awb_image_background_size
