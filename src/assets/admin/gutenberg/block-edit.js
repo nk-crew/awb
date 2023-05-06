@@ -552,6 +552,7 @@ export function RenderInspectorControls(props) {
                 value={backgroundColor}
                 onChange={(val) => setAttributes({ backgroundColor: val })}
                 alpha
+                gradient
               />
             </PanelBody>
           ) : null}
@@ -570,6 +571,7 @@ export function RenderInspectorControls(props) {
               value={color}
               onChange={(val) => setAttributes({ color: val })}
               alpha
+              gradient
             />
           </PanelBody>
 
@@ -768,7 +770,7 @@ export function RenderEditorPreview({ attributes, clientId }) {
   return (
     <div
       className="awb-gutenberg-preview-block"
-      style={backgroundColor ? { backgroundColor } : null}
+      style={backgroundColor ? { background: backgroundColor } : null}
     >
       {useJarallax ? (
         <Jarallax
@@ -786,7 +788,7 @@ export function RenderEditorPreview({ attributes, clientId }) {
           }}
         />
       )}
-      {color ? <div className="nk-awb-overlay" style={{ backgroundColor: color }} /> : ''}
+      {color ? <div className="nk-awb-overlay" style={{ background: color }} /> : ''}
       <EditorStyles
         styles={`
           #block-${clientId} > .awb-gutenberg-preview-block > .awb-gutenberg-preview-block-inner img {

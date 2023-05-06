@@ -141,7 +141,7 @@ export default function BlockSave(props) {
   // awb wrap inner html
   let wrapHTML = '';
   if (color) {
-    wrapHTML += `<div class="nk-awb-overlay" style="background-color: ${color};"></div>`;
+    wrapHTML += `<div class="nk-awb-overlay" style="background: ${color};"></div>`;
   }
   if (useFeaturedImage || resultImg || resultAtts.video) {
     const opacityStyle =
@@ -155,7 +155,7 @@ export default function BlockSave(props) {
   wrapHTML = wrapHTML ? (
     <div
       className="nk-awb-wrap"
-      style={backgroundColor ? { backgroundColor } : null}
+      style={backgroundColor ? { background: backgroundColor } : null}
       {...getDataAttributes(resultAtts)}
       // eslint-disable-next-line react/no-danger
       dangerouslySetInnerHTML={{ __html: wrapHTML }}

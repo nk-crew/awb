@@ -1,111 +1,137 @@
 /**
+ * External dependencies
+ */
+import classnames from 'classnames/dedupe';
+
+/**
  * WordPress dependencies
  */
-const WPColorPicker = wp.components.ColorPicker;
+const { useSelect } = wp.data;
 
-const { Component } = wp.element;
+const { Dropdown, Button, TabPanel, ColorPalette, GradientPicker } = wp.components;
 
-const { __ } = wp.i18n;
+const { __experimentalUseMultipleOriginColorsAndGradients: useMultipleOriginColorsAndGradients } =
+  wp.blockEditor;
 
-const { Dropdown, Tooltip, BaseControl } = wp.components;
+function useColors() {
+  // New way to get colors and gradients.
+  if (useMultipleOriginColorsAndGradients && useMultipleOriginColorsAndGradients()) {
+    const colorsData = useMultipleOriginColorsAndGradients();
+    return {
+      colors: colorsData.colors,
+      gradients: colorsData.gradients,
+    };
+  }
 
-const { ColorPalette } = wp.blockEditor;
+  // Old way.
+  const { colors, gradients } = useSelect((select) => {
+    const settings = select('core/block-editor').getSettings();
+
+    const themeColors = [];
+    const themeGradients = [];
+
+    if (settings.colors && settings.colors.length) {
+      themeColors.push({ name: 'Theme', colors: settings.colors });
+    }
+    if (settings.gradients && settings.gradients.length) {
+      themeGradients.push({ name: 'Theme', gradients: settings.gradients });
+    }
+
+    return {
+      colors: themeColors,
+      gradients: themeGradients,
+    };
+  });
+
+  return { colors, gradients };
+}
 
 /**
  * Component Class
  */
-export default class ColorPicker extends Component {
-  constructor(...args) {
-    super(...args);
+export default function ColorPicker(props) {
+  const { label, value, onChange, alpha = false, gradient = false, afterDropdownContent } = props;
+  const { colors, gradients } = useColors();
 
-    // These states used to fix components re-rendering
-    this.state = {
-      keyForPalette: this.props.value,
-      keyForPicker: this.props.value,
-    };
-  }
+  const isGradient = value && value.match(/gradient/);
+  const colorValue = isGradient ? undefined : value;
+  const gradientValue = isGradient ? value : undefined;
 
-  render() {
-    const {
-      value,
-      onChange,
-      label,
-      help,
-      alpha = false,
-      colorPalette = true,
-      hint = __('Custom Color Picker', '@@text_domain'),
-      afterDropdownContent,
-    } = this.props;
+  const tabs = {
+    solid: (
+      <ColorPalette
+        colors={colors}
+        value={colorValue}
+        enableAlpha={alpha}
+        onChange={(val) => {
+          onChange(val);
+        }}
+        __experimentalHasMultipleOrigins
+        __experimentalIsRenderedInSidebar
+      />
+    ),
+    gradient: (
+      <GradientPicker
+        __nextHasNoMargin
+        value={gradientValue}
+        onChange={(val) => {
+          onChange(val);
+        }}
+        gradients={gradients}
+      />
+    ),
+  };
 
-    return (
-      <BaseControl label={label} help={help} className="awb-component-color-picker-wrapper">
-        <Dropdown
-          position="bottom left"
-          className="awb-component-color-picker__dropdown"
-          contentClassName="awb-component-color-picker__dropdown-content"
-          renderToggle={({ isOpen, onToggle }) => (
-            <Tooltip text={hint}>
-              <button
-                type="button"
-                aria-expanded={isOpen}
-                className="awb-component-color-toggle"
-                onClick={onToggle}
-                aria-label={hint}
-                style={{ color: value || '' }}
-              >
-                <span />
-              </button>
-            </Tooltip>
+  return (
+    <Dropdown
+      className="awb-component-color-picker__dropdown"
+      contentClassName="awb-component-color-picker__dropdown-content"
+      popoverProps={{
+        placement: 'left-start',
+        offset: 36,
+        shift: true,
+      }}
+      renderToggle={({ isOpen, onToggle }) => (
+        <Button
+          className={classnames(
+            'awb-component-color-toggle',
+            isOpen ? 'awb-component-color-toggle-active' : ''
           )}
-          renderContent={() => (
-            <div className="awb-component-color-picker">
-              <WPColorPicker
-                color={value}
-                onChangeComplete={(color) => {
-                  let colorString;
-
-                  if (typeof color.rgb === 'undefined' || color.rgb.a === 1) {
-                    colorString = color.hex;
-                  } else {
-                    const { r, g, b, a } = color.rgb;
-                    colorString = `rgba(${r}, ${g}, ${b}, ${a})`;
-                  }
-
-                  onChange(colorString || '');
-
-                  this.setState({
-                    keyForPalette: colorString,
-                  });
-                }}
-                disableAlpha={!alpha}
-                key={this.state.keyForPicker}
-              />
-              {colorPalette ? (
-                <BaseControl
-                  label={__('Color Palette', '@@text_domain')}
-                  className="awb-component-color-picker-palette"
-                >
-                  <ColorPalette
-                    value={value}
-                    onChange={(color) => {
-                      onChange(color || '');
-
-                      this.setState({
-                        keyForPicker: color,
-                      });
-                    }}
-                    disableCustomColors
-                    key={this.state.keyForPalette}
-                  />
-                </BaseControl>
-              ) : (
-                ''
-              )}
-              {afterDropdownContent || ''}
-            </div>
+          onClick={onToggle}
+        >
+          <span
+            className="awb-component-color-toggle-indicator"
+            style={{ background: value || '' }}
+          />
+          <span className="awb-component-color-toggle-label">{label}</span>
+        </Button>
+      )}
+      renderContent={() => (
+        <div className="awb-component-color-picker">
+          {gradient ? (
+            <TabPanel
+              tabs={[
+                {
+                  name: 'solid',
+                  title: 'Solid',
+                },
+                {
+                  name: 'gradient',
+                  title: 'Gradient',
+                },
+              ]}
+              initialTabName={isGradient ? 'gradient' : 'solid'}
+            >
+              {(tab) => {
+                return tabs[tab.name];
+              }}
+            </TabPanel>
+          ) : (
+            tabs.solid
           )}
-        />
-      </BaseControl>
-    );
-  }
+          {afterDropdownContent || ''}
+        </div>
+      )}
+    />
+  );
 }
