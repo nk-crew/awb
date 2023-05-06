@@ -5,6 +5,7 @@ import metadata from './block.json';
 import iconAWB from './icons/awb.svg';
 import { BlockEdit } from './block-edit';
 import BlockSave from './block-save';
+import deprecated from './deprecated';
 
 const validAlignments = ['full', 'wide'];
 
@@ -29,4 +30,5 @@ export const settings = {
   },
   edit: BlockEdit,
   save: BlockSave,
+  deprecated,
 };

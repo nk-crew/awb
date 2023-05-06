@@ -10,7 +10,14 @@
   "supports": {
     "anchor": true,
     "className": true,
-    "html": false
+    "html": false,
+    "spacing": {
+      "blockGap": true,
+      "__experimentalDefaultControls": {
+        "blockGap": true
+      }
+    },
+    "__experimentalLayout": true
   },
   "attributes": {
     "type": {

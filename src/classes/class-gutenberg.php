@@ -18,7 +18,7 @@ class NK_AWB_Gutenberg {
      */
     public function __construct() {
         // work only if Gutenberg available.
-        if ( function_exists( 'register_block_type' ) ) {
+        if ( function_exists( 'register_block_type_from_metadata' ) ) {
             $this->init_hooks();
         }
     }
@@ -63,7 +63,7 @@ class NK_AWB_Gutenberg {
         wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );
 
         // register block.
-        register_block_type(
+        register_block_type_from_metadata(
             nk_awb()->plugin_path . 'assets/admin/gutenberg',
             array(
                 'render_callback' => array( $this, 'render_block' ),

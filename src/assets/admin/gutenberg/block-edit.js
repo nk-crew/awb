@@ -892,10 +892,15 @@ export function BlockEdit(props) {
   const blockProps = useBlockProps({
     className,
   });
-  const { children, ...innerBlocksProps } = useInnerBlocksProps(blockProps, {
-    templateLock: false,
-    renderAppender: hasChildBlocks ? undefined : () => <InnerBlocks.ButtonBlockAppender />,
-  });
+  const innerBlocksProps = useInnerBlocksProps(
+    {
+      className: 'nk-awb-wrap-content',
+    },
+    {
+      templateLock: false,
+      renderAppender: hasChildBlocks ? undefined : () => <InnerBlocks.ButtonBlockAppender />,
+    }
+  );
 
   return (
     <Fragment>
@@ -1020,9 +1025,9 @@ export function BlockEdit(props) {
         <RenderInspectorControls {...props} />
       </InspectorControls>
 
-      <div {...innerBlocksProps}>
+      <div {...blockProps}>
         <RenderEditorPreview {...props} />
-        {children}
+        <div {...innerBlocksProps} />
       </div>
     </Fragment>
   );

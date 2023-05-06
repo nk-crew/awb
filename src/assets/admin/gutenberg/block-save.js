@@ -174,12 +174,14 @@ export default function BlockSave(props) {
   const blockProps = useBlockProps.save({
     className,
   });
-  const { children, ...innerBlocksProps } = useInnerBlocksProps.save(blockProps);
+  const innerBlocksProps = useInnerBlocksProps.save({
+    className: 'nk-awb-wrap-content',
+  });
 
   return (
-    <div {...innerBlocksProps}>
+    <div {...blockProps}>
       {wrapHTML}
-      {children}
+      <div {...innerBlocksProps} />
     </div>
   );
 }
