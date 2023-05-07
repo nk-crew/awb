@@ -98,10 +98,6 @@ class AWB_Settings {
                 'id'    => 'awb_general',
                 'title' => esc_html__( 'General', '@@text_domain' ),
             ),
-            array(
-                'id'    => 'awb_pro',
-                'title' => esc_html__( 'PRO', '@@text_domain' ),
-            ),
         );
 
         return $sections;
@@ -146,23 +142,6 @@ class AWB_Settings {
                         'opera'      => 'Opera',
                     ),
                     'default'  => array(),
-                ),
-            ),
-            'awb_pro' => array(
-                array(
-                    'name' => 'pro_notice',
-                    'type' => 'html',
-                    'desc' => '</p>
-                    <p>Subscribe to get notified when AWB PRO will be available.</p>
-                    <p>The main features of PRO version:</p>
-                    <ul class="ul-disc">
-                        <li>Multi layered parallax</li>
-                        <li>Gradient backgrounds</li>
-                        <li>Animated colors (transition from one color to another)</li>
-                        <li>Blur parallax</li>
-                        <li>And much more</li>
-                    </ul>
-                    <a class="awb-pro-subscribe-btn" href="http://eepurl.com/dE4fxX">Subscribe</a>',
                 ),
             ),
         );
