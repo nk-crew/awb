@@ -2,7 +2,6 @@
  * Name    : Advanced WordPress Backgrounds
  * Author  : nK https://nkdev.info
  */
-
 import { throttle } from 'throttle-debounce';
 
 import { on, trigger } from './utils/events';
@@ -17,13 +16,12 @@ import './features/srcset-fix';
 import './features/tt-themes-video-style-fix';
 import './features/jarallax';
 
-const AWB = {
-  selector: '.nk-awb .nk-awb-wrap:not(.nk-awb-rendered)',
-  events: {
-    on,
-    trigger,
-  },
-  getData,
+const AWB = getData();
+
+AWB.selector = '.nk-awb .nk-awb-wrap:not(.nk-awb-rendered)';
+AWB.events = {
+  on,
+  trigger,
 };
 
 /**
@@ -95,6 +93,9 @@ new window.MutationObserver((mutations) => {
 
 // Add object globally.
 window.AWB = AWB;
+
+// Trigger the ready event for 3rd-party code, which relies on `AWB` variable.
+trigger(document, 'ready');
 
 // Fallback.
 window.nkAwbInit = function () {

@@ -6,7 +6,7 @@ import deepEqual from 'deep-equal';
 
 import EditorStyles from '../components/editor-styles';
 
-const AWBData = window.AWBGutenbergData;
+const { AWBGutenbergData } = window;
 
 const { __ } = wp.i18n;
 
@@ -449,7 +449,7 @@ function addSaveProps(extraProps, blockType, attributes) {
 }
 
 // enable only if GhostKit is not installed.
-if (!AWBData.is_ghostkit_active) {
+if (!AWBGutenbergData.is_ghostkit_active) {
   // Init filters.
   addFilter(
     'blocks.registerBlockType',

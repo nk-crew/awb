@@ -106,8 +106,9 @@ class NK_AWB {
 
         wp_localize_script(
             'awb',
-            'AWBData',
+            'AWB',
             array(
+                'version'  => '@@plugin_version',
                 'settings' => array(
                     'disable_parallax'    => array_keys( AWB_Settings::get_option( 'disable_parallax', 'awb_general', array() ) ? AWB_Settings::get_option( 'disable_parallax', 'awb_general', array() ) : array() ),
                     'disable_video'       => array_keys( AWB_Settings::get_option( 'disable_video', 'awb_general', array() ) ? AWB_Settings::get_option( 'disable_video', 'awb_general', array() ) : array() ),

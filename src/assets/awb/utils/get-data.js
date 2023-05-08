@@ -1,4 +1,4 @@
-const { AWBData = {} } = window;
+const { AWB } = window;
 
 // Thanks https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser/9851769
 const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/g.test(
@@ -22,12 +22,8 @@ const isOpera =
 let disableParallax = false;
 let disableVideo = false;
 
-if (
-  AWBData.settings &&
-  AWBData.settings.disable_parallax &&
-  AWBData.settings.disable_parallax.length
-) {
-  AWBData.settings.disable_parallax.forEach((device) => {
+if (AWB.settings && AWB.settings.disable_parallax && AWB.settings.disable_parallax.length) {
+  AWB.settings.disable_parallax.forEach((device) => {
     if (disableParallax) {
       return;
     }
@@ -61,8 +57,8 @@ if (
     }
   });
 }
-if (AWBData.settings && AWBData.settings.disable_video && AWBData.settings.disable_video.length) {
-  AWBData.settings.disable_video.forEach((device) => {
+if (AWB.settings && AWB.settings.disable_video && AWB.settings.disable_video.length) {
+  AWB.settings.disable_video.forEach((device) => {
     if (disableVideo) {
       return;
     }
@@ -97,6 +93,10 @@ if (AWBData.settings && AWBData.settings.disable_video && AWBData.settings.disab
   });
 }
 
+AWB.isMobile = isMobile;
+AWB.disableParallax = disableParallax;
+AWB.disableVideo = disableVideo;
+
 export function getData() {
-  return { settings: {}, ...AWBData, isMobile, disableParallax, disableVideo };
+  return AWB;
 }

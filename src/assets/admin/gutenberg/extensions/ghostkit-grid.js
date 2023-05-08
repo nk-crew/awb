@@ -14,7 +14,7 @@ import GhostKitGridWidePreview from '../components/ghostkit-grid-wide-preview';
 /**
  * WordPress Dependencies
  */
-const AWBData = window.AWBGutenbergData;
+const { AWBGutenbergData } = window;
 
 const { addFilter } = wp.hooks;
 
@@ -128,7 +128,7 @@ function addBackgroundControls(Control, props) {
         <PanelBody>
           <BaseControl label={__('Full width background')}>
             <ToolbarGroup>
-              {AWBData.full_width_fallback ? (
+              {AWBGutenbergData.full_width_fallback ? (
                 /* Fallback for align full */
                 <ToolbarButton
                   icon="align-full-width"

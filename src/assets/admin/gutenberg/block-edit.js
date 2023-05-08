@@ -54,7 +54,7 @@ const {
 
 const { useSelect } = wp.data;
 
-const AWBData = window.AWBGutenbergData;
+const { AWBGutenbergData } = window;
 
 const validAlignments = ['none', 'full', 'wide'];
 
@@ -738,7 +738,7 @@ export function RenderEditorPreview({ attributes, clientId }) {
     }
 
     if (useFeaturedImage) {
-      jarallaxSrc = featuredImageId ? featuredImageUrl || '' : AWBData.placeholder_url;
+      jarallaxSrc = featuredImageId ? featuredImageUrl || '' : AWBGutenbergData.placeholder_url;
 
       if (jarallaxSrc) {
         previewHTML = `<img src="${jarallaxSrc}" class="jarallax-img" alt="" style="object-fit: ${
@@ -912,7 +912,7 @@ export function BlockEdit(props) {
     <Fragment>
       <BlockControls>
         <ToolbarGroup>
-          {AWBData.full_width_fallback ? (
+          {AWBGutenbergData.full_width_fallback ? (
             /* Fallback for align full */
             <ToolbarButton
               icon="align-full-width"
