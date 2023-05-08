@@ -18,7 +18,7 @@ $(() => {
     }
 
     const $this = e.view.$el.children('.vc_row, .wpb_column');
-    const $awb = $this.children('.nk-awb-wrap');
+    const $awb = $this.children('.nk-awb-wrap:not(:last)');
 
     // destroy jarallax
     const $jarallax = $awb.find('[id*="jarallax"]').length ? $awb[0] : false;
@@ -28,13 +28,6 @@ $(() => {
 
     // remove awb block
     $awb.remove();
-
-    // init awb if needed
-    const wnd = vc.$frame[0].contentWindow;
-    const nkAwbInit = wnd ? wnd.nkAwbInit : false;
-    if ($this.children('.nk-awb') && nkAwbInit) {
-      nkAwbInit();
-    }
   });
 
   // shortcode backend editor
