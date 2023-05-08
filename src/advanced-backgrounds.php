@@ -102,8 +102,7 @@ class NK_AWB {
     public function register_scripts() {
         wp_register_script( 'jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/dist/jarallax.min.js', array(), '2.1.3', true );
         wp_register_script( 'jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/dist/jarallax-video.min.js', array( 'jarallax' ), '2.1.3', true );
-        wp_register_script( 'awb-mouse-parallax', nk_awb()->plugin_url . 'assets/awb/awb-mouse-parallax.min.js', array(), '@@plugin_version', true );
-        wp_register_script( 'awb', nk_awb()->plugin_url . 'assets/awb/awb.min.js', array( 'jarallax', 'jarallax-video', 'awb-mouse-parallax' ), '@@plugin_version', true );
+        wp_register_script( 'awb', nk_awb()->plugin_url . 'assets/awb/awb.min.js', array( 'jarallax', 'jarallax-video' ), '@@plugin_version', true );
 
         wp_localize_script(
             'awb',

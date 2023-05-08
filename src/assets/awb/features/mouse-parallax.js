@@ -3,15 +3,15 @@
  */
 import { throttle } from 'throttle-debounce';
 
+import { on } from '../utils/events';
+import { getData } from '../utils/get-data';
+
 // variables
 const { IntersectionObserver } = window;
 
-// Thanks https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser/9851769
-const isMobile = /Android|iPhone|iPad|iPod|BlackBerry|Windows Phone/g.test(
-  navigator.userAgent || navigator.vendor || window.opera
-);
+const { isMobile } = getData();
 
-let $parallaxMouseList = [];
+const $parallaxMouseList = [];
 let parallaxMouseFirstRun = 1;
 
 // update rects of visible sections.
@@ -26,10 +26,10 @@ function updateRects() {
 const throttledUpdateRects = throttle(200, updateRects);
 setInterval(updateRects, 3000);
 
-document.addEventListener('resize', throttledUpdateRects, { passive: true });
+window.addEventListener('resize', throttledUpdateRects, { passive: true });
+window.addEventListener('orientationchange', throttledUpdateRects, { passive: true });
+window.addEventListener('load', throttledUpdateRects, { passive: true });
 document.addEventListener('scroll', throttledUpdateRects, { passive: true });
-document.addEventListener('orientationchange', throttledUpdateRects, { passive: true });
-document.addEventListener('load', throttledUpdateRects, { passive: true });
 
 // run parallax animation
 function parallaxMouseRun(x, y, deviceOrientation) {
@@ -121,82 +121,43 @@ function initEvents() {
   }
 }
 
-function init() {
-  const $newParallax = document.querySelectorAll(
-    '.nk-awb .nk-awb-wrap[data-awb-mouse-parallax-size]:not(.nk-awb-mouse-parallax) > .nk-awb-inner'
-  );
-
-  if ($newParallax && $newParallax.length) {
-    // add data to new parallax blocks.
-    $newParallax.forEach(($el) => {
-      const $parent = $el.parentNode;
-      const size = parseFloat($parent.getAttribute('data-awb-mouse-parallax-size')) || 30;
-      const speed = parseFloat($parent.getAttribute('data-awb-mouse-parallax-speed')) || 10000;
-
-      $parent.classList.add('nk-awb-mouse-parallax');
-
-      $el.awbMouseData = {
-        // is_in_viewport: isInViewport($parent) ? isVisible($parent) : 0,
-        is_in_viewport: 0,
-        rect: $parent.getBoundingClientRect(),
-        size,
-        speed: speed / 1000,
-      };
-
-      $el.style.left = `${-size}px`;
-      $el.style.right = `${-size}px`;
-      $el.style.top = `${-size}px`;
-      $el.style.bottom = `${-size}px`;
-
-      visibilityObserver.observe($el);
-    });
-
-    // add new parallax blocks
-    if ($parallaxMouseList.length) {
-      $parallaxMouseList = [...$parallaxMouseList, ...$newParallax];
-
-      // first init parallax
-    } else {
-      $parallaxMouseList = $newParallax;
-
-      initEvents();
-    }
-  }
-}
-
-const throttledInit = throttle(200, init);
-
-init();
-
-new window.MutationObserver((mutations) => {
-  if (!mutations || !mutations.length) {
+function prepareMouseParallax($el) {
+  if (
+    $el.classList.contains('nk-awb-mouse-parallax') ||
+    !$el.getAttribute('data-awb-mouse-parallax-size')
+  ) {
     return;
   }
 
-  let allowInit = false;
+  const $inner = $el.querySelector(':scope > .nk-awb-inner');
+  const size = parseFloat($el.getAttribute('data-awb-mouse-parallax-size')) || 30;
+  const speed = parseFloat($el.getAttribute('data-awb-mouse-parallax-speed')) || 10000;
 
-  // Check if AWB elements added, and run Init function.
-  mutations.forEach(({ addedNodes }) => {
-    if (!allowInit && addedNodes && addedNodes.length) {
-      addedNodes.forEach((node) => {
-        if (!allowInit && node.tagName) {
-          if (typeof node.dataset.awbMouseParallaxSize !== 'undefined') {
-            allowInit = true;
-          } else if (
-            node.firstElementChild &&
-            node.querySelector('[data-awb-mouse-parallax-size]:not(.nk-awb-mouse-parallax)')
-          ) {
-            allowInit = true;
-          }
-        }
-      });
-    }
-  });
+  $el.classList.add('nk-awb-mouse-parallax');
 
-  if (allowInit) {
-    throttledInit();
+  $inner.awbMouseData = {
+    // is_in_viewport: isInViewport($el) ? isVisible($el) : 0,
+    is_in_viewport: 0,
+    rect: $el.getBoundingClientRect(),
+    size,
+    speed: speed / 1000,
+  };
+
+  $inner.style.left = `${-size}px`;
+  $inner.style.right = `${-size}px`;
+  $inner.style.top = `${-size}px`;
+  $inner.style.bottom = `${-size}px`;
+
+  visibilityObserver.observe($inner);
+
+  $parallaxMouseList.push($inner);
+
+  // init parallax when first mouse parallax added.
+  if ($parallaxMouseList.length === 1) {
+    initEvents();
   }
-}).observe(document.documentElement, {
-  childList: true,
-  subtree: true,
+}
+
+on('init', (e) => {
+  prepareMouseParallax(e.target);
 });
