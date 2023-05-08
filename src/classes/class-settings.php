@@ -163,7 +163,7 @@ class AWB_Settings {
 
         echo '</div>';
 
-        wp_enqueue_style( 'nk-awb-settings', nk_awb()->plugin_url . 'assets/admin/settings/style.min.css', '', '@@plugin_version' );
+        wp_enqueue_style( 'nk-awb-settings', nk_awb()->plugin_url . 'assets/admin/settings/style.min.css', array(), '@@plugin_version' );
         wp_enqueue_script( 'nk-awb-settings', nk_awb()->plugin_url . 'assets/admin/settings/script.min.js', array( 'jquery' ), '@@plugin_version', true );
     }
 }
