@@ -44,8 +44,8 @@ class NK_AWB_Shortcode {
         }
         self::$scripts_enqueued = true;
 
-        wp_enqueue_script( 'nk-awb' );
-        wp_enqueue_style( 'nk-awb' );
+        wp_enqueue_script( 'awb' );
+        wp_enqueue_style( 'awb' );
     }
 
     /**
