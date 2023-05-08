@@ -56,6 +56,7 @@ cfg.compile_scss_files_src = ['{src}/*assets/**/*.scss'];
 
 // Compile JS files.
 cfg.compile_js_files_src = [
+  '{src}/*assets/awb/awb-mouse-parallax.js',
   '{src}/*assets/awb/awb.js',
   '{src}/*assets/admin/settings/script.js',
   '{src}/*assets/admin/tinymce/mce-awb-attach-image.js',

@@ -165,6 +165,6 @@
   "usesContext": ["postId", "postType"],
   "editorScript": "awb-gutenberg",
   "editorStyle": "awb-gutenberg",
-  "script": "nk-awb",
-  "style": "nk-awb"
+  "script": "awb",
+  "style": "awb"
 }

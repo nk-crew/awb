@@ -6,10 +6,7 @@
 import { throttle } from 'throttle-debounce';
 
 // variables
-const { AWBData = {} } = window;
-const $ = window.jQuery;
-const $wnd = $(window);
-const $doc = $(document);
+const { AWBData = {}, jarallax } = window;
 
 // Thanks https://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser/9851769
 /* eslint-disable */
@@ -29,9 +26,9 @@ const isOpera =
   (!!window.opr && !!window.opr.addons) ||
   !!window.opera ||
   navigator.userAgent.indexOf(' OPR/') >= 0;
-const isTwentyTwenty = $(
+const isTwentyTwenty = !!document.querySelector(
   '#twentytwenty-style-css, #twenty-twenty-style-css, #twenty-twenty-one-style-css'
-).length;
+);
 /* eslint-enable */
 
 // disable parallax/video on some devices.
@@ -114,207 +111,48 @@ if (AWBData.settings && AWBData.settings.disable_video && AWBData.settings.disab
 }
 
 /**
- * In Viewport checker
- * return visible percent from 0 to 1
- *
- * @param {Object} $item - jQuery object.
- * @param {Bool} returnRect - return array with result and rect.
- *
- * @return {Mixed} - in viewport flag.
- */
-function isInViewport($item, returnRect) {
-  const rect = $item[0].getBoundingClientRect();
-  let result = 1;
-
-  if (rect.right <= 0 || rect.left >= window.innerWidth) {
-    result = 0;
-  } else if (rect.bottom < 0 && rect.top <= window.innerHeight) {
-    result = 0;
-  } else {
-    const beforeTopEnd = Math.max(0, rect.height + rect.top);
-    const beforeBottomEnd = Math.max(
-      0,
-      rect.height - (rect.top + rect.height - window.innerHeight)
-    );
-    const afterTop = Math.max(0, -rect.top);
-    const beforeBottom = Math.max(0, rect.top + rect.height - window.innerHeight);
-
-    if (rect.height < window.innerHeight) {
-      result = 1 - (afterTop || beforeBottom) / rect.height;
-    } else if (beforeTopEnd <= window.innerHeight) {
-      result = beforeTopEnd / window.innerHeight;
-    } else if (beforeBottomEnd <= window.innerHeight) {
-      result = beforeBottomEnd / window.innerHeight;
-    }
-    result = result < 0 ? 0 : result;
-  }
-  if (returnRect) {
-    return [result, rect];
-  }
-  return result;
-}
-
-/**
- * Mouse Parallax
- */
-let $parallaxMouseList = false;
-let parallaxMouseTimeout;
-let parallaxMouseFirstRun = 1;
-
-// run parallax animation
-function parallaxMouseRun(x, y, deviceOrientation) {
-  let data;
-  let itemX;
-  let itemY;
-  $parallaxMouseList.each(function () {
-    const $this = $(this);
-    data = $this.data('awb-mouse-data');
-
-    // don't animate if block isn't in viewport
-    if (
-      typeof data !== 'object' ||
-      (!data.is_in_viewport && !(deviceOrientation && parallaxMouseFirstRun))
-    ) {
-      return;
-    }
-
-    // device acceleration calculate
-    if (deviceOrientation) {
-      itemX = -data.size * x;
-      itemY = -data.size * y;
-
-      // mouse calculate
-    } else {
-      itemX = (data.rect.width - (x - data.rect.left)) / data.rect.width;
-      itemY = (data.rect.height - (y - data.rect.top)) / data.rect.height;
-      if (itemX > 1 || itemX < 0 || itemY > 1 || itemY < 0) {
-        itemX = 0.5;
-        itemY = 0.5;
-      }
-      itemX = data.size * (itemX - 0.5) * 2;
-      itemY = data.size * (itemY - 0.5) * 2;
-    }
-
-    // if first run orientation on device, set default values without animation
-    if (deviceOrientation && parallaxMouseFirstRun) {
-      $this.css({
-        transform: `translateX(${itemX}px) translateY(${itemY}px) translateZ(0)`,
-      });
-    } else {
-      $this.css({
-        transition: `transform ${
-          deviceOrientation ? 2 : data.speed
-        }s  cubic-bezier(.22, .63, .6, .88)`,
-        transform: `translateX(${itemX}px) translateY(${itemY}px) translateZ(0)`,
-      });
-    }
-  });
-  parallaxMouseFirstRun = 0;
-}
-const throttledParallaxMouseRun = throttle(200, (x, y, deviceOrientation) => {
-  parallaxMouseRun(x, y, deviceOrientation);
-});
-
-function parallaxMouseInit(force) {
-  function run() {
-    const $newParallax = $('.nk-awb .nk-awb-wrap.nk-awb-mouse-parallax').children('.nk-awb-inner');
-    if ($newParallax.length) {
-      // add new parallax blocks
-      if ($parallaxMouseList) {
-        $parallaxMouseList = $newParallax;
-
-        // first init parallax
-      } else {
-        $parallaxMouseList = $newParallax;
-
-        if (isMobile && window.DeviceOrientationEvent) {
-          $wnd.on('deviceorientation', (event) => {
-            throttledParallaxMouseRun(
-              event.originalEvent.gamma / 90,
-              event.originalEvent.beta / 180,
-              true
-            );
-          });
-
-          // no smooth on firefox
-        } else {
-          $wnd.on('mousemove', (event) => {
-            throttledParallaxMouseRun(event.clientX, event.clientY);
-          });
-        }
-      }
-    }
-
-    // update data for parallax blocks
-    if ($parallaxMouseList) {
-      $parallaxMouseList.each(function () {
-        const $this = $(this);
-        const $parent = $this.parent();
-        const size = parseFloat($parent.attr('data-awb-mouse-parallax-size')) || 30;
-        const speed = parseFloat($parent.attr('data-awb-mouse-parallax-speed')) || 10000;
-
-        $this.data('awb-mouse-data', {
-          is_in_viewport: isInViewport($parent) ? $parent.is(':visible') : 0,
-          rect: $parent[0].getBoundingClientRect(),
-          size,
-          speed: speed / 1000,
-        });
-        $this.css({
-          left: -size,
-          right: -size,
-          top: -size,
-          bottom: -size,
-        });
-      });
-    }
-  }
-
-  // run force without timeout
-  clearTimeout(parallaxMouseTimeout);
-  if (force) {
-    run();
-  } else {
-    parallaxMouseTimeout = setTimeout(parallaxMouseTimeout, 100);
-  }
-}
-$wnd.on('resize scroll orientationchange load', parallaxMouseInit);
-setInterval(parallaxMouseInit, 3000);
-
-/**
  * Stretch Background
  */
 function stretchAwb() {
-  $('.nk-awb:not(.wpb_column)')
-    .children('.nk-awb-wrap[data-awb-stretch="true"]')
-    .each(function () {
-      const $this = $(this);
-      const rect = this.getBoundingClientRect();
+  const $blocks = document.querySelectorAll(
+    '.nk-awb:not(.wpb_column) > .nk-awb-wrap[data-awb-stretch="true"]'
+  );
+
+  if ($blocks && $blocks.length) {
+    $blocks.forEach(($el) => {
+      const rect = $el.getBoundingClientRect();
       const { left } = rect;
       const right = window.innerWidth - rect.right;
+      const computedStyles = getComputedStyle($el);
 
-      const ml = parseFloat($this.css('margin-left') || 0);
-      const mr = parseFloat($this.css('margin-right') || 0);
-      $this.css({
-        'margin-left': ml - left,
-        'margin-right': mr - right,
-      });
+      const ml = parseFloat(computedStyles['margin-left'] || 0);
+      const mr = parseFloat(computedStyles['margin-right'] || 0);
+
+      $el.style['margin-left'] = `${ml - left}px`;
+      $el.style['margin-right'] = `${mr - right}px`;
     });
+  }
 
   // column stretch
-  $('.nk-awb.wpb_column')
-    .children('.nk-awb-wrap[data-awb-stretch="true"]')
-    .each(function () {
-      const $this = $(this);
-      const $row = $this.closest('.vc_row');
-      const $col = $this.closest('.wpb_column');
-      const rectAWB = this.getBoundingClientRect();
-      const rectRow = $row[0].getBoundingClientRect();
-      const rectCol = $col[0].getBoundingClientRect();
+  const $columns = document.querySelectorAll(
+    '.nk-awb.wpb_column > .nk-awb-wrap[data-awb-stretch="true"]'
+  );
+
+  if ($columns && $columns.length) {
+    $columns.forEach(($el) => {
+      const $row = $el.closest('.vc_row');
+      const $col = $el.closest('.wpb_column');
+      const rectAWB = $el.getBoundingClientRect();
+      const rectRow = $row.getBoundingClientRect();
+      const rectCol = $col.getBoundingClientRect();
+      const computedStyles = getComputedStyle($el);
+      const computedStylesRow = getComputedStyle($row);
+
       const leftAWB = rectAWB.left;
       const rightAWB = window.innerWidth - rectAWB.right;
-      const leftRow = rectRow.left + (parseFloat($row.css('padding-left')) || 0);
+      const leftRow = rectRow.left + (parseFloat(computedStylesRow['padding-left']) || 0);
       const rightRow =
-        window.innerWidth - rectRow.right + (parseFloat($row.css('padding-right')) || 0);
+        window.innerWidth - rectRow.right + (parseFloat(computedStylesRow['padding-right']) || 0);
       const leftCol = rectCol.left;
       const rightCol = window.innerWidth - rectCol.right;
       const css = {
@@ -327,46 +165,43 @@ function stretchAwb() {
       // Col right is 68.015625
       // I don't know why :(
       if (Math.round(leftRow) === Math.round(leftCol)) {
-        const ml = parseFloat($this.css('margin-left') || 0);
-        css['margin-left'] = ml - leftAWB;
+        const ml = parseFloat(computedStyles['margin-left'] || 0);
+        css['margin-left'] = `${ml - leftAWB}px`;
       }
 
       if (Math.round(rightRow) === Math.round(rightCol)) {
-        const mr = parseFloat($this.css('margin-right') || 0);
-        css['margin-right'] = mr - rightAWB;
+        const mr = parseFloat(computedStyles['margin-right'] || 0);
+        css['margin-right'] = `${mr - rightAWB}px`;
       }
 
-      $this.css(css);
+      $el.style = { ...$el.style, ...css };
     });
+  }
 
   // Gutenberg stretch fallback
   if (AWBData.settings && AWBData.settings.full_width_fallback) {
-    $('.nk-awb.alignfull').each(function () {
-      const $this = $(this).children('.nk-awb-wrap');
+    const $blockAlignfull = document.querySelectorAll('.nk-awb.alignfull > .nk-awb-wrap');
 
-      if (!$this[0]) {
-        return;
-      }
-
-      const rect = $this[0].getBoundingClientRect();
-      const { left } = rect;
+    $blockAlignfull.forEach(($el) => {
+      const rect = $el.getBoundingClientRect();
+      const { left, bottom } = rect;
       const right = window.innerWidth - rect.right;
-      const { bottom } = rect;
+      const computedStyles = getComputedStyle($el);
 
-      const ml = parseFloat($this.css('margin-left') || 0);
-      const mr = parseFloat($this.css('margin-right') || 0);
-      const mb = parseFloat($this.css('margin-bottom') || 0);
+      const ml = parseFloat(computedStyles['margin-left'] || 0);
+      const mr = parseFloat(computedStyles['margin-right'] || 0);
+      const mb = parseFloat(computedStyles['margin-bottom'] || 0);
 
       let changeLeft = ml - left;
       let changeRight = mr - right;
       let changeBottom = '';
 
       // Ghostkit column support
-      if ($this.closest('.ghostkit-col').length) {
-        const $row = $this.closest('.ghostkit-grid');
-        const $col = $this.closest('.ghostkit-col');
-        const rectRow = $row[0].getBoundingClientRect();
-        const rectCol = $col[0].getBoundingClientRect();
+      const $col = $el.closest('.ghostkit-col');
+      if ($col) {
+        const $row = $el.closest('.ghostkit-grid');
+        const rectRow = $row.getBoundingClientRect();
+        const rectCol = $col.getBoundingClientRect();
         const leftRow = rectRow.left;
         const rightRow = window.innerWidth - rectRow.right;
         const leftCol = rectCol.left;
@@ -387,14 +222,13 @@ function stretchAwb() {
         changeBottom = mb - (bottomCol - bottom);
       }
 
-      $this.css({
-        'margin-left': changeLeft,
-        'margin-right': changeRight,
-        'margin-bottom': changeBottom,
-      });
+      $el.style['margin-left'] = `${changeLeft}px`;
+      $el.style['margin-right'] = `${changeRight}px`;
+      $el.style['margin-bottom'] = `${changeBottom}px`;
     });
   }
 }
+const throttledStretchAwb = throttle(200, stretchAwb);
 
 /**
  * Srcset fix with object-fit: cover.
@@ -404,34 +238,35 @@ function stretchAwb() {
  *   https://wordpress.org/support/topic/supplement-to-awb-full-image-on-mobile-blurry/
  */
 function fixSrcsetAwb() {
-  $('.nk-awb .nk-awb-inner img').each(function () {
-    const $img = $(this);
+  const $images = document.querySelectorAll('.nk-awb .nk-awb-inner img');
 
-    if (!$img[0]) {
-      return;
-    }
+  if (!$images || !$images.length) {
+    return;
+  }
 
-    const CSS = window.getComputedStyle(this, null);
+  $images.forEach(($el) => {
+    const CSS = window.getComputedStyle($el, null);
 
     if (CSS && CSS.objectFit && CSS.objectFit === 'cover') {
-      const imgHeight = parseInt(this.getAttribute('height'), 10);
-      const imgWidth = parseInt(this.getAttribute('width'), 10);
+      const imgHeight = parseInt($el.getAttribute('height'), 10);
+      const imgWidth = parseInt($el.getAttribute('width'), 10);
 
       if (imgHeight) {
-        let calculatedWidth = this.clientWidth;
+        let calculatedWidth = $el.clientWidth;
 
-        if (imgWidth / imgHeight > this.clientWidth / this.clientHeight) {
-          calculatedWidth = parseInt((this.clientHeight * imgWidth) / imgHeight, 10);
+        if (imgWidth / imgHeight > $el.clientWidth / $el.clientHeight) {
+          calculatedWidth = parseInt(($el.clientHeight * imgWidth) / imgHeight, 10);
         }
 
         // Make changes only if value changed to prevent image force reload.
-        if (this.getAttribute('sizes') !== `${calculatedWidth}px`) {
-          this.setAttribute('sizes', `${calculatedWidth}px`);
+        if ($el.getAttribute('sizes') !== `${calculatedWidth}px`) {
+          $el.setAttribute('sizes', `${calculatedWidth}px`);
         }
       }
     }
   });
 }
+const throttledFixSrcsetAwb = throttle(200, fixSrcsetAwb);
 
 /**
  * Custom styles fallback if GhostKit plugin is not installed.
@@ -442,91 +277,100 @@ function maybeFallbackGhostkitStyles() {
     return;
   }
 
-  const $blocksWithStyles = $('.nk-awb[data-ghostkit-styles]');
+  const $blocksWithStyles = document.querySelectorAll('.nk-awb[data-ghostkit-styles]');
 
-  if ($blocksWithStyles.length) {
-    $blocksWithStyles.each(function () {
-      customStyles += $(this).attr('data-ghostkit-styles');
-      $(this).removeAttr('data-ghostkit-styles');
-    });
-
-    let $style = $('#ghostkit-awb-custom-css-inline-css');
-    if (!$style.length) {
-      $style = $('<style id="ghostkit-awb-custom-css-inline-css">').appendTo('head');
-    }
-    $style.html(customStyles);
+  if (!$blocksWithStyles || !$blocksWithStyles.length) {
+    return;
   }
+
+  $blocksWithStyles.forEach(($el) => {
+    customStyles += $el.getAttribute('data-ghostkit-styles');
+    $el.removeAttribute('data-ghostkit-styles');
+  });
+
+  let $style = document.querySelector('#ghostkit-awb-custom-css-inline-css');
+  if (!$style) {
+    $style = document.createElement('style');
+    $style.setAttribute('id', 'ghostkit-awb-custom-css-inline-css');
+
+    document.head.appendChild($style);
+  }
+
+  $style.textContent = customStyles;
 }
 
 /**
  * Fix Jetpack Lazy Loading conflict.
  * Jetpack make image clone and our Jarallax stop working.
  */
-$doc.on('jetpack-lazy-loaded-image', '.jarallax-img', (e) => {
-  const $parent = $(e.target).parent().parent();
+// $doc.on('jetpack-lazy-loaded-image', '.jarallax-img', (e) => {
+//   const $parent = $(e.target).parent().parent();
 
-  if ($parent[0].jarallax && $parent[0].jarallax.image && $parent[0].jarallax.image.$item) {
-    $parent[0].jarallax.image.$item = e.target;
-  }
-});
+//   if ($parent[0].jarallax && $parent[0].jarallax.image && $parent[0].jarallax.image.$item) {
+//     $parent[0].jarallax.image.$item = e.target;
+//   }
+// });
 
 /**
  * Main AWB Init
  */
 window.nkAwbInit = function () {
-  // init mouse parallax
-  const $newMousePrallax = $(
-    '.nk-awb .nk-awb-wrap[data-awb-mouse-parallax-size]:not(.nk-awb-mouse-parallax)'
-  );
-  if ($newMousePrallax.length) {
-    $newMousePrallax.addClass('nk-awb-mouse-parallax');
-    parallaxMouseInit(true);
+  // prepare vc_row
+  const $vcRows = document.querySelectorAll('.nk-awb-after-vc_row');
+
+  if ($vcRows && $vcRows.length) {
+    $vcRows.forEach(($el) => {
+      let $vcClearfix = $el.previousElementSibling;
+      $vcClearfix = $vcClearfix.classList.contains('vc_clearfix') ? $vcClearfix : false;
+
+      let $vcRow = ($vcClearfix || $el).previousElementSibling;
+      $vcRow = $vcRow && $vcRow.matches('.vc_row:not(.nk-awb)') ? $vcRow : false;
+
+      if ($vcRow) {
+        const $children = $el.querySelector(':scope > .nk-awb-wrap');
+
+        if ($children) {
+          // remove stretch option from AWB if stretch enabled on ROW
+          if ($vcRow.matches('[data-vc-full-width=true]')) {
+            $children.removeAttr('data-awb-stretch');
+          }
+
+          // insert AWB in row
+          $vcRow.classList.add('nk-awb');
+          $vcRow.append($children);
+        }
+      }
+
+      $el.remove();
+    });
   }
 
-  // prepare vc_row
-  $('.nk-awb-after-vc_row').each(function () {
-    const $this = $(this);
-    let $vcClearfix = $this.prev('.vc_clearfix');
-    $vcClearfix = $vcClearfix.length ? $vcClearfix : false;
-    const $vcRow = ($vcClearfix || $this).prev('.vc_row:not(.nk-awb)');
-
-    if ($vcRow.length) {
-      const $children = $this.children('.nk-awb-wrap');
-
-      // remove stretch option from AWB if stretch enabled on ROW
-      if ($vcRow.is('[data-vc-full-width=true]')) {
-        $children.removeAttr('data-awb-stretch');
-      }
-
-      // insert AWB in row
-      $vcRow.addClass('nk-awb');
-      $vcRow.append($children);
-    }
-
-    $this.remove();
-  });
-
   // prepare vc_column
-  $('.nk-awb-after-vc_column').each(function () {
-    const $this = $(this);
-    const $vcColumn = $this.prev('.wpb_column:not(.nk-awb)');
-    const $vcRow = $vcColumn.closest('.vc_row');
+  const $vcCols = document.querySelectorAll('.nk-awb-after-vc_column');
 
-    if ($vcColumn.length) {
-      const $children = $this.children('.nk-awb-wrap');
+  if ($vcCols && $vcCols.length) {
+    $vcCols.forEach(($el) => {
+      let $vcCol = $el.previousElementSibling;
+      $vcCol = $vcCol && $vcCol.matches('.wpb_column:not(.nk-awb)') ? $vcCol : false;
 
-      // remove stretch option from AWB if stretch enabled on ROW
-      if ($vcRow.is('[data-vc-stretch-content=true]')) {
-        $children.removeAttr('data-awb-stretch');
+      const $vcRow = $vcCol.closest('.vc_row');
+
+      if ($vcCol) {
+        const $children = $el.querySelector(':scope > .nk-awb-wrap');
+
+        // remove stretch option from AWB if stretch enabled on ROW
+        if ($vcRow.matches('[data-vc-stretch-content=true]')) {
+          $children.removeAttribute('data-awb-stretch');
+        }
+
+        // insert AWB in row
+        $vcCol.classList.add('nk-awb');
+        $vcCol.append($children);
       }
 
-      // insert AWB in row
-      $vcColumn.addClass('nk-awb');
-      $vcColumn.append($children);
-    }
-
-    $this.remove();
-  });
+      $el.remove();
+    });
+  }
 
   // Ghostkit styles fallback
   maybeFallbackGhostkitStyles();
@@ -538,15 +382,22 @@ window.nkAwbInit = function () {
   fixSrcsetAwb();
 
   // init jarallax
-  if (typeof $.fn.jarallax === 'undefined') {
+  if (typeof jarallax === 'undefined') {
     return;
   }
 
-  $('.nk-awb .nk-awb-wrap:not(.nk-awb-rendered)').each(function () {
-    const $this = $(this).addClass('nk-awb-rendered');
-    const type = $this.attr('data-awb-type');
-    const imageBgSize = $this.attr('data-awb-image-background-size');
-    const imageBgPosition = $this.attr('data-awb-image-background-position');
+  const $awbWrap = document.querySelectorAll('.nk-awb .nk-awb-wrap:not(.nk-awb-rendered)');
+
+  if (!$awbWrap || !$awbWrap.length) {
+    return;
+  }
+
+  $awbWrap.forEach(function ($el) {
+    $el.classList.add('nk-awb-rendered');
+
+    const type = $el.getAttribute('data-awb-type');
+    const imageBgSize = $el.getAttribute('data-awb-image-background-size');
+    const imageBgPosition = $el.getAttribute('data-awb-image-background-position');
     let video = false;
     let videoStartTime = 0;
     let videoEndTime = 0;
@@ -554,23 +405,23 @@ window.nkAwbInit = function () {
     let videoLoop = true;
     let videoAlwaysPlay = true;
     let videoMobile = false;
-    let parallax = $this.attr('data-awb-parallax');
-    let parallaxSpeed = $this.attr('data-awb-parallax-speed');
+    let parallax = $el.getAttribute('data-awb-parallax');
+    let parallaxSpeed = $el.getAttribute('data-awb-parallax-speed');
     let parallaxMobile =
-      $this.attr('data-awb-parallax-mobile') === 'true' ||
-      $this.attr('data-awb-parallax-mobile') === '1';
+      $el.getAttribute('data-awb-parallax-mobile') === 'true' ||
+      $el.getAttribute('data-awb-parallax-mobile') === '1';
 
     // video type
     if (type === 'yt_vm_video' || type === 'video') {
-      video = $this.attr('data-awb-video');
-      videoStartTime = parseFloat($this.attr('data-awb-video-start-time')) || 0;
-      videoEndTime = parseFloat($this.attr('data-awb-video-end-time')) || 0;
-      videoVolume = parseFloat($this.attr('data-awb-video-volume')) || 0;
-      videoLoop = $this.attr('data-awb-video-loop') !== 'false';
-      videoAlwaysPlay = $this.attr('data-awb-video-always-play') === 'true';
+      video = $el.getAttribute('data-awb-video');
+      videoStartTime = parseFloat($el.getAttribute('data-awb-video-start-time')) || 0;
+      videoEndTime = parseFloat($el.getAttribute('data-awb-video-end-time')) || 0;
+      videoVolume = parseFloat($el.getAttribute('data-awb-video-volume')) || 0;
+      videoLoop = $el.getAttribute('data-awb-video-loop') !== 'false';
+      videoAlwaysPlay = $el.getAttribute('data-awb-video-always-play') === 'true';
       videoMobile =
-        $this.attr('data-awb-video-mobile') === '1' ||
-        $this.attr('data-awb-video-mobile') === 'true';
+        $el.getAttribute('data-awb-video-mobile') === '1' ||
+        $el.getAttribute('data-awb-video-mobile') === 'true';
 
       // we need to enable parallax options to play videos
       // https://github.com/nk-crew/awb/issues/17
@@ -584,13 +435,14 @@ window.nkAwbInit = function () {
     // prevent if no parallax and no video
     if (!parallax && !video) {
       // we need to add object-fit manually, as we don't use Jarallax
-      const objectSize = $this.attr('data-awb-image-background-size') || 'cover';
-      const objectPosition = $this.attr('data-awb-image-background-position') || '50% 50%';
+      const objectSize = $el.getAttribute('data-awb-image-background-size') || 'cover';
+      const objectPosition = $el.getAttribute('data-awb-image-background-position') || '50% 50%';
+      const $image = $el.querySelector('.jarallax-img');
 
-      $this.find('.jarallax-img').css({
-        objectFit: objectSize,
-        objectPosition,
-      });
+      if ($image) {
+        $image.style.objectFit = objectSize;
+        $image.style.objectPosition = objectPosition;
+      }
 
       return;
     }
@@ -623,12 +475,12 @@ window.nkAwbInit = function () {
       jarallaxParams.videoPlayOnlyVisible = !videoAlwaysPlay;
     }
 
-    const $inner = $this.children('.nk-awb-inner');
-    const $pictureImg = $inner.find('picture .jarallax-img');
+    const $inner = $el.querySelector(':scope > .nk-awb-inner');
+    const $pictureImg = $inner.querySelector('picture .jarallax-img');
 
-    if ($pictureImg.length) {
-      $pictureImg.removeClass('jarallax-img');
-      $pictureImg.closest('picture').addClass('jarallax-img');
+    if ($pictureImg) {
+      $pictureImg.classList.remove('jarallax-img');
+      $pictureImg.closest('picture').classList.add('jarallax-img');
     }
 
     // Fix for TwentyTwenty and TwentyTwentyOne (using custom CSS) video styles conflict.
@@ -636,62 +488,66 @@ window.nkAwbInit = function () {
     // https://github.com/WordPress/twentytwentyone/blob/trunk/assets/js/responsive-embeds.js#L14-L30
     if (isTwentyTwenty) {
       jarallaxParams.onInit = function () {
-        $inner.children().addClass('intrinsic-ignore');
+        $inner.children.forEach(($child) => {
+          $child.classList.add('intrinsic-ignore');
+        });
       };
     }
 
-    $inner.jarallax(jarallaxParams);
+    jarallax($inner, jarallaxParams);
   });
 };
 
-// init awb.
-window.nkAwbInit();
 const throttledInitAwb = throttle(200, () => {
   window.nkAwbInit();
 });
-if (window.MutationObserver) {
-  new window.MutationObserver((mutations) => {
-    if (!mutations || !mutations.length) {
-      return;
-    }
 
-    let allowInit = false;
+// init awb.
+window.nkAwbInit();
 
-    // Check if AWB elements added, and run Init function.
-    mutations.forEach(({ addedNodes }) => {
-      if (!allowInit && addedNodes && addedNodes.length) {
-        addedNodes.forEach((node) => {
-          if (!allowInit && node.tagName) {
-            if (
-              node.classList.contains('nk-awb') ||
-              node.classList.contains('nk-awb-after-vc_row') ||
-              node.classList.contains('nk-awb-after-vc_column')
-            ) {
-              allowInit = true;
-            } else if (
-              node.firstElementChild &&
-              node.querySelector('.nk-awb, .nk-awb-after-vc_row, .nk-awb-after-vc_column')
-            ) {
-              allowInit = true;
-            }
+new window.MutationObserver((mutations) => {
+  if (!mutations || !mutations.length) {
+    return;
+  }
+
+  let allowInit = false;
+
+  // Check if AWB elements added, and run Init function.
+  mutations.forEach(({ addedNodes }) => {
+    if (!allowInit && addedNodes && addedNodes.length) {
+      addedNodes.forEach((node) => {
+        if (!allowInit && node.tagName) {
+          if (
+            node.classList.contains('nk-awb') ||
+            node.classList.contains('nk-awb-after-vc_row') ||
+            node.classList.contains('nk-awb-after-vc_column')
+          ) {
+            allowInit = true;
+          } else if (
+            node.firstElementChild &&
+            node.querySelector('.nk-awb, .nk-awb-after-vc_row, .nk-awb-after-vc_column')
+          ) {
+            allowInit = true;
           }
-        });
-      }
-    });
-
-    if (allowInit) {
-      throttledInitAwb();
+        }
+      });
     }
-  }).observe(document.documentElement, {
-    childList: true,
-    subtree: true,
   });
-} else {
-  $(document).on('DOMContentLoaded DOMNodeInserted load', () => {
-    throttledInitAwb();
-  });
-}
 
-// init stretch
-$wnd.on('resize orientationchange load', throttle(200, stretchAwb));
-$wnd.on('resize orientationchange load', throttle(200, fixSrcsetAwb));
+  if (allowInit) {
+    throttledInitAwb();
+  }
+}).observe(document.documentElement, {
+  childList: true,
+  subtree: true,
+});
+
+// init stretch.
+document.addEventListener('resize', throttledStretchAwb, { passive: true });
+document.addEventListener('orientationchange', throttledStretchAwb, { passive: true });
+document.addEventListener('load', throttledStretchAwb, { passive: true });
+
+// init srcset fixes.
+document.addEventListener('resize', throttledFixSrcsetAwb, { passive: true });
+document.addEventListener('orientationchange', throttledFixSrcsetAwb, { passive: true });
+document.addEventListener('load', throttledFixSrcsetAwb, { passive: true });

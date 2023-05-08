@@ -100,12 +100,13 @@ class NK_AWB {
      * Register scripts that will be used in the future when portfolio will be printed.
      */
     public function register_scripts() {
-        wp_register_script( 'jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/dist/jarallax.min.js', array( 'jquery' ), '2.1.3', true );
+        wp_register_script( 'jarallax', nk_awb()->plugin_url . 'assets/vendor/jarallax/dist/jarallax.min.js', array(), '2.1.3', true );
         wp_register_script( 'jarallax-video', nk_awb()->plugin_url . 'assets/vendor/jarallax/dist/jarallax-video.min.js', array( 'jarallax' ), '2.1.3', true );
-        wp_register_script( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.js', array( 'jquery', 'jarallax', 'jarallax-video' ), '@@plugin_version', true );
+        wp_register_script( 'awb-mouse-parallax', nk_awb()->plugin_url . 'assets/awb/awb-mouse-parallax.min.js', array(), '@@plugin_version', true );
+        wp_register_script( 'awb', nk_awb()->plugin_url . 'assets/awb/awb.min.js', array( 'jarallax', 'jarallax-video', 'awb-mouse-parallax' ), '@@plugin_version', true );
 
         wp_localize_script(
-            'nk-awb',
+            'awb',
             'AWBData',
             array(
                 'settings' => array(
@@ -116,7 +117,7 @@ class NK_AWB {
             )
         );
 
-        wp_register_style( 'nk-awb', nk_awb()->plugin_url . 'assets/awb/awb.min.css', '', '@@plugin_version' );
+        wp_register_style( 'awb', nk_awb()->plugin_url . 'assets/awb/awb.min.css', array(), '@@plugin_version' );
     }
 
     /**
@@ -124,7 +125,7 @@ class NK_AWB {
      */
     public function enqueue_scripts() {
         // add styles to header to fix image jumping when use shortcode.
-        wp_enqueue_style( 'nk-awb' );
+        wp_enqueue_style( 'awb' );
     }
 
     /**
@@ -135,8 +136,8 @@ class NK_AWB {
     public function parse_ghostkit_blocks( $blocks ) {
         foreach ( $blocks as $block ) {
             if ( 'ghostkit/grid-column' === $block['blockName'] || 'ghostkit/grid' === $block['blockName'] ) {
-                wp_enqueue_script( 'nk-awb' );
-                wp_enqueue_style( 'nk-awb' );
+                wp_enqueue_script( 'awb' );
+                wp_enqueue_style( 'awb' );
             }
         }
     }
