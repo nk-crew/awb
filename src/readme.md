@@ -73,14 +73,18 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
-= 1.11.0 =
+= 1.11.1 =
 
 * added support for `Layout`, `Block Gap`, `Min Heigh` and `Typography` settings in the (Gutenberg block)
 * added support for gradients in background and overlay (Gutenberg block)
 * added `Fill` option in background size setting
 * added `IntersectionObserver` for Mouse Parallax to detect element in viewport (increased performance)
+* added JS events to init internal components and for 3rd-party code
+* added global JS object `AWB`
+* improved srcset fix code to work with some popular lazy loading data attributes
 * removed jQuery dependency from frontend script (less code required)
 * removed Pro tab from plugin settings
+* deprecated public function `nkAwbInit`, use `AWB.init()` instead
 * fixed image blinking when disabled browser cache and added new elements or screen resized
 * fixed empty FullWidth block setting in the GhostKit Column settings
 
