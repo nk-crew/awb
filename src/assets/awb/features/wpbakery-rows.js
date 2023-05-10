@@ -18,8 +18,8 @@ function prepareRow($el) {
 
   if ($row) {
     // remove stretch option from AWB if stretch enabled on ROW
-    if ($row.matches('[data-vc-full-width=true]')) {
-      $el.removeAttr('data-awb-stretch');
+    if ($row.getAttribute('data-vc-full-width') === 'true') {
+      $el.removeAttribute('data-awb-stretch');
     }
 
     // insert AWB in row
