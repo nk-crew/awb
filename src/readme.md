@@ -73,6 +73,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.11.2 =
+
+* improved Stretch script to use `before-init` event with provided elements - better performance
+* fixed wrong column background calculation in WPBakery Page Builder
+
 = 1.11.1 =
 
 * added support for `Layout`, `Block Gap`, `Min Heigh` and `Typography` settings in the (Gutenberg block)
