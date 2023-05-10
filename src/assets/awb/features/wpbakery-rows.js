@@ -51,7 +51,7 @@ function prepareCol($el) {
       $el.removeAttribute('data-awb-stretch');
     }
 
-    // insert AWB in row
+    // insert AWB in col
     $col.classList.add('nk-awb');
     $col.append($el);
   }
