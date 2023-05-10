@@ -73,6 +73,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.11.3 =
+
+* fixed JS error when WPBakery FullHeight row used
+
 = 1.11.2 =
 
 * improved Stretch script to use `before-init` event with provided elements - better performance
