@@ -73,6 +73,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.11.4 =
+
+* fixed JS error in TwentyTwenty and TwentyTwentyOne themes
+
 = 1.11.3 =
 
 * fixed JS error when WPBakery FullHeight row used
