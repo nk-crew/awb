@@ -12,7 +12,7 @@ function prepareTTThemesStylesFix($el, jarallaxParams) {
   const defaultOnInit = jarallaxParams.onInit;
 
   jarallaxParams.onInit = function () {
-    $inner.children.forEach(($child) => {
+    Array.from($inner.children).forEach(($child) => {
       $child.classList.add('intrinsic-ignore');
     });
 
