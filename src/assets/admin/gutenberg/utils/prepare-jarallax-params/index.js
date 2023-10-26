@@ -52,9 +52,12 @@ export default function prepareJarallaxParams(attrs) {
 
   if (attrs.parallax) {
     result.parallax = attrs.parallax;
-    if (attrs.parallaxSpeed) {
+
+    // We have to check for undefined, because 0 value is also valid.
+    if (typeof attrs.parallaxSpeed !== 'undefined' && attrs.parallaxSpeed !== '') {
       result.parallaxSpeed = attrs.parallaxSpeed;
     }
+
     result.parallaxMobile = attrs.parallaxMobile;
   }
 
