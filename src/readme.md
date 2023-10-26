@@ -2,8 +2,8 @@
 
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
-* Requires at least: 5.8
-* Tested up to: 6.2
+* Requires at least: 6.2
+* Tested up to: 6.4
 * Requires PHP: 7.2
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -72,6 +72,12 @@ The manual installation method involves downloading our AWB plugin and uploading
 5. Extended WPBakery Page Builder ROW options
 
 ## Changelog
+
+= 1.11.5 =
+
+* change block apiVersion to v3
+* fixed parallax speed 0 in AWB block
+* fixed JS error inside iframe in block editor
 
 = 1.11.4 =
 
