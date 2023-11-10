@@ -28,6 +28,7 @@ class NK_AWB_Gutenberg {
      */
     public function init_hooks() {
         add_action( 'init', array( $this, 'register_block' ) );
+        add_action( 'init', array( $this, 'register_attribute' ) );
     }
 
     /**
@@ -67,6 +68,14 @@ class NK_AWB_Gutenberg {
             nk_awb()->plugin_path . 'assets/admin/gutenberg',
             array(
                 'render_callback' => array( $this, 'render_block' ),
+            )
+        );
+
+        // Register the block support.
+        WP_Block_Supports::get_instance()->register(
+            'awb',
+            array(
+                'register_attribute' => array( $this, 'register_attribute' ),
             )
         );
     }
@@ -120,5 +129,35 @@ class NK_AWB_Gutenberg {
         $content = preg_replace( $regex, $matches[0][0] . $image, $content, 1 );
 
         return $content;
+    }
+
+    /**
+     * Registers the `awb` block attribute for block types that support it.
+     *
+     * @param WP_Block_Type $block_type Block Type.
+     */
+    public function register_attribute( $block_type ) {
+        $has_awb_support = block_has_support( $block_type, array( 'awb' ), false );
+
+        if ( ! $has_awb_support ) {
+            return;
+        }
+
+        $awb_block_type = WP_Block_Type_Registry::get_instance()->get_registered( 'nk/awb' );
+
+        $skip_attributes = array( 'lock', 'ghostkit', 'ghostkitId', 'ghostkitClassname', 'ghostkitStyles', 'ghostkitSR', 'ghostkitCustomCSS', 'ghostkitPosition', 'ghostkitSpacings', 'ghostkitFrame', 'className', 'style', 'layout', 'fontSize', 'fontFamily' );
+
+        // Add all AWB attributes to the block.
+        if ( ! empty( $awb_block_type->attributes ) ) {
+            if ( ! $block_type->attributes ) {
+                $block_type->attributes = array();
+            }
+
+            foreach ( $awb_block_type->attributes as $name => $val ) {
+                if ( ! in_array( $name, $skip_attributes, true ) ) {
+                    $block_type->attributes[ 'awb_' . $name ] = $val;
+                }
+            }
+        }
     }
 }

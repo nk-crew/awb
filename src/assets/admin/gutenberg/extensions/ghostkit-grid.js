@@ -6,7 +6,7 @@ import classnames from 'classnames/dedupe';
 /**
  * Internal Dependencies
  */
-import { settings } from '../block';
+import metadata from '../block.json';
 import BlockSave from '../block-save';
 import { BlockEdit, RenderEditorPreview } from '../block-edit';
 import GhostKitGridWidePreview from '../components/ghostkit-grid-wide-preview';
@@ -24,39 +24,9 @@ const { hasBlockSupport } = wp.blocks;
 
 const { __ } = wp.i18n;
 
-/**
- * Filters registered block settings, extending attributes to include `fullheight`.
- *
- * @param  {Object} blockSettings Original block settings
- * @return {Object}               Filtered block settings
- */
-export function addAttribute(blockSettings) {
-  if (blockSettings.name === 'ghostkit/grid' || blockSettings.name === 'ghostkit/grid-column') {
-    blockSettings.supports.awb = true;
-  }
-
-  let allow = false;
-
-  if (hasBlockSupport(blockSettings, 'awb', false)) {
-    allow = true;
-  }
-
-  if (allow) {
-    Object.keys(settings.attributes).forEach((name) => {
-      blockSettings.attributes[`awb_${name}`] = settings.attributes[name];
-    });
-    blockSettings.attributes.awb_align = {
-      type: 'string',
-      default: '',
-    };
-  }
-
-  return blockSettings;
-}
-
 function prepareAWBprops(props) {
   const awbAttributes = {};
-  Object.keys(settings.attributes).forEach((name) => {
+  Object.keys(metadata.attributes).forEach((name) => {
     awbAttributes[name] = props.attributes[`awb_${name}`];
 
     // inside exported xml file almost all symbols are escaped.
@@ -254,7 +224,6 @@ function addSaveBackground(background, props) {
   return background;
 }
 
-addFilter('blocks.registerBlockType', 'ghostkit/grid/awb/additional-attributes', addAttribute);
 addFilter(
   'ghostkit.editor.controls',
   'ghostkit/grid/awb/addBackgroundControls',

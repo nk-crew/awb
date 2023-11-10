@@ -826,11 +826,13 @@ export function BlockEdit(props) {
 
     video,
     videoPosterPreview,
-
-    ghostkitClassname,
   } = attributes;
 
-  let className = classnames('nk-awb', useFeaturedImage ? 'nk-awb-with-featured-image' : '');
+  let className = classnames(
+    'nk-awb',
+    align ? ` align${align}` : '',
+    useFeaturedImage ? 'nk-awb-with-featured-image' : ''
+  );
 
   const { hasChildBlocks, fetchImageTag } = useSelect(
     (select) => {
@@ -882,11 +884,6 @@ export function BlockEdit(props) {
       'nk-awb-fullheight',
       fullHeightAlign ? `nk-awb-content-valign-${fullHeightAlign}` : ''
     );
-  }
-
-  // add custom classname.
-  if (ghostkitClassname) {
-    className = classnames(className, ghostkitClassname);
   }
 
   // return controls only

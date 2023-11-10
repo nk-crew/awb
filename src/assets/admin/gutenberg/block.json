@@ -8,13 +8,18 @@
   "keywords": ["awb", "background", "parallax"],
   "textdomain": "advanced-backgrounds",
   "supports": {
+    "ghostkit": true,
     "anchor": true,
     "className": true,
     "html": false,
     "spacing": {
       "blockGap": true,
+      "margin": true,
+      "padding": true,
       "__experimentalDefaultControls": {
-        "blockGap": true
+        "blockGap": true,
+        "margin": false,
+        "padding": false
       }
     },
     "dimensions": {
@@ -33,7 +38,8 @@
         "fontSize": true
       }
     },
-    "__experimentalLayout": true
+    "__experimentalLayout": true,
+    "layout": true
   },
   "attributes": {
     "type": {
