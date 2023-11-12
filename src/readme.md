@@ -73,6 +73,13 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.0 =
+
+* added support for new Ghost Kit extensions
+* removed Ghost Kit spacings fallback feature, use Gutenberg spacings instead
+* fixed default AWB padding in editor
+* changed attributes registration from JS to PHP
+
 = 1.11.5 =
 
 * change block apiVersion to v3
