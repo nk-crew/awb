@@ -35,7 +35,7 @@ class NK_AWB_Gutenberg {
      * Enqueue admin scripts hook
      */
     public function register_block() {
-        $js_deps  = array( 'wp-i18n', 'wp-element', 'wp-components', 'wp-block-editor', 'underscore', 'jquery', 'jarallax', 'jarallax-video' );
+        $js_deps  = array( 'wp-i18n', 'wp-element', 'wp-components', 'wp-block-editor', 'lodash', 'jquery', 'jarallax', 'jarallax-video' );
         $css_deps = array();
 
         // enqueue block js.

@@ -55,7 +55,7 @@ class NK_AWB_VC_Extend {
             wp_enqueue_style( 'nk-awb-vc-attach-file', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-attach-video.min.css', array(), '@@plugin_version' );
             wp_enqueue_style( 'nk-awb-vc-heading', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-heading.min.css', array(), '@@plugin_version' );
             wp_enqueue_style( 'nk-awb-vc-icon', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-icon.min.css', array(), '@@plugin_version' );
-            wp_enqueue_script( 'nk-awb-vc-frontend', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-frontend.min.js', array( 'jquery' ), '@@plugin_version', true );
+            wp_enqueue_script( 'nk-awb-vc-frontend', nk_awb()->plugin_url . 'assets/admin/vc_extend/vc-awb-frontend.min.js', array( 'jquery', 'underscore' ), '@@plugin_version', true );
         }
     }
 
