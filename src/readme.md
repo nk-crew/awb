@@ -73,6 +73,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.1 =
+
+* improved EditorStyles component to use portals in WP editor
+* fixed error in WP editor because of missing lodash dependency
+
 = 1.12.0 =
 
 * added support for new Ghost Kit extensions
