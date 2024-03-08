@@ -43,13 +43,13 @@
     "wpeg": "1.2.8"
   },
   "dependencies": {
-    "classnames": "^2.3.2",
+    "classnames": "^2.5.1",
     "conditionize": "^1.0.5",
     "deep-assign": "^3.0.0",
     "deep-equal": "^2.2.3",
-    "jarallax": "^2.1.4",
+    "jarallax": "^2.2.0",
     "shorthash": "0.0.2",
     "throttle-debounce": "^5.0.0",
-    "video-worker": "^2.1.5"
+    "video-worker": "^2.2.0"
   }
 }
