@@ -3,7 +3,7 @@
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
 * Requires at least: 6.2
-* Tested up to: 6.4
+* Tested up to: 6.5
 * Requires PHP: 7.2
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -57,12 +57,6 @@ In the search field type AWB and click Search Plugins. Once you’ve found our p
 
 The manual installation method involves downloading our AWB plugin and uploading it to your webserver via your favourite FTP application. The WordPress codex contains [instructions on how to do this here](https://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
 
-## Frequently Asked Questions
-
-### How to enable `Stretch` with Gutenberg
-
-[Read in documentation](https://wpbackgrounds.com/docs/enable-stretch-option-with-gutenberg/)
-
 ## Screenshots
 
 1. Background color
@@ -73,38 +67,44 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
-= 1.12.1 =
+= 1.12.2 - Mar 9, 2024 =
+
+* added support for private Vimeo videos hash in URL
+* fixed `play` method play when `endTime` reached
+* fixed rendering styles error in editor iframe and latest Gutenberg
+
+= 1.12.1 - Nov 13, 2023 =
 
 * improved EditorStyles component to use portals in WP editor
 * fixed error in WP editor because of missing lodash dependency
 
-= 1.12.0 =
+= 1.12.0 - Nov 12, 2023 =
 
 * added support for new Ghost Kit extensions
 * removed Ghost Kit spacings fallback feature, use Gutenberg spacings instead
 * fixed default AWB padding in editor
 * changed attributes registration from JS to PHP
 
-= 1.11.5 =
+= 1.11.5 - Oct 26, 2023 =
 
 * change block apiVersion to v3
 * fixed parallax speed 0 in AWB block
 * fixed JS error inside iframe in block editor
 
-= 1.11.4 =
+= 1.11.4 - May 17, 2023 =
 
 * fixed JS error in TwentyTwenty and TwentyTwentyOne themes
 
-= 1.11.3 =
+= 1.11.3 - May 10, 2023 =
 
 * fixed JS error when WPBakery FullHeight row used
 
-= 1.11.2 =
+= 1.11.2 - May 10, 2023 =
 
 * improved Stretch script to use `before-init` event with provided elements - better performance
 * fixed wrong column background calculation in WPBakery Page Builder
 
-= 1.11.1 =
+= 1.11.1 - May 9, 2023 =
 
 * added support for `Layout`, `Block Gap`, `Min Heigh` and `Typography` settings in the (Gutenberg block)
 * added support for gradients in background and overlay (Gutenberg block)
@@ -119,33 +119,33 @@ The manual installation method involves downloading our AWB plugin and uploading
 * fixed image blinking when disabled browser cache and added new elements or screen resized
 * fixed empty FullWidth block setting in the GhostKit Column settings
 
-= 1.10.0 =
+= 1.10.0 - Dec 27, 2022 =
 
 * added `IntersectionObserver` to detect element in viewport (increased performance)
 * added support for Youtube Shorts
 * added support for Vimeo high quality thumbnails
 * improved rendering of Featured Image - use faster method without `DOMDocument`
 
-= 1.9.4 =
+= 1.9.4 - Aug 29, 2022 =
 
 * fixed error on widgets screen
 
-= 1.9.3 =
+= 1.9.3 - Aug 27, 2022 =
 
 * fixed shortcode builder "Enable on Mobile Devices" checkbox displaying for Local videos
 * renamed `Local Video` to `Self Hosted Video`
 
-= 1.9.2 =
+= 1.9.2 - Aug 15, 2022 =
 
 * fixed self-hosted video preview loading in block editor
 * fixed Youtube / Vimeo video preview image loading in block editor
 
-= 1.9.1 =
+= 1.9.1 - Aug 11, 2022 =
 
 * added fallback image url in Gutenberg block preview to display image faster when page loaded
 * improved rest permissions check
 
-= 1.9.0 =
+= 1.9.0 - Jul 22, 2022 =
 
 * added support for Featured Image in the block background
 * added `nk-awb` classname to the block in editor
@@ -153,12 +153,12 @@ The manual installation method involves downloading our AWB plugin and uploading
 * fixed parallax re-rendering in the editor when the props were not changed
 * removed `will-change` usage from parallax - fixed the warning in the inspector in Firefox browser
 
-= 1.8.1 =
+= 1.8.1 - Feb 19, 2022 =
 
 * fixed tinymce error - `Failed to initialize plugin: awb`
 * disabled block align fallback in block-based themes
 
-= 1.8.0 =
+= 1.8.0 - Feb 18, 2022 =
 
 * dropped support for IE and old browsers
 * added support for block-based themes and WordPress 5.9
@@ -169,32 +169,32 @@ The manual installation method involves downloading our AWB plugin and uploading
 * removed usage of DOMContentLoaded for register block
 * minor changes
 
-= 1.7.7 =
+= 1.7.7 - Dec 1, 2021 =
 
 * added encode/decode to Gutenberg block image tag attribute
 * fixed shortcode inserter color overlay selection
 * fixed conflict with PublishPress Blocks plugin
 * fixed React state change inside render callback
 
-= 1.7.6 =
+= 1.7.6 - Aug 31, 2021 =
 
 * added WP 5.8 support
 
-= 1.7.5 =
+= 1.7.5 - May 12, 2021 =
 
 * added accessibility attributes to background videos (tabindex, aria-hidden)
 * fixed video start and end time save in block
 
-= 1.7.4 =
+= 1.7.4 - Mar 4, 2021 =
 
 * tested up to WordPress 5.7
 * moved to nk-crew GitHub repo
 
-= 1.7.3 =
+= 1.7.3 - Feb 8, 2021 =
 
 * fixed TwentyTwenty and TwentyTwentyOne video styles conflict
 
-= 1.7.1 =
+= 1.7.1 - Jan 7, 2021 =
 
 * added support for Gutenberg Wide alignment
 * added support for row gaps in WPBakery Page Builder
@@ -202,7 +202,7 @@ The manual installation method involves downloading our AWB plugin and uploading
 * fixed blur images on mobile devices
 * fixed deprecated jQuery ready event usage
 
-= 1.7.0 =
+= 1.7.0 - Sep 23, 2020 =
 
 * added support for 3rd-party plugins, that adds WebP images
 * fixed bug with clip images in Safari v14
