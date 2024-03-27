@@ -224,28 +224,34 @@ function addSaveBackground(background, props) {
   return background;
 }
 
+// Use priority 15 to make sure that our filters are applied after the default ones in Ghost Kit.
 addFilter(
   'ghostkit.editor.controls',
   'ghostkit/grid/awb/addBackgroundControls',
-  addBackgroundControls
+  addBackgroundControls,
+  15
 );
 addFilter(
   'ghostkit.editor.grid.background',
   'ghostkit/grid/awb/addEditorBackground',
-  addEditorBackground
+  addEditorBackground,
+  15
 );
 addFilter(
   'ghostkit.editor.grid-column.background',
   'ghostkit/grid-column/awb/addEditorBackground',
-  addEditorBackground
+  addEditorBackground,
+  15
 );
 addFilter(
   'ghostkit.blocks.grid.background',
   'ghostkit/grid/awb/addSaveBackground',
-  addSaveBackground
+  addSaveBackground,
+  15
 );
 addFilter(
   'ghostkit.blocks.grid-column.background',
   'ghostkit/grid-column/awb/addSaveBackground',
-  addSaveBackground
+  addSaveBackground,
+  15
 );
