@@ -50,7 +50,7 @@ export default function prepareJarallaxParams(attrs) {
       break;
   }
 
-  if (attrs.parallax) {
+  if (attrs.type !== 'color' && attrs.parallax) {
     result.parallax = attrs.parallax;
 
     // We have to check for undefined, because 0 value is also valid.

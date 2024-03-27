@@ -11,8 +11,13 @@ function prepareJarallax($el) {
     return;
   }
 
-  const $image = $el.querySelector('.jarallax-img');
   const type = $el.getAttribute('data-awb-type');
+
+  if (type === 'color') {
+    return;
+  }
+
+  const $image = $el.querySelector('.jarallax-img');
   const imageBgSize = $el.getAttribute('data-awb-image-background-size');
   const imageBgPosition = $el.getAttribute('data-awb-image-background-position');
   let video = false;

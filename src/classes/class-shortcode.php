@@ -229,14 +229,23 @@ class NK_AWB_Shortcode {
         }
 
         // parallax.
-        if ( 'scroll' === $atts['awb_parallax'] || 'scale' === $atts['awb_parallax'] || 'opacity' === $atts['awb_parallax'] || 'scroll-opacity' === $atts['awb_parallax'] || 'scale-opacity' === $atts['awb_parallax'] ) {
+        if (
+            'color' !== $atts['awb_type'] &&
+            (
+                'scroll' === $atts['awb_parallax'] ||
+                'scale' === $atts['awb_parallax'] ||
+                'opacity' === $atts['awb_parallax'] ||
+                'scroll-opacity' === $atts['awb_parallax'] ||
+                'scale-opacity' === $atts['awb_parallax']
+            )
+        ) {
             $awb_wrap_attributes .= ' data-awb-parallax="' . esc_attr( $atts['awb_parallax'] ) . '"';
             $awb_wrap_attributes .= ' data-awb-parallax-speed="' . esc_attr( $atts['awb_parallax_speed'] ) . '"';
             $awb_wrap_attributes .= ' data-awb-parallax-mobile="' . esc_attr( $atts['awb_parallax_mobile'] ) . '"';
         }
 
         // mouse parallax.
-        if ( $atts['awb_mouse_parallax'] && 'false' !== $atts['awb_mouse_parallax'] ) {
+        if ( 'color' !== $atts['awb_type'] && $atts['awb_mouse_parallax'] && 'false' !== $atts['awb_mouse_parallax'] ) {
             $awb_wrap_attributes .= ' data-awb-mouse-parallax-size="' . esc_attr( $atts['awb_mouse_parallax_size'] ) . '"';
             $awb_wrap_attributes .= ' data-awb-mouse-parallax-speed="' . esc_attr( $atts['awb_mouse_parallax_speed'] ) . '"';
         }
