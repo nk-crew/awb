@@ -67,6 +67,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.3 - Mar 27, 2024 =
+
+* fixed background settings display in Ghost Kit columns
+* fixed parallax option enabled on block with Color background type
+
 = 1.12.2 - Mar 9, 2024 =
 
 * added support for private Vimeo videos hash in URL
