@@ -1,0 +1,23 @@
+{
+  "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+  "landingPage": "/wp-admin/post.php?post=5&action=edit",
+  "phpExtensionBundles": ["kitchen-sink"],
+  "steps": [
+    {
+      "step": "login",
+      "username": "admin",
+      "password": "password"
+    },
+    {
+      "step": "installTheme",
+      "themeZipFile": {
+        "resource": "wordpress.org/themes",
+        "slug": "twentytwentyfour"
+      }
+    },
+    {
+      "step": "runPHP",
+      "code": "<?php\ninclude 'wordpress/wp-load.php';\nwp_insert_post(array(\n'import_id' => 5,\n'post_title' => 'Advanced Backgrounds Demo',\n'post_content' => '<!-- wp:nk/awb {\"type\":\"image\",\"align\":\"full\",\"fullHeight\":true,\"image\":155,\"imageTag\":\"%3Cimg%20src%3D%22https%3A%2F%2Fwpbackgrounds.com%2Fwp-content%2Fuploads%2F2018%2F12%2Fcristina-gottardi-177252-unsplash.png%22%20class%3D%22wp-image-155%20jarallax-img%22%20width%3D%221920%22%20height%3D%221280%22%20%2F%3E\",\"color\":\"rgba(58, 44, 39, 0.7)\",\"backgroundColor\":\"#3b2c27\",\"parallax\":\"scroll\",\"parallaxSpeed\":0.8,\"parallaxMobile\":true} -->\n<div class=\"wp-block-nk-awb nk-awb alignfull nk-awb-fullheight nk-awb-content-valign-center\"><div class=\"nk-awb-wrap\" style=\"background:#3b2c27\" data-awb-type=\"image\" data-awb-parallax=\"scroll\" data-awb-parallax-speed=\"0.8\" data-awb-parallax-mobile=\"true\" data-awb-image-background-size=\"cover\" data-awb-image-background-position=\"50% 50%\"><div class=\"nk-awb-overlay\" style=\"background: rgba(58, 44, 39, 0.7);\"></div><div class=\"nk-awb-inner\"><img src=\"https://wpbackgrounds.com/wp-content/uploads/2018/12/cristina-gottardi-177252-unsplash.png\" class=\"wp-image-155 jarallax-img\" width=\"1920\" height=\"1280\" /></div></div><div class=\"nk-awb-wrap-content\"><!-- wp:heading {\"textAlign\":\"center\",\"level\":1,\"style\":{\"color\":{\"text\":\"#ffffff\"}},\"ghostkit\":{\"effects\":{\"reveal\":{\"x\":0,\"y\":30,\"opacity\":0,\"scale\":1,\"transition\":{\"type\":\"spring\",\"stiffness\":300,\"damping\":35,\"mass\":2,\"delay\":0.1}}}}} -->\n    <h1 class=\"wp-block-heading has-text-align-center has-text-color\" id=\"advanced-wordpress-backgrounds\" style=\"color:#ffffff\">Advanced<br> WordPress<br> Backgrounds</h1>\n    <!-- /wp:heading --></div></div>\n    <!-- /wp:nk/awb -->',\n'post_status' => 'publish',\n'post_author' => 1\n));"
+    }
+  ]
+}
