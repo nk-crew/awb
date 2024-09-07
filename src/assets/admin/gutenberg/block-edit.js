@@ -7,7 +7,7 @@ import classnames from 'classnames/dedupe';
 /**
  * Internal Dependencies
  */
-import { maybeEncode, maybeDecode } from './utils/encode-decode';
+import { maybeEncode } from './utils/encode-decode';
 import prepareJarallaxParams from './utils/prepare-jarallax-params';
 import ColorIndicator from './components/color-indicator';
 import ColorPicker from './components/color-picker';
@@ -19,6 +19,7 @@ import iconFullHeight from './icons/fullheight.svg';
 import iconVerticalCenter from './icons/vertical-center.svg';
 import iconVerticalTop from './icons/vertical-top.svg';
 import iconVerticalBottom from './icons/vertical-bottom.svg';
+import cleanImgTag from './utils/clean-img-tag';
 
 /**
  * WordPress Dependencies
@@ -472,7 +473,7 @@ export function RenderInspectorControls(props) {
                       image={
                         useFeaturedImage
                           ? `<img src="${featuredImageUrl}" />`
-                          : maybeDecode(imageTag)
+                          : cleanImgTag(imageTag)
                       }
                       onChange={(v) => setAttributes({ imageBackgroundPosition: v })}
                     />
@@ -746,7 +747,8 @@ export function RenderEditorPreview({ attributes, clientId }) {
         };object-position: ${imageBackgroundPosition || '50% 50%'};">`;
       }
     } else if (imageTag) {
-      previewHTML = maybeDecode(imageTag);
+      // Prepare safe image output.
+      previewHTML = cleanImgTag(imageTag);
 
       // Fallback image src from saved img tag string.
       // While `selectedImageUrl` is in loading state, we can display the saved image.

@@ -7,10 +7,10 @@ import classnames from 'classnames/dedupe';
  * Internal Dependencies
  */
 import metadata from './block.json';
-import { maybeDecode } from './utils/encode-decode';
 import camelCaseToDash from './utils/camel-case-to-dash';
 import prepareJarallaxParams from './utils/prepare-jarallax-params';
 import getGhostkitStyles from './utils/get-ghostkit-styles';
+import cleanImgTag from './utils/clean-img-tag';
 
 /**
  * WordPress Dependencies
@@ -182,15 +182,6 @@ export default [
           if (useFeaturedImage || imageTag) {
             resultImg = imageTag;
 
-            // inside exported xml file almost all symbols are escaped.
-            if (resultImg && /^u003c/g.test(resultImg)) {
-              resultImg = resultImg
-                .replace(/u003c/g, '<')
-                .replace(/u003e/g, '>')
-                .replace(/u0022/g, '"')
-                .replace(/u0026/g, '&');
-            }
-
             if (imageBackgroundSize) {
               resultAtts.imageBackgroundSize = imageBackgroundSize;
             }
@@ -213,12 +204,9 @@ export default [
         }
       }
 
-      // Fix style tag background.
+      // Prepare safe image output.
       if (resultImg) {
-        resultImg = maybeDecode(resultImg);
-
-        resultImg = resultImg.replace('url(&quot;', "url('");
-        resultImg = resultImg.replace('&quot;);', "');");
+        resultImg = cleanImgTag(resultImg);
       }
 
       // awb wrap inner html
@@ -344,15 +332,6 @@ export default [
           if (useFeaturedImage || imageTag) {
             resultImg = imageTag;
 
-            // inside exported xml file almost all symbols are escaped.
-            if (resultImg && /^u003c/g.test(resultImg)) {
-              resultImg = resultImg
-                .replace(/u003c/g, '<')
-                .replace(/u003e/g, '>')
-                .replace(/u0022/g, '"')
-                .replace(/u0026/g, '&');
-            }
-
             if (imageBackgroundSize) {
               resultAtts.imageBackgroundSize = imageBackgroundSize;
             }
@@ -375,12 +354,9 @@ export default [
         }
       }
 
-      // Fix style tag background.
+      // Prepare safe image output.
       if (resultImg) {
-        resultImg = maybeDecode(resultImg);
-
-        resultImg = resultImg.replace('url(&quot;', "url('");
-        resultImg = resultImg.replace('&quot;);', "');");
+        resultImg = cleanImgTag(resultImg);
       }
 
       // awb wrap inner html
