@@ -67,9 +67,16 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.6 - Dec 19, 2024 =
+
+* revert back block default attributes added in v1.12.5 as it crashes the block
+
 = 1.12.5 - Dec 19, 2024 =
 
 * added WP 6.7 compatibility fixes
+* added more block support features: ariaLabel, colors, shadow, border and position
+* changed registration of block assets to use enqueue_block_assets hook
+* changed some block default attributes
 
 = 1.12.4 - Sep 7, 2024 =
 
