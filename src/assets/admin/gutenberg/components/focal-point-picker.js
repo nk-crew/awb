@@ -98,6 +98,7 @@ export default class CustomFocalPointPicker extends Component {
         onChange={(val) => {
           onChange(`${parseInt(100 * val.x, 10)}% ${parseInt(100 * val.y, 10)}%`);
         }}
+        __nextHasNoMarginBottom
       />
     );
   }

@@ -27,14 +27,15 @@ class NK_AWB_Gutenberg {
      * Init Hooks
      */
     public function init_hooks() {
+        add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
         add_action( 'init', array( $this, 'register_block' ) );
         add_action( 'init', array( $this, 'register_attribute' ) );
     }
 
     /**
-     * Enqueue admin scripts hook
+     * Enqueue block assets
      */
-    public function register_block() {
+    public function enqueue_block_assets() {
         $js_deps  = array( 'wp-i18n', 'wp-element', 'wp-components', 'wp-block-editor', 'lodash', 'jquery', 'jarallax', 'jarallax-video' );
         $css_deps = array();
 
@@ -62,7 +63,12 @@ class NK_AWB_Gutenberg {
             'is_ghostkit_active'  => class_exists( 'GhostKit' ),
         );
         wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );
+    }
 
+    /**
+     * Enqueue admin scripts hook
+     */
+    public function register_block() {
         // register block.
         register_block_type_from_metadata(
             nk_awb()->plugin_path . 'assets/admin/gutenberg',
