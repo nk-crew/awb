@@ -96,7 +96,7 @@ function addBackgroundControls(Control, props) {
       <PanelBody title={__('Background')} initialOpen={false}>
         <BlockEdit {...awbProps} inspectorControlsOnly />
         <PanelBody>
-          <BaseControl label={__('Full width background')}>
+          <BaseControl label={__('Full width background')} __nextHasNoMarginBottom>
             <ToolbarGroup>
               {AWBGutenbergData.full_width_fallback ? (
                 /* Fallback for align full */

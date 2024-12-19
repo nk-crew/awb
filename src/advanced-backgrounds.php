@@ -36,7 +36,6 @@ class NK_AWB {
         if ( is_null( self::$instance ) ) {
             self::$instance = new self();
             self::$instance->init();
-            self::$instance->init_hooks();
         }
         return self::$instance;
     }
@@ -69,9 +68,6 @@ class NK_AWB {
         $this->plugin_path = plugin_dir_path( __FILE__ );
         $this->plugin_url  = plugin_dir_url( __FILE__ );
 
-        // load textdomain.
-        load_plugin_textdomain( '@@text_domain', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
         // register images sizes.
         $this->add_image_sizes();
 
@@ -84,16 +80,21 @@ class NK_AWB {
         new NK_AWB_VC_Extend();
         new NK_AWB_TinyMCE();
         new NK_AWB_Gutenberg();
-    }
 
-    /**
-     * Init hooks
-     */
-    public function init_hooks() {
+        // Hooks.
+        add_action( 'init', array( $this, 'init_hook' ) );
         add_action( 'init', array( $this, 'register_scripts' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
         add_action( 'ghostkit_parse_blocks', array( $this, 'parse_ghostkit_blocks' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'fix_youtube_embed_plus_plugin' ), 101 );
+    }
+
+    /**
+     * Init hook
+     */
+    public function init_hook() {
+        // load textdomain.
+        load_plugin_textdomain( '@@text_domain', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
 
     /**
