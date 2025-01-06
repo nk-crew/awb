@@ -60,15 +60,13 @@
       }
     },
     "layout": {
-      "allowSizingOnChildren": true
+      "allowSizingOnChildren": true,
+      "default": {
+        "type": "constrained"
+      }
     }
   },
   "attributes": {
-    "layout": {
-      "type": "object",
-      "default": { "type": "constrained" }
-    },
-
     "type": {
       "type": "string",
       "default": "color"
