@@ -98,6 +98,10 @@ class AWB_Settings {
                 'id'    => 'awb_general',
                 'title' => esc_html__( 'General', '@@text_domain' ),
             ),
+            array(
+                'id'    => 'awb_images',
+                'title' => esc_html__( 'Images', '@@text_domain' ),
+            ),
         );
 
         return $sections;
@@ -142,6 +146,23 @@ class AWB_Settings {
                         'opera'      => 'Opera',
                     ),
                     'default'  => array(),
+                ),
+            ),
+            'awb_images' => array(
+                array(
+                    'name'    => 'register_image_sizes',
+                    'label'   => esc_html__( 'Register image sizes', '@@text_domain' ),
+                    'type'    => 'checkbox',
+                    'default' => 'on',
+                ),
+                array(
+                    'name'    => 'register_image_sizes_note',
+                    'desc'    => '<span style="display: block; margin-top: -30px;">' .
+                        esc_html__( 'Uncheck this option if you have already registered sizes or want to save disk space.', '@@text_domain' ) . '<br />' .
+                        // translators: %s: regenerate thumbnails url.
+                        sprintf( __( 'After publishing your changes, new image sizes may not be shown until you <a href="%s" target="_blank">Regenerate Thumbnails</a>.', '@@text_domain' ), 'https://wordpress.org/plugins/regenerate-thumbnails/' ) .
+                        '</span>',
+                    'type'    => 'html',
                 ),
             ),
         );

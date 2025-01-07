@@ -68,9 +68,6 @@ class NK_AWB {
         $this->plugin_path = plugin_dir_path( __FILE__ );
         $this->plugin_url  = plugin_dir_url( __FILE__ );
 
-        // register images sizes.
-        $this->add_image_sizes();
-
         // include helper files.
         $this->include_dependencies();
 
@@ -93,6 +90,9 @@ class NK_AWB {
      * Init hook
      */
     public function init_hook() {
+        // register images sizes.
+        $this->add_image_sizes();
+
         // load textdomain.
         load_plugin_textdomain( '@@text_domain', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
     }
@@ -167,14 +167,15 @@ class NK_AWB {
     }
 
     /**
-     * Add image sizes.
+     * Add custom image sizes.
      */
     public function add_image_sizes() {
-        // custom image sizes.
-        add_image_size( 'awb_sm', 500 );
-        add_image_size( 'awb_md', 800 );
-        add_image_size( 'awb_lg', 1280 );
-        add_image_size( 'awb_xl', 1920 );
+        if ( AWB_Settings::get_option( 'register_image_sizes', 'awb_images', true ) ) {
+            add_image_size( 'awb_sm', 500 );
+            add_image_size( 'awb_md', 800 );
+            add_image_size( 'awb_lg', 1280 );
+            add_image_size( 'awb_xl', 1920 );
+        }
     }
 
     /**
