@@ -67,6 +67,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.7 - Jan 7, 2025 =
+
+* added setting to prevent custom image sizes registration
+* fixed block layout constrained on frontend
+
 = 1.12.6 - Dec 19, 2024 =
 
 * revert back block default attributes added in v1.12.5 as it crashes the block
