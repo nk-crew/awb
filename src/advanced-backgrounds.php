@@ -3,6 +3,7 @@
  * Plugin Name:  Advanced WordPress Backgrounds
  * Description:  Parallax, Video, Images Backgrounds
  * Version:      @@plugin_version
+ * Plugin URI:   https://wpbackgrounds.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline
  * Author:       Advanced WordPress Backgrounds Team
  * Author URI:   https://wpbackgrounds.com/?utm_source=wordpress.org&utm_medium=readme&utm_campaign=byline
  * License:      GPLv2 or later
