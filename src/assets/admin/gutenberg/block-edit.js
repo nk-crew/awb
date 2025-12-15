@@ -172,12 +172,14 @@ export function RenderInspectorControls(props) {
       const { getEditedPostAttribute } = select('core/editor') || {};
       const blockEditor = select('core/block-editor');
       const editorSettings = blockEditor.getSettings();
-      const { getMedia } = select('core');
+      const { getEntityRecord } = select('core');
 
       const featuredImage = getEditedPostAttribute
         ? getEditedPostAttribute('featured_media')
         : false;
-      const featuredImageData = featuredImage ? getMedia(featuredImage) : null;
+      const featuredImageData = featuredImage
+        ? getEntityRecord('postType', 'attachment', featuredImage)
+        : null;
 
       const result = {
         imageSizes: editorSettings.imageSizes,
@@ -729,13 +731,15 @@ export function RenderEditorPreview({ attributes, clientId }) {
   const { selectedImageUrl, featuredImageId, featuredImageUrl } = useSelect(
     (select) => {
       const { getEditedPostAttribute } = select('core/editor') || {};
-      const { getMedia } = select('core');
+      const { getEntityRecord } = select('core');
       const featuredImage = getEditedPostAttribute
         ? getEditedPostAttribute('featured_media')
         : false;
 
-      const selectedImageData = image ? getMedia(image) : null;
-      const featuredImageData = featuredImage ? getMedia(featuredImage) : null;
+      const selectedImageData = image ? getEntityRecord('postType', 'attachment', image) : null;
+      const featuredImageData = featuredImage
+        ? getEntityRecord('postType', 'attachment', featuredImage)
+        : null;
 
       const result = {
         selectedImageUrl: null,
