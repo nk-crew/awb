@@ -28,8 +28,8 @@ class NK_AWB_Gutenberg {
      */
     public function init_hooks() {
         add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_assets' ) );
-        add_action( 'init', array( $this, 'register_block' ) );
-        add_action( 'init', array( $this, 'register_attribute' ) );
+        add_action( 'init', array( $this, 'register_block' ), 0 );
+        add_action( 'init', array( $this, 'register_attributes_for_registered_blocks' ), 99 );
     }
 
     /**
@@ -164,6 +164,15 @@ class NK_AWB_Gutenberg {
                     $block_type->attributes[ 'awb_' . $name ] = $val;
                 }
             }
+        }
+    }
+
+    /**
+     * Registers the `awb` attributes for blocks that were registered before the support.
+     */
+    public function register_attributes_for_registered_blocks() {
+        foreach ( WP_Block_Type_Registry::get_instance()->get_all_registered() as $block_type ) {
+            $this->register_attribute( $block_type );
         }
     }
 }
