@@ -273,4 +273,3 @@ class NK_AWB_Shortcode {
                 . '</div>';
     }
 }
-

@@ -59,7 +59,7 @@ class NK_AWB_Gutenberg {
         // add variables to script.
         $data = array(
             'placeholder_url'     => nk_awb()->plugin_url . 'assets/images/placeholder.jpg',
-            'full_width_fallback' => ! ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() || get_theme_support( 'align-wide' ) ),
+            'full_width_fallback' => ! ( ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) || get_theme_support( 'align-wide' ) ),
             'is_ghostkit_active'  => class_exists( 'GhostKit' ),
         );
         wp_localize_script( 'awb-gutenberg', 'AWBGutenbergData', $data );

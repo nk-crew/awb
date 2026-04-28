@@ -50,6 +50,11 @@
         <!-- Don't ask to use posts_per_page and nopaging args -->
     </rule>
 
+    <!-- WordPress plugins commonly keep the main plugin class and bootstrap helper in one file. -->
+    <rule ref="Universal.Files.SeparateFunctionsFromOO">
+        <exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed" />
+    </rule>
+
     <!-- Disallow tabs -->
     <rule ref="Generic.WhiteSpace.DisallowTabIndent"/>
 
@@ -87,7 +92,7 @@
     <rule ref="WordPress.NamingConventions.PrefixAllGlobals">
         <properties>
             <property name="prefixes" type="array">
-                <element value="AWB"/>
+                <element value="AWB_"/>
                 <element value="NK_AWB"/>
             </property>
         </properties>
