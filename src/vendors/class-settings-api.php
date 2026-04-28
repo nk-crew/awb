@@ -111,7 +111,10 @@ class AWB_Settings_API {
 
             if ( isset( $section['desc'] ) && ! empty( $section['desc'] ) ) {
                 $section['desc'] = '<div class="inside">' . $section['desc'] . '</div>';
-                $callback = create_function( '', 'echo "' . str_replace( '"', '\"', $section['desc'] ) . '";' );
+                $section_desc = $section['desc'];
+                $callback = function() use ( $section_desc ) {
+                    echo $section_desc;
+                };
             } else if ( isset( $section['callback'] ) ) {
                 $callback = $section['callback'];
             } else {
