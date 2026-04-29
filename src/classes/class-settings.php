@@ -34,9 +34,9 @@ class AWB_Settings {
      *
      * @param string $option - option name.
      * @param string $section - section name.
-     * @param string $default_value - default option value.
+     * @param mixed  $default_value - default option value.
      *
-     * @return bool|string
+     * @return mixed
      */
     public static function get_option( $option, $section, $default_value = '' ) {
         $options = get_option( $section );
