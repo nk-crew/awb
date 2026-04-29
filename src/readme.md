@@ -3,7 +3,7 @@
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
 * Requires at least: 6.2
-* Tested up to: 6.9
+* Tested up to: 7.0
 * Requires PHP: 7.2
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
