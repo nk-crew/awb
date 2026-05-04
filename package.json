@@ -23,11 +23,11 @@
     "postinstall": "composer install"
   },
   "devDependencies": {
-    "@babel/node": "^7.22.19",
+    "@babel/node": "^7.29.0",
     "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/plugin-transform-react-jsx": "^7.22.15",
-    "@babel/preset-env": "^7.23.3",
-    "@babel/register": "^7.22.15",
+    "@babel/plugin-transform-react-jsx": "^7.28.6",
+    "@babel/preset-env": "^7.29.3",
+    "@babel/register": "^7.29.3",
     "@svgr/webpack": "^6.5.1",
     "babel-eslint": "^10.1.0",
     "base64-inline-loader": "^2.0.1",
@@ -37,7 +37,7 @@
     "json-file": "^0.1.0",
     "lint-staged": "^15.1.0",
     "md5": "^2.3.0",
-    "micromatch": "^4.0.5",
+    "micromatch": "^4.0.8",
     "prettier-config-nk": "^1.1.1",
     "stylelint-config-nk": "^1.1.4",
     "wpeg": "1.2.8"
@@ -47,9 +47,9 @@
     "conditionize": "^1.0.5",
     "deep-assign": "^3.0.0",
     "deep-equal": "^2.2.3",
-    "jarallax": "^2.2.1",
+    "jarallax": "^3.0.0",
     "shorthash": "0.0.2",
     "throttle-debounce": "^5.0.2",
-    "video-worker": "^2.2.0"
+    "video-worker": "^3.0.0"
   }
 }
