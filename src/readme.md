@@ -67,6 +67,11 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.9 - May 4, 2026 =
+
+* tested up to WordPress 7.0
+* changed block registration: register the block early on `init` and register `awb` block attributes after other blocks load
+
 = 1.12.8 - Dec 15, 2025 =
 
 * testes with WP 6.9
