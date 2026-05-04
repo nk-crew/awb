@@ -67,6 +67,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.10 - May 4, 2026 =
+
+* updated Jarallax and Video-Worker libraries to the latest v3
+
 = 1.12.9 - May 4, 2026 =
 
 * tested up to WordPress 7.0
