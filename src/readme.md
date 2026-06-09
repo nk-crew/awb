@@ -67,6 +67,10 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.12.11 - Jun 9, 2026 =
+
+* fixed Vimeo video backgrounds not playing
+
 = 1.12.10 - May 4, 2026 =
 
 * updated Jarallax and Video-Worker libraries to the latest v3
