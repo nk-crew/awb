@@ -51,6 +51,7 @@ export default function Jarallax({ className = '', ...options }) {
     options.videoVolume,
     options.videoLoop,
     options.videoPlayOnlyVisible,
+    options.videoYoutubeHost,
   ]);
 
   // Destroy Jarallax.

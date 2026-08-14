@@ -99,6 +99,16 @@ function onImageSelect(media, setAttributes) {
     });
 }
 
+/**
+ * The no-cookie host only exists for YouTube, so the toggle is offered only once the URL is one.
+ *
+ * @param {String} url - video URL.
+ * @return {Boolean}
+ */
+function isYoutubeUrl(url) {
+  return !!url && !!VideoWorker.providers.Youtube.parseURL(url);
+}
+
 const videoPosterCache = {};
 let videoPosterTimeout;
 
@@ -150,6 +160,7 @@ export function RenderInspectorControls(props) {
     videoEndTime,
     videoLoop,
     videoAlwaysPlay,
+    videoYoutubeNoCookie,
     videoMobile,
 
     mediaOpacity,
@@ -254,6 +265,18 @@ export function RenderInspectorControls(props) {
                   onChange={(v) => setAttributes({ video: v })}
                   help={__('Supported YouTube and Vimeo URLs')}
                   __next40pxDefaultSize
+                  __nextHasNoMarginBottom
+                />
+              ) : null}
+
+              {type === 'yt_vm_video' && isYoutubeUrl(video) ? (
+                <ToggleControl
+                  label={__('Privacy-Enhanced Mode')}
+                  help={__(
+                    'Load the video from youtube-nocookie.com. YouTube stores no cookies until playback starts, but some visitors are asked to sign in before the video plays.'
+                  )}
+                  checked={!!videoYoutubeNoCookie}
+                  onChange={(v) => setAttributes({ videoYoutubeNoCookie: v })}
                   __nextHasNoMarginBottom
                 />
               ) : null}

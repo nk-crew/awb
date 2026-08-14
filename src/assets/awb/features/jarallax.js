@@ -24,6 +24,7 @@ function prepareJarallax($el) {
   let videoStartTime = 0;
   let videoEndTime = 0;
   let videoVolume = 0;
+  let videoYoutubeNoCookie = false;
   let videoLoop = true;
   let videoAlwaysPlay = true;
   let videoMobile = false;
@@ -39,6 +40,7 @@ function prepareJarallax($el) {
     videoStartTime = parseFloat($el.getAttribute('data-awb-video-start-time')) || 0;
     videoEndTime = parseFloat($el.getAttribute('data-awb-video-end-time')) || 0;
     videoVolume = parseFloat($el.getAttribute('data-awb-video-volume')) || 0;
+    videoYoutubeNoCookie = $el.getAttribute('data-awb-video-youtube-no-cookie') === 'true';
     videoLoop = $el.getAttribute('data-awb-video-loop') !== 'false';
     videoAlwaysPlay = $el.getAttribute('data-awb-video-always-play') === 'true';
     videoMobile =
@@ -93,6 +95,11 @@ function prepareJarallax($el) {
     jarallaxParams.videoEndTime = videoEndTime;
     jarallaxParams.videoVolume = videoVolume;
     jarallaxParams.videoLoop = videoLoop;
+
+    // Opt-in privacy-enhanced host. Left unset, VideoWorker keeps its own default.
+    if (videoYoutubeNoCookie) {
+      jarallaxParams.videoYoutubeHost = 'https://www.youtube-nocookie.com';
+    }
     jarallaxParams.videoPlayOnlyVisible = !videoAlwaysPlay;
   }
 
