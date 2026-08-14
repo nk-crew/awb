@@ -47,9 +47,9 @@
     "conditionize": "^1.0.5",
     "deep-assign": "^3.0.0",
     "deep-equal": "^2.2.3",
-    "jarallax": "^3.0.1",
+    "jarallax": "^3.1.0",
     "shorthash": "0.0.2",
     "throttle-debounce": "^5.0.2",
-    "video-worker": "^3.0.1"
+    "video-worker": "^3.1.0"
   }
 }
