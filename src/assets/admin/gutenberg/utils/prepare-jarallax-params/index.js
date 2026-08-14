@@ -43,6 +43,9 @@ export default function prepareJarallaxParams(attrs) {
         if (attrs.videoAlwaysPlay) {
           result.videoAlwaysPlay = attrs.videoAlwaysPlay;
         }
+        if (attrs.videoYoutubeNoCookie) {
+          result.videoYoutubeHost = 'https://www.youtube-nocookie.com';
+        }
         result.videoMobile = attrs.videoMobile;
       }
       break;

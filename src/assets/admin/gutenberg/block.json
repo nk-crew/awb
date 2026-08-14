@@ -149,6 +149,10 @@
       "type": "boolean",
       "default": false
     },
+    "videoYoutubeNoCookie": {
+      "type": "boolean",
+      "default": false
+    },
 
     "mediaOpacity": {
       "type": "number",

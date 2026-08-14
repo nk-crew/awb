@@ -79,6 +79,7 @@ class NK_AWB_Shortcode {
                 'awb_video_volume'              => 0,
                 'awb_video_always_play'         => 'false',
                 'awb_video_mobile'              => 'false',
+                'awb_video_youtube_no_cookie'   => 'false',
 
                 'awb_parallax'                  => 'false', // scroll, scale, opacity, scroll-opacity, scale-opacity.
                 'awb_parallax_speed'            => 0.5,
@@ -174,6 +175,11 @@ class NK_AWB_Shortcode {
             $awb_wrap_attributes .= ' data-awb-video-start-time="' . esc_attr( $atts['awb_video_start_time'] ) . '"';
             $awb_wrap_attributes .= ' data-awb-video-end-time="' . esc_attr( $atts['awb_video_end_time'] ) . '"';
             $awb_wrap_attributes .= ' data-awb-video-volume="' . esc_attr( $atts['awb_video_volume'] ) . '"';
+
+            // youtube privacy-enhanced host.
+            if ( filter_var( $atts['awb_video_youtube_no_cookie'], FILTER_VALIDATE_BOOLEAN ) ) {
+                $awb_wrap_attributes .= ' data-awb-video-youtube-no-cookie="true"';
+            }
 
             // video always play.
             if ( filter_var( $atts['awb_video_always_play'], FILTER_VALIDATE_BOOLEAN ) ) {
