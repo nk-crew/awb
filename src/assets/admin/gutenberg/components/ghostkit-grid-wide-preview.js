@@ -2,7 +2,7 @@ import { throttle } from 'throttle-debounce';
 
 import EditorStyles from './editor-styles';
 
-const { Component, Fragment } = wp.element;
+const { Component, Fragment, createRef } = wp.element;
 
 export default class GhostKitGridWidePreview extends Component {
   constructor(...args) {
@@ -18,11 +18,18 @@ export default class GhostKitGridWidePreview extends Component {
           : `[data-block="${this.props.clientId}"] > .awb-gutenberg-preview-block`,
     };
 
+    // The editor canvas is iframed, so the block list lives in a different document than
+    // the editor chrome. This anchor is rendered inside the canvas and gives us that document.
+    this.anchorRef = createRef();
+    this.canvasWindow = null;
+
     this.updatePosition = throttle(300, this.updatePosition.bind(this));
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.updatePosition);
+    this.canvasWindow = this.anchorRef.current?.ownerDocument?.defaultView || null;
+
+    this.canvasWindow?.addEventListener('resize', this.updatePosition);
     this.updatePosition();
   }
 
@@ -37,7 +44,8 @@ export default class GhostKitGridWidePreview extends Component {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updatePosition);
+    this.canvasWindow?.removeEventListener('resize', this.updatePosition);
+    this.canvasWindow = null;
   }
 
   updatePosition() {
@@ -51,12 +59,14 @@ export default class GhostKitGridWidePreview extends Component {
       previewAlign: attributes.awb_align,
     };
 
-    if (attributes.awb_align === 'full') {
-      const $layout = document.querySelector('.block-editor-block-list__layout');
-      const $parentBlock = document.querySelector(
+    const canvasDocument = this.anchorRef.current?.ownerDocument;
+
+    if (attributes.awb_align === 'full' && canvasDocument) {
+      const $layout = canvasDocument.querySelector('.block-editor-block-list__layout');
+      const $parentBlock = canvasDocument.querySelector(
         '.block-editor-block-list__layout .wp-block:not([data-align])'
       );
-      const $preview = document.querySelector(previewSelector);
+      const $preview = canvasDocument.querySelector(previewSelector);
 
       if ($layout && $parentBlock && $preview) {
         const layoutRect = $layout.getBoundingClientRect();
@@ -93,6 +103,7 @@ export default class GhostKitGridWidePreview extends Component {
 
     return (
       <Fragment>
+        <style ref={this.anchorRef} />
         {AWBpreviewStyles ? <EditorStyles styles={AWBpreviewStyles} /> : ''}
         {this.props.children}
       </Fragment>

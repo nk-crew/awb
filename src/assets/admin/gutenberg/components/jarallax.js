@@ -6,9 +6,26 @@ import classnames from 'classnames/dedupe';
 const { useRef, useEffect, Fragment } = wp.element;
 
 /**
- * Local Dependencies
+ * The jarallax instance that belongs to the element's own document.
+ *
+ * This component runs in the admin page but renders into the editor canvas, which WordPress 7.1
+ * always serves as an iframe. jarallax reads the viewport from the window it was loaded in, so
+ * the copy on the admin page would measure the admin viewport while positioning an element that
+ * lives in the canvas - the parallax offset comes out wrong by the difference between the two,
+ * and the visibility check that gates video playback tests the wrong rectangle.
+ *
+ * The canvas loads its own copy, so take that one. The admin page's copy is the fallback for
+ * anywhere the canvas does not have it.
+ *
+ * @param {HTMLElement} element - the element being decorated.
+ *
+ * @return {Function|undefined} jarallax, bound to the right document.
  */
-const { jarallax } = window;
+function getJarallax(element) {
+  const view = element && element.ownerDocument && element.ownerDocument.defaultView;
+
+  return (view && view.jarallax) || window.jarallax;
+}
 
 /**
  * Component
@@ -33,7 +50,9 @@ export default function Jarallax({ className = '', ...options }) {
 
   // Init Jarallax and update options.
   useEffect(() => {
-    if ($el.current) {
+    const jarallax = getJarallax($el.current);
+
+    if ($el.current && jarallax) {
       jarallax($el.current, 'destroy');
       jarallax($el.current, options);
     }
@@ -54,12 +73,15 @@ export default function Jarallax({ className = '', ...options }) {
     options.videoYoutubeHost,
   ]);
 
-  // Destroy Jarallax.
+  // Destroy Jarallax. Resolve the instance from the element again rather than closing over the
+  // one used to initialise, so teardown always talks to the copy that owns the element.
   useEffect(() => {
     const $currentEl = $el.current;
 
     return () => {
-      if ($currentEl) {
+      const jarallax = getJarallax($currentEl);
+
+      if ($currentEl && jarallax) {
         jarallax($currentEl, 'destroy');
       }
     };

@@ -264,8 +264,6 @@ export function RenderInspectorControls(props) {
                   value={video}
                   onChange={(v) => setAttributes({ video: v })}
                   help={__('Supported YouTube and Vimeo URLs')}
-                  __next40pxDefaultSize
-                  __nextHasNoMarginBottom
                 />
               ) : null}
 
@@ -277,7 +275,6 @@ export function RenderInspectorControls(props) {
                   )}
                   checked={!!videoYoutubeNoCookie}
                   onChange={(v) => setAttributes({ videoYoutubeNoCookie: v })}
-                  __nextHasNoMarginBottom
                 />
               ) : null}
 
@@ -422,7 +419,6 @@ export function RenderInspectorControls(props) {
                 label={__('Enable on mobile devices')}
                 checked={!!videoMobile}
                 onChange={(v) => setAttributes({ videoMobile: v })}
-                __nextHasNoMarginBottom
               />
 
               <TextControl
@@ -433,8 +429,6 @@ export function RenderInspectorControls(props) {
                 help={__(
                   'Start time in seconds when video will be started (this value will be applied also after loop)'
                 )}
-                __next40pxDefaultSize
-                __nextHasNoMarginBottom
               />
               <TextControl
                 label={__('End time')}
@@ -442,21 +436,17 @@ export function RenderInspectorControls(props) {
                 value={videoEndTime}
                 onChange={(v) => setAttributes({ videoEndTime: parseFloat(v) })}
                 help={__('End time in seconds when video will be ended')}
-                __next40pxDefaultSize
-                __nextHasNoMarginBottom
               />
               <ToggleControl
                 label={__('Loop')}
                 checked={!!videoLoop}
                 onChange={(v) => setAttributes({ videoLoop: v })}
-                __nextHasNoMarginBottom
               />
               <ToggleControl
                 label={__('Always play')}
                 help={__('Play video also when not in viewport')}
                 checked={!!videoAlwaysPlay}
                 onChange={(v) => setAttributes({ videoAlwaysPlay: v })}
-                __nextHasNoMarginBottom
               />
               <RangeControl
                 label={__('Video Opacity')}
@@ -464,8 +454,6 @@ export function RenderInspectorControls(props) {
                 min="0"
                 max="100"
                 onChange={(value) => setAttributes({ mediaOpacity: value })}
-                __next40pxDefaultSize
-                __nextHasNoMarginBottom
               />
             </PanelBody>
           ) : null}
@@ -515,7 +503,6 @@ export function RenderInspectorControls(props) {
                           : cleanImgTag(imageTag)
                       }
                       onChange={(v) => setAttributes({ imageBackgroundPosition: v })}
-                      __nextHasNoMarginBottom
                     />
                   ) : null}
 
@@ -528,8 +515,6 @@ export function RenderInspectorControls(props) {
                         label: imgSize.name,
                       }))}
                       onChange={(v) => setAttributes({ imageSize: v })}
-                      __next40pxDefaultSize
-                      __nextHasNoMarginBottom
                     />
                   ) : null}
                   <SelectControl
@@ -554,8 +539,6 @@ export function RenderInspectorControls(props) {
                       },
                     ]}
                     onChange={(v) => setAttributes({ imageBackgroundSize: v })}
-                    __next40pxDefaultSize
-                    __nextHasNoMarginBottom
                   />
                   <RangeControl
                     label={__('Image Opacity')}
@@ -563,8 +546,6 @@ export function RenderInspectorControls(props) {
                     min="0"
                     max="100"
                     onChange={(value) => setAttributes({ mediaOpacity: value })}
-                    __next40pxDefaultSize
-                    __nextHasNoMarginBottom
                   />
                   <div style={{ textAlign: 'right' }}>
                     <Button
@@ -663,8 +644,6 @@ export function RenderInspectorControls(props) {
                     },
                   ]}
                   onChange={(v) => setAttributes({ parallax: v })}
-                  __next40pxDefaultSize
-                  __nextHasNoMarginBottom
                 />
                 {parallax ? (
                   <Fragment>
@@ -677,14 +656,11 @@ export function RenderInspectorControls(props) {
                       max="2"
                       onChange={(v) => setAttributes({ parallaxSpeed: parseFloat(v) })}
                       help={__('Provide number from -1.0 to 2.0')}
-                      __next40pxDefaultSize
-                      __nextHasNoMarginBottom
                     />
                     <ToggleControl
                       label={__('Enable on mobile devices')}
                       checked={!!parallaxMobile}
                       onChange={(v) => setAttributes({ parallaxMobile: v })}
-                      __nextHasNoMarginBottom
                     />
                   </Fragment>
                 ) : null}
@@ -694,7 +670,6 @@ export function RenderInspectorControls(props) {
                   label={__('Enable')}
                   checked={!!mouseParallax}
                   onChange={(v) => setAttributes({ mouseParallax: v })}
-                  __nextHasNoMarginBottom
                 />
                 {mouseParallax ? (
                   <Fragment>
@@ -705,8 +680,6 @@ export function RenderInspectorControls(props) {
                       max="200"
                       help={` ${__('px')}`}
                       onChange={(v) => setAttributes({ mouseParallaxSize: v })}
-                      __next40pxDefaultSize
-                      __nextHasNoMarginBottom
                     />
                     <RangeControl
                       label={__('Speed')}
@@ -715,8 +688,6 @@ export function RenderInspectorControls(props) {
                       max="20000"
                       help={` ${__('ms')}`}
                       onChange={(v) => setAttributes({ mouseParallaxSpeed: v })}
-                      __next40pxDefaultSize
-                      __nextHasNoMarginBottom
                     />
                   </Fragment>
                 ) : null}
