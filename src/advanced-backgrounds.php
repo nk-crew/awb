@@ -113,7 +113,7 @@ class NK_AWB {
                 'version'  => '@@plugin_version',
                 'settings' => array(
                     'disable_parallax'    => array_keys( AWB_Settings::get_option( 'disable_parallax', 'awb_general', array() ) ? AWB_Settings::get_option( 'disable_parallax', 'awb_general', array() ) : array() ),
-                    'disable_video'       => array_keys( AWB_Settings::get_option( 'disable_video', 'awb_general', array() ) ? AWB_Settings::get_option( 'disable_video', 'awb_general', array() ) : array() ),
+                    'disable_video'       => array_keys( AWB_Settings::get_option( 'disable_videos', 'awb_general', array() ) ? AWB_Settings::get_option( 'disable_videos', 'awb_general', array() ) : array() ),
                     'full_width_fallback' => ! ( ( function_exists( 'wp_is_block_theme' ) && wp_is_block_theme() ) || get_theme_support( 'align-wide' ) ),
                 ),
             )

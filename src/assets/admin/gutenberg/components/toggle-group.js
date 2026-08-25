@@ -28,7 +28,6 @@ class ToggleGroup extends Component {
         <BaseControl
           label={label}
           className={classnames('awb-control-toggle-group', this.props.className)}
-          __nextHasNoMarginBottom
         >
           <ToggleGroupControl
             value={value}
@@ -36,8 +35,6 @@ class ToggleGroup extends Component {
             isBlock={isBlock}
             isAdaptiveWidth={isAdaptiveWidth}
             hideLabelFromVision
-            __next40pxDefaultSize
-            __nextHasNoMarginBottom
           >
             {options.map((option) => (
               <ToggleGroupControlOption
@@ -60,7 +57,7 @@ class ToggleGroup extends Component {
 
     // Fallback.
     return (
-      <BaseControl label={label} __nextHasNoMarginBottom>
+      <BaseControl label={label}>
         <ButtonGroup className="awb-control-toggle-group">
           {options.map((option) => (
             <Button

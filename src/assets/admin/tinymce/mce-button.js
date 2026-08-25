@@ -393,7 +393,7 @@ const { jQuery: $, tinymce, AWBTinyMCEOptions: options } = window;
             const $this = $(this);
             let val = $this.val();
             if (val) {
-              if ($.isNumeric(val)) {
+              if (!Number.isNaN(parseFloat(val)) && Number.isFinite(Number(val))) {
                 val += 'px';
               }
               customStyles += ` ${$this.attr('data-style')}: ${val};`;

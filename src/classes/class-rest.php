@@ -89,7 +89,8 @@ class NK_AWB_Rest extends WP_REST_Controller {
             return $this->error( 'no_id_found', __( 'Provide image ID.', '@@text_domain' ) );
         }
 
-        $attr = isset( $attr ) && $attr && is_array( $attr ) ? $attr : array();
+        $attr  = isset( $attr ) && $attr && is_array( $attr ) ? $attr : array();
+        $image = '';
 
         if ( $div_tag ) {
             $image_url = wp_get_attachment_image_url( $id, $size, $icon );
