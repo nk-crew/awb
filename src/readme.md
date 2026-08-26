@@ -67,6 +67,16 @@ The manual installation method involves downloading our AWB plugin and uploading
 
 ## Changelog
 
+= 1.13.0 - Aug 26, 2026 =
+
+* added a Privacy-Enhanced Mode toggle for YouTube backgrounds, shown once the entered URL is a YouTube one
+* changed YouTube backgrounds to use the regular YouTube host by default, because the privacy-enhanced host asks a share of visitors to sign in before it plays anything
+* added WordPress 7.1 compatibility
+* fixed the Disable video setting doing nothing when ticked
+* fixed parallax sitting at the wrong offset in the block editor, which also stopped video backgrounds starting there
+* fixed full width stretching inside a Ghost Kit grid in the block editor
+* raised the minimum PHP requirement to 7.4
+
 = 1.12.11 - Jun 9, 2026 =
 
 * fixed Vimeo video backgrounds not playing
