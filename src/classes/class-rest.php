@@ -113,11 +113,11 @@ class NK_AWB_Rest extends WP_REST_Controller {
             if ( $image_src ) {
                 list( $src, $width, $height ) = $image_src;
 
-                $alt = trim( wp_strip_all_tags( get_post_meta( $id, '_wp_attachment_image_alt', true ) ) );
-
-                if ( $alt ) {
-                    $attr['alt'] = $alt;
-                }
+                // An attachment with no alt text still needs `alt=""`, the way
+                // wp_get_attachment_image() writes it. Leaving the attribute out marks the image
+                // as missing alt text for crawlers and screen readers alike, and the editor saves
+                // this tag into the block content, so the gap ships with the post.
+                $attr['alt'] = trim( wp_strip_all_tags( get_post_meta( $id, '_wp_attachment_image_alt', true ) ) );
 
                 if ( ! isset( $attr['class'] ) ) {
                     $attr['class'] = 'wp-image-' . $id;
