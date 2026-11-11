@@ -40,8 +40,8 @@ export default function Jarallax({ className = '', ...options }) {
   options.type = options.parallax;
   options.speed = options.parallaxSpeed;
 
-  // Without a type jarallax leaves the video fixed to the viewport, so do what the front end does.
-  if (options.video && !options.parallax) {
+  // Without a type jarallax leaves the background fixed to the viewport. Speed 1 keeps it still.
+  if (!options.parallax) {
     options.type = 'scroll';
     options.speed = 1;
   }
