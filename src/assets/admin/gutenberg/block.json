@@ -71,6 +71,9 @@
       "type": "string",
       "default": "color"
     },
+    "align": {
+      "type": "string"
+    },
     "fullHeight": {
       "type": "boolean",
       "default": false
