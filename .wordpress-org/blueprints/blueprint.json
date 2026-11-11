@@ -10,6 +10,16 @@
 	},
 	"steps": [
 		{
+			"step": "installPlugin",
+			"pluginData": {
+				"resource": "wordpress.org/plugins",
+				"slug": "advanced-backgrounds"
+			},
+			"options": {
+				"activate": true
+			}
+		},
+		{
 			"step": "login",
 			"username": "admin",
 			"password": "password"
