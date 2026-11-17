@@ -3,7 +3,7 @@
 * Contributors: nko
 * Tags: parallax, video, youtube, background, gutenberg
 * Requires at least: 6.2
-* Tested up to: 7.1
+* Tested up to: 7.2
 * Requires PHP: 7.4
 * Stable tag: @@plugin_version
 * License: GPLv2 or later
@@ -66,6 +66,13 @@ The manual installation method involves downloading our AWB plugin and uploading
 5. Extended WPBakery Page Builder ROW options
 
 ## Changelog
+
+= 1.13.1 - Nov 17, 2026 =
+
+* added WordPress 7.2 compatibility
+* fixed the Wide and Full width alignment being lost after saving the page
+* fixed video backgrounds without parallax staying fixed to the screen in the block editor instead of scrolling with the block
+* fixed background images with no alt text being saved without an alt attribute, which SEO tools report as missing alt text
 
 = 1.13.0 - Aug 26, 2026 =
 
