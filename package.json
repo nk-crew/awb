@@ -15,7 +15,7 @@
     "css-lint-fix": "stylelint --fix --custom-syntax postcss-scss \"src/**/*.scss\"",
     "js-lint": "eslint --ext .js --ext .jsx src/",
     "js-lint-fix": "eslint --ext .js --ext .jsx --fix src/",
-    "lint": "npm-run-all php-lint css-lint js-lint",
+    "lint": "npm run php-lint && npm run css-lint && npm run js-lint",
     "lint-fix": "npm-run-all php-lint-fix css-lint-fix js-lint-fix",
     "lint-staged": "lint-staged",
     "make-pot": "composer wp -- i18n make-pot ./src ./src/languages/advanced-backgrounds.pot --skip-audit --exclude=vendor,vendors,node_modules --headers='{\"Last-Translator\":\"nK\",\"Report-Msgid-Bugs-To\":\"https://github.com/nk-o/awb/issues\"}'",
