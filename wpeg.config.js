@@ -28,8 +28,7 @@ cfg.template_files_variables = {
 
 // Copy files.
 cfg.copy_files_src = [
-  '{src}/**/*',
-  '!{src}/**/*.{js,scss}',
+  '{src}/**/!(*.js|*.scss)',
   '{src}/**/vendor/**/*.{js,scss}',
   './node_modules/*jarallax/dist/jarallax-video.min.js',
   './node_modules/*jarallax/dist/jarallax-video.min.js.map',

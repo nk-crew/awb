@@ -40,7 +40,7 @@
     "micromatch": "^4.0.8",
     "prettier-config-nk": "^1.1.1",
     "stylelint-config-nk": "^1.1.4",
-    "wpeg": "1.2.8"
+    "wpeg": "2.0.0"
   },
   "dependencies": {
     "classnames": "^2.5.1",
