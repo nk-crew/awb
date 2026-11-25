@@ -92,7 +92,7 @@
 			}
 
 			// Bind the close event.
-			self.close = $.proxy( self.close, self );
+			self.close = self.close.bind( self );
 
 			self.initialValue = el.val();
 
@@ -221,7 +221,7 @@
 						self.toggler.css( { backgroundColor : ui.color.toString() } );
 					}
 
-					if ( $.isFunction( self.options.change ) ) {
+					if ( 'function' === typeof self.options.change ) {
 						self.options.change.call( this, event, ui );
 					}
 				}
@@ -232,7 +232,7 @@
 
 			// Force the color picker to always be closed on initial load.
 			if ( ! self.options.hide ) {
-				self.toggler.click();
+				self.toggler.trigger( 'click' );
 			}
 		},
 		/**
@@ -265,7 +265,7 @@
 			 *
 			 * @since 3.5
 			 */
-			self.toggler.click( function(){
+			self.toggler.on( 'click', function(){
 				if ( self.toggler.hasClass( 'wp-picker-open' ) ) {
 					self.close();
 				} else {
@@ -298,7 +298,7 @@
 					}
 
 					// fire clear callback if we have one
-					if ( $.isFunction( self.options.clear ) )
+					if ( 'function' === typeof self.options.clear )
 						self.options.clear.call( this, event );
 				}
 			} );
@@ -326,7 +326,7 @@
 						self.toggler.css( 'backgroundColor', '' );
 					}
 
-					if ( $.isFunction( self.options.clear ) )
+					if ( 'function' === typeof self.options.clear )
 						self.options.clear.call( this, event );
 
 					self.element.trigger( 'change' );
