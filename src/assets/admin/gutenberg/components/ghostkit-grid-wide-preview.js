@@ -8,14 +8,17 @@ export default class GhostKitGridWidePreview extends Component {
   constructor(...args) {
     super(...args);
 
+    const blockSelector = `[data-block="${this.props.clientId}"]`;
+    const previewParent =
+      this.props.name === 'ghostkit/grid'
+        ? `:is(${blockSelector}.ghostkit-grid, ${blockSelector} > .ghostkit-grid)`
+        : blockSelector;
+
     this.state = {
       previewLeft: 0,
       previewRight: 0,
       previewAlign: false,
-      previewSelector:
-        this.props.name === 'ghostkit/grid'
-          ? `[data-block="${this.props.clientId}"] > .ghostkit-grid > .awb-gutenberg-preview-block`
-          : `[data-block="${this.props.clientId}"] > .awb-gutenberg-preview-block`,
+      previewSelector: `${previewParent} > .awb-gutenberg-preview-block`,
     };
 
     // The editor canvas is iframed, so the block list lives in a different document than
