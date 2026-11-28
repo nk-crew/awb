@@ -115,6 +115,21 @@ class NK_AWB_VC_Extend {
      */
     public function vc_shortcode_output_filter( $output, $obj, $attr ) {
         if ( $obj->settings( 'base' ) === 'vc_row' ) {
+            if ( preg_match( '/^\s*<div(?=[\s>])(?:[^>"\']++|"[^"]*"|\'[^\']*\')*>/i', $output, $opening_tag ) ) {
+                $row = new WP_HTML_Tag_Processor( $opening_tag[0] );
+                if ( $row->next_tag( array( 'class_name' => 'vc_row' ) ) && ! preg_match( '/(?:^|\s)nk-awb(?:\s|$)/', $row->get_attribute( 'class' ) ) ) {
+                    if ( 'true' === $row->get_attribute( 'data-vc-full-width' ) ) {
+                        unset( $attr['awb_stretch'] );
+                    }
+                    $background = NK_AWB_Shortcode::render( $attr, '', false );
+                    if ( $background ) {
+                        $row->add_class( 'nk-awb' );
+                        return $row->get_updated_html() . $background . substr( $output, strlen( $opening_tag[0] ) );
+                    }
+                    return $output;
+                }
+            }
+
             $attr['awb_after_vc_row'] = 'true';
             $output                  .= NK_AWB_Shortcode::get_shortcode_out( $attr, '' );
         } elseif ( $obj->settings( 'base' ) === 'vc_column' ) {

@@ -57,6 +57,19 @@ class NK_AWB_Shortcode {
      * @return string
      */
     public static function get_shortcode_out( $atts = array(), $content = null ) {
+        return self::render( $atts, $content, true );
+    }
+
+    /**
+     * Render a background, optionally with its own container.
+     *
+     * @param array  $atts - shortcode attributes.
+     * @param string $content - shortcode content.
+     * @param bool   $wrap - whether to add a container.
+     *
+     * @return string
+     */
+    public static function render( $atts, $content, $wrap ) {
         $atts = shortcode_atts(
             array(
                 'awb_type'                      => '', // color, image, yt_vm_video, video.
@@ -270,12 +283,18 @@ class NK_AWB_Shortcode {
         // classes.
         $awb_wrap_attributes = 'class="nk-awb-wrap" ' . $awb_wrap_attributes;
 
-        return '<div class="' . esc_attr( $atts['awb_class'] ) . '" ' . $awb_attributes . '>'
-                    . do_shortcode( $content )
-                    . '<div ' . $awb_wrap_attributes . '>'
+        $background = '<div ' . $awb_wrap_attributes . '>'
                         . $awb_overlay_html
                         . '<div ' . $awb_inner_attributes . '>' . $awb_inner_html . '</div>'
-                    . '</div>'
+                    . '</div>';
+
+        if ( ! $wrap ) {
+            return $background;
+        }
+
+        return '<div class="' . esc_attr( $atts['awb_class'] ) . '" ' . $awb_attributes . '>'
+                    . do_shortcode( $content )
+                    . $background
                 . '</div>';
     }
 }
