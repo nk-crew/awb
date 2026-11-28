@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Class nK_AWB_VC_Extend
  */
 class NK_AWB_VC_Extend {
+    private const ROW_BACKGROUND_MARKER = '<!-- nk-awb-row-background -->';
+
     /**
      * NK_AWB_VC_Extend constructor.
      */
@@ -39,6 +41,7 @@ class NK_AWB_VC_Extend {
      * Init hooks
      */
     public function init_hooks() {
+        add_filter( 'vc_shortcode_content_filter', array( $this, 'mark_row_background' ), 10, 3 );
         add_filter( 'vc_shortcode_output', array( $this, 'vc_shortcode_output_filter' ), 10, 3 );
         add_action( 'admin_init', array( $this, 'vc_shortcode_extend_prepare' ) );
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
@@ -105,7 +108,56 @@ class NK_AWB_VC_Extend {
     }
 
     /**
-     * Filter for vc_row output
+     * Mark the end of a row's content before WPBakery wraps it.
+     *
+     * @param string     $content - shortcode content.
+     * @param string     $shortcode - shortcode name.
+     * @param array|null $attr - shortcode attributes when passed by WPBakery.
+     *
+     * @return string
+     */
+    public function mark_row_background( $content, $shortcode, $attr = null ) {
+        if ( 'vc_row' === $shortcode && ( null === $attr || ! empty( $attr['awb_type'] ) ) ) {
+            $content .= self::ROW_BACKGROUND_MARKER;
+        }
+        return $content;
+    }
+
+    /**
+     * Select the row that contains the marker at the end of the HTML fragment.
+     *
+     * @param WP_HTML_Tag_Processor $html - HTML before the marker.
+     * @return bool
+     */
+    private function select_background_row( $html ) {
+        $depth     = 0;
+        $row_depth = 0;
+        while ( $html->next_tag(
+            array(
+                'tag_name'    => 'DIV',
+                'tag_closers' => 'visit',
+            )
+        ) ) {
+            if ( $html->is_tag_closer() ) {
+                if ( $depth === $row_depth ) {
+                    $row_depth = 0;
+                }
+                --$depth;
+                continue;
+            }
+
+            ++$depth;
+            if ( ! $row_depth && preg_match( '/(?:^|\s)vc_row(?:\s|$)/', (string) $html->get_attribute( 'class' ) ) ) {
+                $html->set_bookmark( 'awb-row' );
+                $row_depth = $depth;
+            }
+        }
+
+        return $row_depth > 0 && $depth === $row_depth && $html->seek( 'awb-row' );
+    }
+
+    /**
+     * Filter for row and column output.
      *
      * @param string $output - output row content.
      * @param object $obj - shortcode data.
@@ -115,6 +167,29 @@ class NK_AWB_VC_Extend {
      */
     public function vc_shortcode_output_filter( $output, $obj, $attr ) {
         if ( $obj->settings( 'base' ) === 'vc_row' ) {
+            $marker = strrpos( $output, self::ROW_BACKGROUND_MARKER );
+            if ( false !== $marker ) {
+                $before = substr( $output, 0, $marker );
+                $after  = substr( $output, $marker + strlen( self::ROW_BACKGROUND_MARKER ) );
+                if ( empty( $attr['awb_type'] ) ) {
+                    return $before . $after;
+                }
+
+                $row = new WP_HTML_Tag_Processor( $before );
+                if ( $this->select_background_row( $row ) && ! preg_match( '/(?:^|\s)nk-awb(?:\s|$)/', $row->get_attribute( 'class' ) ) ) {
+                    if ( 'true' === $row->get_attribute( 'data-vc-full-width' ) ) {
+                        unset( $attr['awb_stretch'] );
+                    }
+                    $background = NK_AWB_Shortcode::render( $attr, '', false );
+                    if ( $background ) {
+                        $row->add_class( 'nk-awb' );
+                    }
+                    return $row->get_updated_html() . $background . $after;
+                }
+
+                $output = $before . $after;
+            }
+
             $attr['awb_after_vc_row'] = 'true';
             $output                  .= NK_AWB_Shortcode::get_shortcode_out( $attr, '' );
         } elseif ( $obj->settings( 'base' ) === 'vc_column' ) {
