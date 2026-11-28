@@ -110,14 +110,14 @@ class NK_AWB_VC_Extend {
     /**
      * Mark the end of a row's content before WPBakery wraps it.
      *
-     * @param string $content - shortcode content.
-     * @param string $shortcode - shortcode name.
-     * @param array  $attr - shortcode attributes.
+     * @param string     $content - shortcode content.
+     * @param string     $shortcode - shortcode name.
+     * @param array|null $attr - shortcode attributes when passed by WPBakery.
      *
      * @return string
      */
-    public function mark_row_background( $content, $shortcode, $attr ) {
-        if ( 'vc_row' === $shortcode && ! empty( $attr['awb_type'] ) ) {
+    public function mark_row_background( $content, $shortcode, $attr = null ) {
+        if ( 'vc_row' === $shortcode && ( null === $attr || ! empty( $attr['awb_type'] ) ) ) {
             $content .= self::ROW_BACKGROUND_MARKER;
         }
         return $content;
@@ -168,11 +168,14 @@ class NK_AWB_VC_Extend {
     public function vc_shortcode_output_filter( $output, $obj, $attr ) {
         if ( $obj->settings( 'base' ) === 'vc_row' ) {
             $marker = strrpos( $output, self::ROW_BACKGROUND_MARKER );
-            if ( false !== $marker && ! empty( $attr['awb_type'] ) ) {
+            if ( false !== $marker ) {
                 $before = substr( $output, 0, $marker );
                 $after  = substr( $output, $marker + strlen( self::ROW_BACKGROUND_MARKER ) );
-                $row    = new WP_HTML_Tag_Processor( $before );
+                if ( empty( $attr['awb_type'] ) ) {
+                    return $before . $after;
+                }
 
+                $row = new WP_HTML_Tag_Processor( $before );
                 if ( $this->select_background_row( $row ) && ! preg_match( '/(?:^|\s)nk-awb(?:\s|$)/', $row->get_attribute( 'class' ) ) ) {
                     if ( 'true' === $row->get_attribute( 'data-vc-full-width' ) ) {
                         unset( $attr['awb_stretch'] );
